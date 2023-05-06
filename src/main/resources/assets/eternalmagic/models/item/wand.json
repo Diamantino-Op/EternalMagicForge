@@ -1,0 +1,6 @@
+{
+  "loader": "eternalmagic:em_model_loader",
+  "base_model": {
+    "parent": "item/generated"
+  }
+}
