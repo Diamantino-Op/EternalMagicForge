@@ -126,6 +126,12 @@ public class ModelLoader
             this.getTransforms().getTransform(transformType).apply(applyLeftHandTransform, poseStack);
             return this;
         }
+
+        @Override
+        public @NotNull List<BakedModel> getRenderPasses(@NotNull ItemStack itemStack, boolean fabulous)
+        {
+            return List.of(this);
+        }
     }
 
     public static class EMOverrideList extends ItemOverrides
