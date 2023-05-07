@@ -1,5 +1,6 @@
 package com.diamantino.eternalmagic.client.model;
 
+import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.registration.ModItems;
 import com.google.gson.JsonDeserializationContext;
@@ -16,7 +17,6 @@ import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -34,20 +34,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 public class ModelLoader
 {
-    List<ResourceLocation> loadedModels;
+    private static final List<ResourceLocation> loadedModels = new ArrayList<>();
 
     public void registerModels(ModelEvent.RegisterAdditional event) {
         FileToIdConverter fileToIdConverter = FileToIdConverter.json("models/em_models");
-        loadedModels = fileToIdConverter.listMatchingResources(Minecraft.getInstance().getResourceManager()).keySet().stream().toList();
 
-        loadedModels.forEach(modelId -> {
+        fileToIdConverter.listMatchingResources(Minecraft.getInstance().getResourceManager()).keySet().stream().toList().forEach(modelId -> {
             String id = modelId.toString().replace(".json", "").replace("models/em_models", "em_models");
+
+            loadedModels.add(new ResourceLocation(id));
 
             event.register(new ResourceLocation(id));
         });
@@ -111,7 +111,7 @@ public class ModelLoader
         }
 
         @Override
-        public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand)
+        public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand)
         {
             if (side == null)
             {
@@ -131,6 +131,11 @@ public class ModelLoader
     public static class EMOverrideList extends ItemOverrides
     {
         private static final RandomSource randomSource = RandomSource.create();
+        //private final Map<ResourceLocation, BakedModel> cachedModels = new LinkedHashMap<>(loadedModels.size());
+
+        /*private EMOverrideList() {
+            loadedModels.forEach(modelId -> cachedModels.put(modelId, null));
+        }*/
 
         @Nullable
         @Override
@@ -145,7 +150,9 @@ public class ModelLoader
                     BakedModel bakedModel = Minecraft.getInstance().getModelManager().getModel(mdl.modelId());
                     List<BakedQuad> tempQuads = new ArrayList<>(bakedModel.getQuads(null, null, randomSource, ModelData.EMPTY, null));
 
-                    Transformation translation = new Transformation(mdl.translation(), null, mdl.scale(), new Quaternionf(mdl.rotation().x(), mdl.rotation().y(), mdl.rotation().z(), 1));
+                    ModReferences.logger.warn("Quads: " + tempQuads.size());
+
+                    Transformation translation = new Transformation(mdl.translation(), new Quaternionf(), mdl.scale(), new Quaternionf(mdl.rotation().x(), mdl.rotation().y(), mdl.rotation().z(), 1));
                     IQuadTransformer transformer = QuadTransformers.applying(translation);
 
                     quads.addAll(transformer.process(tempQuads));

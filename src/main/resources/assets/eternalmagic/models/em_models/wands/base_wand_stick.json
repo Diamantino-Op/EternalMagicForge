@@ -1,5 +1,4 @@
 {
-	"parent": "item/generated",
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "eternalmagic:em_textures/wands/base_wand_stick",
