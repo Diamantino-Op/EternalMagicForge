@@ -156,8 +156,6 @@ public class ModelLoader
                     BakedModel bakedModel = Minecraft.getInstance().getModelManager().getModel(mdl.modelId());
                     List<BakedQuad> tempQuads = new ArrayList<>(bakedModel.getQuads(null, null, randomSource, ModelData.EMPTY, null));
 
-                    ModReferences.logger.warn("Quads: " + tempQuads.size());
-
                     Transformation translation = new Transformation(mdl.translation(), new Quaternionf(), mdl.scale(), new Quaternionf(mdl.rotation().x(), mdl.rotation().y(), mdl.rotation().z(), 1));
                     IQuadTransformer transformer = QuadTransformers.applying(translation);
 
