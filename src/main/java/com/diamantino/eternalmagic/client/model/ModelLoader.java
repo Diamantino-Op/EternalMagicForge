@@ -1,6 +1,5 @@
 package com.diamantino.eternalmagic.client.model;
 
-import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.registration.ModItems;
 import com.google.gson.JsonDeserializationContext;
@@ -137,11 +136,6 @@ public class ModelLoader
     public static class EMOverrideList extends ItemOverrides
     {
         private static final RandomSource randomSource = RandomSource.create();
-        //private final Map<ResourceLocation, BakedModel> cachedModels = new LinkedHashMap<>(loadedModels.size());
-
-        /*private EMOverrideList() {
-            loadedModels.forEach(modelId -> cachedModels.put(modelId, null));
-        }*/
 
         @Nullable
         @Override
