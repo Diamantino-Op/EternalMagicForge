@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public static final DeferredRegister<Block> blocks = DeferredRegister.create(ForgeRegistries.BLOCKS, ModReferences.modId);
 
-    public static RegistryObject<WandBenchBlock> wandBenchBlock = registerBlock("wand_bench", () -> new WandBenchBlock(BlockBehaviour.Properties.of(Material.STONE).strength(6, 6).lightLevel(state -> 15).requiresCorrectToolForDrops()));
+    public static final RegistryObject<WandBenchBlock> wandBenchBlock = registerBlock("wand_bench", () -> new WandBenchBlock(BlockBehaviour.Properties.of(Material.STONE).strength(6, 6).lightLevel(state -> 15).requiresCorrectToolForDrops()));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = blocks.register(name, block);

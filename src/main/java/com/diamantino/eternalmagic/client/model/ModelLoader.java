@@ -122,7 +122,7 @@ public class ModelLoader
         @Override
         public @NotNull BakedModel applyTransform(@NotNull ItemDisplayContext transformType, @NotNull PoseStack poseStack, boolean applyLeftHandTransform)
         {
-            this.getTransforms().getTransform(transformType).apply(applyLeftHandTransform, poseStack);
+            this.getTransforms().m_269404_(transformType).apply(applyLeftHandTransform, poseStack);
             return this;
         }
 

@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModItems {
     public static final DeferredRegister<Item> items = DeferredRegister.create(ForgeRegistries.ITEMS, ModReferences.modId);
 
-    public static RegistryObject<WandItem> wandItem = items.register("wand", () -> new WandItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<WandItem> wandItem = items.register("wand", () -> new WandItem(new Item.Properties().stacksTo(1)));
 
     public static void registerItems(IEventBus bus) {
         items.register(bus);
