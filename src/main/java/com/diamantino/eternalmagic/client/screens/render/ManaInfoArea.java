@@ -25,9 +25,9 @@ public class ManaInfoArea extends InfoArea {
     }
 
     @Override
-    public void draw(PoseStack transform) {
+    public void draw(PoseStack transform, int x, int y) {
         RenderSystem.setShaderTexture(0, barLocation);
 
-        blit(transform, destArea.getX(), destArea.getY(), sourceArea.getX(), sourceArea.getY(), sourceArea.getWidth(), sourceArea.getHeight(), manaStorage.getManaStored() * (sourceArea.getWidth() / manaStorage.getMaxManaStored()), sourceArea.getHeight());
+        blit(transform, x + destArea.getX(), y + destArea.getY(), sourceArea.getX(), sourceArea.getY(), sourceArea.getWidth(), sourceArea.getHeight(), manaStorage.getManaStored() * (sourceArea.getWidth() / manaStorage.getMaxManaStored()), sourceArea.getHeight());
     }
 }

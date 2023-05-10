@@ -56,7 +56,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
         blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
 
-        manaInfoArea.draw(poseStack);
+        manaInfoArea.draw(poseStack, x, y);
     }
 
     @Override

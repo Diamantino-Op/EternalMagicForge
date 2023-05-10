@@ -13,5 +13,5 @@ public abstract class InfoArea extends GuiComponent {
         this.destArea = destArea;
     }
 
-    public abstract void draw(PoseStack transform);
+    public abstract void draw(PoseStack transform, int x, int y);
 }
