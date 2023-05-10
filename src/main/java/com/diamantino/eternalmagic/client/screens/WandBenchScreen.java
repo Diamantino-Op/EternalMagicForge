@@ -36,7 +36,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     }
 
     private void assignManaInfoArea() {
-        manaInfoArea = new ManaInfoArea(0, 69, 26, 136, 80, 3, barTexture, menu.blockEntity.getManaStorage());
+        manaInfoArea = new ManaInfoArea(0, 70, 26, 136, 80, 3, barTexture, menu.blockEntity.getManaStorage());
     }
 
     @Override

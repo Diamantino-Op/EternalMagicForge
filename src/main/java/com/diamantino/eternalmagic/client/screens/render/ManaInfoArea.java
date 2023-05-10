@@ -1,5 +1,6 @@
 package com.diamantino.eternalmagic.client.screens.render;
 
+import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -28,6 +29,8 @@ public class ManaInfoArea extends InfoArea {
     public void draw(PoseStack transform, int x, int y) {
         RenderSystem.setShaderTexture(0, barLocation);
 
-        blit(transform, x + destArea.getX(), y + destArea.getY(), sourceArea.getX(), sourceArea.getY(), sourceArea.getWidth(), sourceArea.getHeight(), manaStorage.getManaStored() * (sourceArea.getWidth() / manaStorage.getMaxManaStored()), sourceArea.getHeight());
+        ModReferences.logger.warn(String.valueOf(manaStorage.getManaStored() * (sourceArea.getWidth() / manaStorage.getMaxManaStored())));
+
+        blit(transform, x + destArea.getX(), y + destArea.getY(), sourceArea.getX(), sourceArea.getY(), manaStorage.getManaStored() * (sourceArea.getWidth() / manaStorage.getMaxManaStored()), sourceArea.getHeight());
     }
 }
