@@ -4,11 +4,11 @@ import com.diamantino.eternalmagic.api.mana.ManaStorage;
 
 public abstract class ModManaStorage extends ManaStorage {
     public ModManaStorage(int capacity, int maxTransfer) {
-        super(capacity, maxTransfer);
+        super(capacity, maxTransfer, maxTransfer);
     }
 
     public ModManaStorage(int capacity, int maxTransfer, int mana) {
-        super(capacity, maxTransfer, mana);
+        super(capacity, maxTransfer, maxTransfer, mana);
     }
 
     @Override
