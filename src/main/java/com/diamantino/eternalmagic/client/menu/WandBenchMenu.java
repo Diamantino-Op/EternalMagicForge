@@ -39,6 +39,10 @@ public class WandBenchMenu extends AbstractContainerMenu {
         });
     }
 
+    public long getRequiredMana() {
+        return blockEntity.getRequiredMana();
+    }
+
     public WandBenchBlockEntity getBlockEntity() {
         return this.blockEntity;
     }

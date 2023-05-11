@@ -4,22 +4,27 @@ import com.diamantino.eternalmagic.ModReferences;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-public class WandBenchSphereModel<T extends Entity> extends EntityModel<T> {
-	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ModReferences.modId, "wand_bench_sphere"), "main");
+@OnlyIn(Dist.CLIENT)
+public class WandBenchSphereModel extends Model {
+	public static final ModelLayerLocation layer = new ModelLayerLocation(new ResourceLocation(ModReferences.modId, "wand_bench_sphere"), "main");
 	private final ModelPart Ring1;
 	private final ModelPart Ring2;
-	private final ModelPart ItemSpawn;
+	public final ModelPart ItemSpawn;
 
 	public WandBenchSphereModel(ModelPart root) {
+		super(RenderType::entitySolid);
 		this.Ring1 = root.getChild("Ring1");
 		this.Ring2 = Ring1.getChild("Ring2");
 		this.ItemSpawn = Ring2.getChild("ItemSpawn");
@@ -110,14 +115,11 @@ public class WandBenchSphereModel<T extends Entity> extends EntityModel<T> {
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
-	@Override
-	public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		float currentRot = ((360f / 80f) * (ageInTicks % 81));
-
-		Ring1.yRot = currentRot;
-		Ring2.xRot = currentRot;
-		ItemSpawn.xRot = currentRot;
-		ItemSpawn.yRot = currentRot;
+	public void setupAnim() {
+		Ring1.yRot += 0.001f;
+		Ring2.xRot += 0.001f;
+		ItemSpawn.xRot -= 0.001f;
+		ItemSpawn.yRot -= 0.001f;
 	}
 
 	@Override

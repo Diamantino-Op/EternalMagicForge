@@ -1,9 +1,11 @@
 package com.diamantino.eternalmagic.client.screens;
 
 import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.screens.render.ManaInfoArea;
 import com.diamantino.eternalmagic.utils.MouseUtils;
+import com.diamantino.eternalmagic.utils.TextUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -13,10 +15,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     private static final ResourceLocation texture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench.png");
     private static final ResourceLocation barTexture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench_elements.png");
-    public ManaInfoArea manaInfoArea;
+    private IManaStorage manaStorage;
+    private ManaInfoArea manaInfoArea;
 
     public WandBenchScreen(WandBenchMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -32,18 +37,31 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     protected void init() {
         super.init();
 
+        manaStorage = menu.blockEntity.getManaStorage();
+
         assignManaInfoArea();
     }
 
     private void assignManaInfoArea() {
-        manaInfoArea = new ManaInfoArea(0, 70, 26, 136, 80, 3, barTexture, menu.blockEntity.getManaStorage());
+        manaInfoArea = new ManaInfoArea(0, 28, 26, 136, 80, 3, barTexture, manaStorage);
     }
 
     @Override
     protected void renderLabels(@NotNull PoseStack poseStack, int mouseX, int mouseY) {
         super.renderLabels(poseStack, mouseX, mouseY);
 
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
 
+        this.font.draw(poseStack, Component.literal("Required: " + TextUtils.formatNumberWithPrefix(menu.getRequiredMana())), 26, 126, 0xff0000);
+
+        renderManaAreaTooltips(poseStack, mouseX, mouseY, x, y);
+    }
+
+    private void renderManaAreaTooltips(PoseStack poseStack, int mouseX, int mouseY, int x, int y) {
+        if(isMouseAboveArea(mouseX, mouseY, x, y, 26, 136, 80, 3)) {
+            renderTooltip(poseStack, manaInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
+        }
     }
 
     @Override

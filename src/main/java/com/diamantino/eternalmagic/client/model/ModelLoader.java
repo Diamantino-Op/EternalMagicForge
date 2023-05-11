@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.client.model;
 
 import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.registration.ModItems;
+import com.diamantino.eternalmagic.utils.TextUtils;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -38,7 +39,7 @@ import java.util.function.Function;
 
 public class ModelLoader
 {
-    private static final List<ResourceLocation> loadedModels = new ArrayList<>();
+    private static final Map<String, ResourceLocation> loadedModels = new LinkedHashMap<>();
 
     public void registerModels(ModelEvent.RegisterAdditional event) {
         FileToIdConverter fileToIdConverter = FileToIdConverter.json("models/em_models");
@@ -46,9 +47,12 @@ public class ModelLoader
         fileToIdConverter.listMatchingResources(Minecraft.getInstance().getResourceManager()).keySet().stream().toList().forEach(modelId -> {
             String id = modelId.toString().replace(".json", "").replace("models/em_models", "em_models");
 
-            loadedModels.add(new ResourceLocation(id));
+            ResourceLocation modId = new ResourceLocation(id);
+            String modelName = TextUtils.removeUnderscoresAndCapitalize(TextUtils.removeBeforeLastSlash(modelId.getPath()));
 
-            event.register(new ResourceLocation(id));
+            loadedModels.put(modelName, modId);
+
+            event.register(modId);
         });
     }
 
@@ -122,7 +126,7 @@ public class ModelLoader
         @Override
         public @NotNull BakedModel applyTransform(@NotNull ItemDisplayContext transformType, @NotNull PoseStack poseStack, boolean applyLeftHandTransform)
         {
-            this.getTransforms().m_269404_(transformType).apply(applyLeftHandTransform, poseStack);
+            this.getTransforms().getTransform(transformType).apply(applyLeftHandTransform, poseStack);
             return this;
         }
 

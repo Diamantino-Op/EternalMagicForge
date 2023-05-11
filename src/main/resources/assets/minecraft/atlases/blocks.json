@@ -4,6 +4,10 @@
       "type": "directory",
       "source": "em_textures",
       "prefix": "em_textures/"
+    },
+    {
+      "type": "single",
+      "resource": "eternalmagic:entity/wand_bench_sphere"
     }
   ]
 }

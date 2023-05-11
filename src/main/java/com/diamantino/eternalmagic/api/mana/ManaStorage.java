@@ -1,31 +1,32 @@
 package com.diamantino.eternalmagic.api.mana;
 
-import net.minecraft.nbt.IntTag;
+import com.diamantino.eternalmagic.ModReferences;
+import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
-    protected int mana;
-    protected int capacity;
-    protected int maxReceive;
-    protected int maxExtract;
+    protected long mana;
+    protected long capacity;
+    protected long maxReceive;
+    protected long maxExtract;
 
-    public ManaStorage(int capacity)
+    public ManaStorage(long capacity)
     {
         this(capacity, capacity, capacity, 0);
     }
 
-    public ManaStorage(int capacity, int maxTransfer)
+    public ManaStorage(long capacity, long maxTransfer)
     {
         this(capacity, maxTransfer, maxTransfer, 0);
     }
 
-    public ManaStorage(int capacity, int maxReceive, int maxExtract)
+    public ManaStorage(long capacity, long maxReceive, long maxExtract)
     {
         this(capacity, maxReceive, maxExtract, 0);
     }
 
-    public ManaStorage(int capacity, int maxReceive, int maxExtract, int mana)
+    public ManaStorage(long capacity, long maxReceive, long maxExtract, long mana)
     {
         this.capacity = capacity;
         this.maxReceive = maxReceive;
@@ -34,37 +35,37 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     }
 
     @Override
-    public int receiveMana(int maxReceive, boolean simulate)
+    public long receiveMana(long maxReceive, boolean simulate)
     {
         if (!canReceive())
             return 0;
 
-        int manaReceived = Math.min(capacity - mana, Math.min(this.maxReceive, maxReceive));
+        long manaReceived = Math.min(capacity - mana, Math.min(this.maxReceive, maxReceive));
         if (!simulate)
             mana += manaReceived;
         return manaReceived;
     }
 
     @Override
-    public int extractMana(int maxExtract, boolean simulate)
+    public long extractMana(long maxExtract, boolean simulate)
     {
         if (!canExtract())
             return 0;
 
-        int manaExtracted = Math.min(mana, Math.min(this.maxExtract, maxExtract));
+        long manaExtracted = Math.min(mana, Math.min(this.maxExtract, maxExtract));
         if (!simulate)
             mana -= manaExtracted;
         return manaExtracted;
     }
 
     @Override
-    public int getManaStored()
+    public long getManaStored()
     {
         return mana;
     }
 
     @Override
-    public int getMaxManaStored()
+    public long getMaxManaStored()
     {
         return capacity;
     }
@@ -84,14 +85,14 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     @Override
     public Tag serializeNBT()
     {
-        return IntTag.valueOf(this.getManaStored());
+        return LongTag.valueOf(this.getManaStored());
     }
 
     @Override
     public void deserializeNBT(Tag nbt)
     {
-        if (!(nbt instanceof IntTag intNbt))
+        if (!(nbt instanceof LongTag longNbt))
             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
-        this.mana = intNbt.getAsInt();
+        this.mana = longNbt.getAsLong();
     }
 }

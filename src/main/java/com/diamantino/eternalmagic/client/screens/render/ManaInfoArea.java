@@ -1,9 +1,10 @@
 package com.diamantino.eternalmagic.client.screens.render;
 
-import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
+import com.diamantino.eternalmagic.utils.TextUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,13 +23,13 @@ public class ManaInfoArea extends InfoArea {
     }
 
     public List<Component> getTooltips() {
-        return List.of(Component.literal("Mana: " + manaStorage.getManaStored() + "/" + manaStorage.getMaxManaStored()));
+        return List.of(Component.literal("Mana: " + TextUtils.formatNumberWithPrefix(manaStorage.getManaStored()) + "/" + TextUtils.formatNumberWithPrefix(manaStorage.getMaxManaStored())).withStyle(ChatFormatting.AQUA));
     }
 
     @Override
     public void draw(PoseStack transform, int x, int y) {
         RenderSystem.setShaderTexture(0, barLocation);
 
-        blit(transform, x + destArea.getX(), y + destArea.getY(), sourceArea.getX(), sourceArea.getY(), (int) ((float) manaStorage.getManaStored() * ((float) sourceArea.getWidth() / (float) manaStorage.getMaxManaStored())), sourceArea.getHeight());
+        blit(transform, x + destArea.getX(), y + destArea.getY(), sourceArea.getX(), sourceArea.getY(), (int) ((double) manaStorage.getManaStored() * ((double) sourceArea.getWidth() / (double) manaStorage.getMaxManaStored())), sourceArea.getHeight());
     }
 }

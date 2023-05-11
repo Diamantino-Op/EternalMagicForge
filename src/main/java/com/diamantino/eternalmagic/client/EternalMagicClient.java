@@ -2,10 +2,14 @@ package com.diamantino.eternalmagic.client;
 
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.client.model.ModelLoader;
+import com.diamantino.eternalmagic.client.model.entities.WandBenchSphereModel;
+import com.diamantino.eternalmagic.client.renderers.blocks.WandBenchRenderer;
 import com.diamantino.eternalmagic.client.screens.WandBenchScreen;
+import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import com.diamantino.eternalmagic.registration.ModMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +26,16 @@ public class EternalMagicClient {
     public static void onRegisterLoaders(ModelEvent.RegisterGeometryLoaders event)
     {
         event.register("em_model_loader", new ModelLoader.ModelGeometryLoader());
+    }
+
+    @SubscribeEvent
+    public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(WandBenchSphereModel.layer, WandBenchSphereModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModBlockEntityTypes.wandBenchBlockEntity.get(), WandBenchRenderer::new);
     }
 
     @SubscribeEvent

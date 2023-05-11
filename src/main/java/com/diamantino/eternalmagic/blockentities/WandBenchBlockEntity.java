@@ -5,6 +5,7 @@ import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
+import com.diamantino.eternalmagic.networking.s2c.RequiredManaSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import com.diamantino.eternalmagic.registration.ModCapabilities;
 import com.diamantino.eternalmagic.registration.ModItems;
@@ -20,6 +21,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -33,6 +35,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
+    private long requiredMana = 0;
+
     private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -63,15 +67,29 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
-    public ItemStack getRenderStack() {
-        return itemHandler.getStackInSlot(3);
-    }
-
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private LazyOptional<IManaStorage> lazyManaHandler = LazyOptional.empty();
 
     public WandBenchBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntityTypes.wandBenchBlockEntity.get(), pos, state);
+    }
+
+    public ItemStack getRenderStack() {
+        return itemHandler.getStackInSlot(3);
+    }
+
+    public long getRequiredMana() {
+        return requiredMana;
+    }
+
+    public void changeRequiredMana(long requiredMana) {
+        setRequiredMana(requiredMana);
+
+        ModMessages.sendToClients(new RequiredManaSyncS2CPacket(requiredMana, worldPosition));
+    }
+
+    public void setRequiredMana(long requiredMana) {
+        this.requiredMana = requiredMana;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, WandBenchBlockEntity blockEntity) {
@@ -94,7 +112,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         return manaStorage;
     }
 
-    public void setManaLevel(int mana) {
+    public void setManaLevel(long mana) {
         this.manaStorage.setMana(mana);
     }
 
@@ -115,7 +133,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public void load(@NotNull CompoundTag nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        manaStorage.deserializeNBT(nbt.getCompound("manaStorage"));
+        manaStorage.deserializeNBT(nbt.get("manaStorage"));
 
         super.load(nbt);
     }

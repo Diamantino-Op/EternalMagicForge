@@ -13,7 +13,7 @@ public interface IManaStorage {
      *            If TRUE, the insertion will only be simulated.
      * @return Amount of mana that was (or would have been, if simulated) accepted by the storage.
      */
-    int receiveMana(int maxReceive, boolean simulate);
+    long receiveMana(long maxReceive, boolean simulate);
 
     /**
      * Removes mana from the storage. Returns quantity of mana that was removed.
@@ -24,17 +24,17 @@ public interface IManaStorage {
      *            If TRUE, the extraction will only be simulated.
      * @return Amount of mana that was (or would have been, if simulated) extracted from the storage.
      */
-    int extractMana(int maxExtract, boolean simulate);
+    long extractMana(long maxExtract, boolean simulate);
 
     /**
      * Returns the amount of mana currently stored.
      */
-    int getManaStored();
+    long getManaStored();
 
     /**
      * Returns the maximum amount of mana that can be stored.
      */
-    int getMaxManaStored();
+    long getMaxManaStored();
 
     /**
      * Returns if this storage can have mana extracted.

@@ -9,22 +9,22 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ManaSyncS2CPacket {
-    private final long mana;
+public class RequiredManaSyncS2CPacket {
+    private final long requiredMana;
     private final BlockPos pos;
 
-    public ManaSyncS2CPacket(long mana, BlockPos pos) {
-        this.mana = mana;
+    public RequiredManaSyncS2CPacket(long requiredMana, BlockPos pos) {
+        this.requiredMana = requiredMana;
         this.pos = pos;
     }
 
-    public ManaSyncS2CPacket(FriendlyByteBuf buf) {
-        this.mana = buf.readInt();
+    public RequiredManaSyncS2CPacket(FriendlyByteBuf buf) {
+        this.requiredMana = buf.readInt();
         this.pos = buf.readBlockPos();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeLong(mana);
+        buf.writeLong(requiredMana);
         buf.writeBlockPos(pos);
     }
 
@@ -33,10 +33,10 @@ public class ManaSyncS2CPacket {
 
         context.enqueueWork(() -> {
             if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) instanceof WandBenchBlockEntity blockEntity) {
-                blockEntity.setManaLevel(mana);
+                blockEntity.setRequiredMana(requiredMana);
 
                 if(Minecraft.getInstance().player.containerMenu instanceof WandBenchMenu menu && menu.getBlockEntity().getBlockPos().equals(pos)) {
-                    blockEntity.setManaLevel(mana);
+                    blockEntity.setRequiredMana(requiredMana);
                 }
             }
         });
