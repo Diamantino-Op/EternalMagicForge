@@ -45,8 +45,8 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
     public String selectedButtonName;
 
-    ModelsScrollPanel availableModelsScrollPanel;
-    ModelsScrollPanel insertedModelsScrollPanel;
+    private ModelsScrollPanel availableModelsScrollPanel;
+    private ModelsScrollPanel insertedModelsScrollPanel;
 
     public WandBenchScreen(WandBenchMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
