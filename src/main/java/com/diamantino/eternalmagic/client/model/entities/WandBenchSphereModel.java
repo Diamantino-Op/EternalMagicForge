@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.client.model.entities;
 
 import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
 public class WandBenchSphereModel extends Model {
@@ -115,11 +118,13 @@ public class WandBenchSphereModel extends Model {
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
-	public void setupAnim() {
-		Ring1.yRot += 0.001f;
-		Ring2.xRot += 0.001f;
-		ItemSpawn.xRot -= 0.001f;
-		ItemSpawn.yRot -= 0.001f;
+	public void setupAnim(WandBenchBlockEntity blockEntity, float partialTicks) {
+		float currentRot = (Objects.requireNonNull(blockEntity.getLevel()).getGameTime() + partialTicks) * 0.125f;
+
+		Ring1.yRot = currentRot;
+		Ring2.xRot = currentRot;
+		ItemSpawn.xRot = -currentRot;
+		ItemSpawn.yRot = -currentRot;
 	}
 
 	@Override

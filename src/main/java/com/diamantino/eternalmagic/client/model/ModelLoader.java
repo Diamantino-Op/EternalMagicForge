@@ -39,7 +39,7 @@ import java.util.function.Function;
 
 public class ModelLoader
 {
-    private static final Map<String, ResourceLocation> loadedModels = new LinkedHashMap<>();
+    public static final Map<String, ResourceLocation> loadedModels = new LinkedHashMap<>();
 
     public void registerModels(ModelEvent.RegisterAdditional event) {
         FileToIdConverter fileToIdConverter = FileToIdConverter.json("models/em_models");

@@ -40,7 +40,7 @@ public class WandBenchRenderer implements BlockEntityRenderer<WandBenchBlockEnti
         poseStack.pushPose();
         poseStack.translate(0.5F, 0.8F, 0.5F);
 
-        wandBenchSphereModel.setupAnim();
+        wandBenchSphereModel.setupAnim(blockEntity, partialTick);
         VertexConsumer vertexconsumer = sphereLocation.buffer(bufferSource, RenderType::entitySolid);
         wandBenchSphereModel.renderToBuffer(poseStack, vertexconsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -48,6 +48,7 @@ public class WandBenchRenderer implements BlockEntityRenderer<WandBenchBlockEnti
             poseStack.translate(0F, 1F, 0F);
             poseStack.mulPose(Axis.XP.rotationDegrees(wandBenchSphereModel.ItemSpawn.xRot));
             poseStack.mulPose(Axis.YP.rotationDegrees(wandBenchSphereModel.ItemSpawn.yRot));
+            poseStack.scale(0.5f, 0.5f, 0.5f);
 
             itemRenderer.renderStatic(itemStack, ItemDisplayContext.GUI, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, 1);
         }
