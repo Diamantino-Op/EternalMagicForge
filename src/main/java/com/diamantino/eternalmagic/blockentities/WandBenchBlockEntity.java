@@ -3,6 +3,8 @@ package com.diamantino.eternalmagic.blockentities;
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
+import com.diamantino.eternalmagic.client.model.Model;
+import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.RequiredManaSyncS2CPacket;
@@ -119,6 +121,16 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         for (int i = 0; i < itemStackHandler.getSlots(); i++) {
             itemHandler.setStackInSlot(i, itemStackHandler.getStackInSlot(i));
         }
+    }
+
+    public int getNextModelId() {
+        return WandItem.getFirstFreeId(itemHandler.getStackInSlot(3).getTag());
+    }
+
+    public void addModelToItem(Model model) {
+        ItemStack stack = itemHandler.getStackInSlot(3);
+
+        WandItem.addPart(stack.getOrCreateTag(), model);
     }
 
     @Override

@@ -18,6 +18,8 @@ public class WandBenchMenu extends AbstractContainerMenu {
     public final WandBenchBlockEntity blockEntity;
     private final Level level;
 
+    private int selectedModelId;
+
     public WandBenchMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
     }
@@ -31,12 +33,18 @@ public class WandBenchMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
+        this.selectedModelId = 0;
+
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 8, 125));
             this.addSlot(new SlotItemHandler(handler, 1, 108, 125));
             this.addSlot(new SlotItemHandler(handler, 2, 126, 125));
             this.addSlot(new SlotItemHandler(handler, 3, 180, 125));
         });
+    }
+
+    public void setSelectedModelId(int selectedModelId) {
+        this.selectedModelId = selectedModelId;
     }
 
     public long getRequiredMana() {

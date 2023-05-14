@@ -5,6 +5,8 @@ import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.model.ModelLoader;
 import com.diamantino.eternalmagic.client.screens.render.ManaInfoArea;
+import com.diamantino.eternalmagic.networking.c2s.WandBenchButtonC2SPacket;
+import com.diamantino.eternalmagic.registration.ModMessages;
 import com.diamantino.eternalmagic.utils.MouseUtils;
 import com.diamantino.eternalmagic.utils.TextUtils;
 import com.mojang.blaze3d.platform.Lighting;
@@ -17,18 +19,17 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 import org.jetbrains.annotations.NotNull;
@@ -39,11 +40,9 @@ import java.util.*;
 public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     private static final ResourceLocation texture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench.png");
     private static final ResourceLocation backgroundTexture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench_background.png");
-    private static final ResourceLocation barTexture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench_elements.png");
+    private static final ResourceLocation elementsTexture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench_elements.png");
     private IManaStorage manaStorage;
     private ManaInfoArea manaInfoArea;
-
-    public String selectedButtonName;
 
     private ModelsScrollPanel availableModelsScrollPanel;
     private ModelsScrollPanel insertedModelsScrollPanel;
@@ -56,25 +55,31 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
         inventoryLabelX += 14;
         inventoryLabelY = 145;
-
-        selectedButtonName = "";
     }
 
     @Override
     protected void init() {
         super.init();
 
-        this.manaStorage = menu.blockEntity.getManaStorage();
-        this.availableModelsScrollPanel = new ModelsScrollPanel(this, ModelLoader.loadedModels.keySet().stream().toList(), 7, 15, 73, 42);
-        this.insertedModelsScrollPanel = new ModelsScrollPanel(this, List.of(), 7, 61, 73, 42);
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
 
-        this.children().add(this.availableModelsScrollPanel);
-        this.children().add(this.insertedModelsScrollPanel);
+        this.manaStorage = menu.blockEntity.getManaStorage();
+        this.availableModelsScrollPanel = new ModelsScrollPanel(7, 15, 73, 42, x, y, 0, elementsTexture);
+        this.insertedModelsScrollPanel = new ModelsScrollPanel(7, 61, 73, 42, x, y, 1, elementsTexture);
+
+        for (String modelName : ModelLoader.loadedModels.keySet().stream().toList())
+        {
+            availableModelsScrollPanel.addAndUpdateButtons(this, modelName, 0);
+        }
+
+        this.addRenderableWidget(this.availableModelsScrollPanel);
+        this.addRenderableWidget(this.insertedModelsScrollPanel);
         assignManaInfoArea();
     }
 
     private void assignManaInfoArea() {
-        manaInfoArea = new ManaInfoArea(0, 28, 26, 136, 80, 3, barTexture, manaStorage);
+        manaInfoArea = new ManaInfoArea(0, 28, 26, 136, 80, 3, elementsTexture, manaStorage);
     }
 
     @Override
@@ -145,13 +150,15 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
         RenderSystem.setShaderTexture(0, backgroundTexture);
 
-        poseStack.translate(0, 0, -10);
+        poseStack.translate(0, 0, -100);
 
         blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
 
-        poseStack.popPose();
+        poseStack.translate(0, 0, -50);
 
         renderItem(poseStack, partialTick, x, y);
+
+        poseStack.popPose();
 
         RenderSystem.setShaderTexture(0, texture);
 
@@ -171,19 +178,49 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         return MouseUtils.isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
     }
 
-    public static class ModelButton extends ExtendedButton {
-        private final int baseY;
-        public final String modelName;
+    public enum ButtonType {
+        model,
+        normal,
+        up_arrow,
+        down_arrow,
+        left_arrow,
+        right_arrow,
+        plus,
+        minus
+    }
 
-        public ModelButton(WandBenchScreen screen, String modelName, int x, int y, int width) {
-            super(x, y, width, 14, Component.literal(modelName), button -> onButtonClicked(screen, modelName));
+    public static class BenchButton extends ExtendedButton {
+        private final int baseY;
+        public final String btnText;
+        public final int modelId;
+        private final ButtonType buttonType;
+        private final ResourceLocation elementsTexture;
+
+        public BenchButton(WandBenchScreen screen, String btnText, int modelId, int x, int y, int width, int btnId, ButtonType buttonType, ResourceLocation elementsTexture) {
+            super(x, y, width, 14, Component.literal(btnText), button -> onButtonClicked(screen, btnId, modelId, btnText));
 
             this.baseY = y;
-            this.modelName = modelName;
+            this.btnText = btnText;
+            this.modelId = modelId;
+            this.buttonType = buttonType;
+            this.elementsTexture = elementsTexture;
         }
 
-        public static void onButtonClicked(WandBenchScreen localScreen, String modelName) {
-            localScreen.selectedButtonName = modelName;
+        public static void onButtonClicked(WandBenchScreen localScreen, int btnId, int modelId, String btnText) {
+            ModMessages.sendToServer(new WandBenchButtonC2SPacket(localScreen.menu.blockEntity.getBlockPos(), btnId, modelId, btnText));
+        }
+
+        @Override
+        public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+            Minecraft mc = Minecraft.getInstance();
+            int k = !this.active ? 0 : (this.isHovered() ? 2 : (this.isFocused() ? 1 : 0));
+
+            RenderSystem.setShaderTexture(0, elementsTexture);
+
+            blit(poseStack, this.getX(), this.getY(), k * 58, 14, this.getWidth(), this.getHeight());
+
+            final FormattedText buttonText = mc.font.ellipsize(this.getMessage(), this.width - 6); // Remove 6 pixels so that the text is always contained within the button's borders
+            drawCenteredString(poseStack, mc.font, Language.getInstance().getVisualOrder(buttonText), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, getFGColor());
         }
 
         @Override
@@ -198,25 +235,22 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     }
 
     public static class ModelsScrollPanel extends ScrollPanel {
-        private final List<ModelButton> buttons = new ArrayList<>();
+        private final List<BenchButton> buttons = new ArrayList<>();
+        private boolean scrolling;
         public int totalButtonHeight;
+        private final int buttonsId;
+        private final ResourceLocation elementsTexture;
 
-        public ModelsScrollPanel(WandBenchScreen screen, List<String> modelNames, int left, int top, int width, int height)
+        public ModelsScrollPanel(int left, int top, int width, int height, int x, int y, int buttonsId, ResourceLocation elementsTexture)
         {
-            super(Minecraft.getInstance(), width, height, top, left);
+            super(Minecraft.getInstance(), width, height, y + top, x + left);
 
-            Level world = Minecraft.getInstance().level;
-            if (world != null)
-            {
-                for (String modelName : modelNames)
-                {
-                    addAndUpdateButtons(screen, modelName);
-                }
-            }
+            this.buttonsId = buttonsId;
+            this.elementsTexture = elementsTexture;
         }
 
-        public void addAndUpdateButtons(WandBenchScreen screen, String modelName) {
-            ModelButton modelButton = new ModelButton(screen, modelName, left, top + totalButtonHeight, this.width - 15);
+        public void addAndUpdateButtons(WandBenchScreen screen, String modelName, int modelId) {
+            BenchButton modelButton = new BenchButton(screen, modelName, modelId, left, top + totalButtonHeight, this.width - 15, buttonsId, ButtonType.model, elementsTexture);
             this.buttons.add(modelButton);
             totalButtonHeight += modelButton.getHeight();
         }
@@ -228,11 +262,11 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         }
 
         public void searchContent(String search) {
-            List<ModelButton> tempButtons = new ArrayList<>();
+            List<BenchButton> tempButtons = new ArrayList<>();
             int tempTotalButtonsHeight = 0;
 
-            for (ModelButton btn : this.buttons) {
-                if (btn.modelName.contains(search)) {
+            for (BenchButton btn : this.buttons) {
+                if (btn.btnText.contains(search)) {
                     tempTotalButtonsHeight += btn.getHeight();
                     tempButtons.add(btn);
                 }
@@ -258,6 +292,8 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
             int extraHeight = (this.getContentHeight() + border) - height;
 
+            RenderSystem.setShaderTexture(0, elementsTexture);
+
             if (extraHeight > 0) {
                 int barTop = (int)this.scrollDistance * (height - 13) / extraHeight + this.top;
                 if (barTop < this.top)
@@ -266,15 +302,33 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
                 }
 
                 if (this.scrolling)
-                    blit(stack, (this.top + this.width) - 12, barTop, 174, 0, 12, 15);
+                    blit(stack, (this.left + this.width) - 13, barTop + 1, 174, 0, 12, 15);
                 else
-                    blit(stack, (this.top + this.width) - 12, this.top, 186, 0, 12, 15);
+                    blit(stack, (this.left + this.width) - 13, this.top + 1, 186, 0, 12, 15);
             } else {
-                blit(stack, (this.top + this.width) - 12, this.top, 186, 0, 12, 15);
+                blit(stack, (this.left + this.width) - 13, this.top + 1, 186, 0, 12, 15);
             }
 
             RenderSystem.disableBlend();
             RenderSystem.disableScissor();
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button)
+        {
+            this.scrolling = button == 0 && mouseX >= (left + width) - 13 && mouseX < left + width;
+
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
+
+        @Override
+        public boolean mouseReleased(double mouseX, double mouseY, int button)
+        {
+            if (super.mouseReleased(mouseX, mouseY, button))
+                return true;
+            boolean ret = this.scrolling;
+            this.scrolling = false;
+            return ret;
         }
 
         @Override
@@ -292,17 +346,11 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         @Override
         protected void drawPanel(PoseStack stack, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
         {
-            for (ModelButton button : this.buttons)
+            for (BenchButton button : this.buttons)
             {
                 button.scrollButton((int) this.scrollDistance);
                 button.render(stack, mouseX, mouseY, 0);
             }
-        }
-
-        @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button)
-        {
-            return super.mouseClicked(mouseX, mouseY, button);
         }
 
         @Override

@@ -28,7 +28,7 @@ public class ManaSyncS2CPacket {
         buf.writeBlockPos(pos);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
+    public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
 
         context.enqueueWork(() -> {
@@ -40,7 +40,5 @@ public class ManaSyncS2CPacket {
                 }
             }
         });
-
-        return true;
     }
 }

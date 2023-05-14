@@ -32,19 +32,63 @@ public class WandItem extends Item {
         nbt.put("models", tag);
     }
 
+    public static int getFirstFreeId(@Nullable CompoundTag nbt) {
+        int nextId = 1;
+
+        if (nbt != null && nbt.contains("models")) {
+            CompoundTag tag = nbt.getCompound("models");
+
+            int i = tag.getInt("modelsAmount");
+
+            for (int j = 0; j < i + 1; j++) {
+                if (!tag.contains(String.valueOf(j))) {
+                    nextId = j;
+                    break;
+                }
+            }
+        }
+
+        return nextId;
+    }
+
+    public static void addPart(CompoundTag nbt, Model model) {
+        if (nbt.contains("models")) {
+            CompoundTag tag = nbt.getCompound("models");
+
+            int i = tag.getInt("modelsAmount");
+
+            tag.put(String.valueOf(i), model.toNbt());
+
+            tag.putInt("modelsAmount", i + 1);
+
+            nbt.put("models", tag);
+        } else {
+            CompoundTag tag = new CompoundTag();
+
+            tag.put("0", new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)).toNbt());
+            tag.put("1", model.toNbt());
+
+            tag.putInt("modelsAmount", 2);
+
+            nbt.put("models", tag);
+        }
+    }
+
     public static List<Model> loadPartsFromNbt(@Nullable CompoundTag nbt) {
         List<Model> wandParts = new ArrayList<>();
 
         if (nbt != null && nbt.contains("models")) {
-            int amount = nbt.getInt("modelsAmount");
+            CompoundTag modelsTag = nbt.getCompound("models");
+
+            int amount = modelsTag.getInt("modelsAmount");
 
             for(int i = 0; i < amount; i++) {
-                CompoundTag tag = nbt.getCompound(String.valueOf(i));
+                CompoundTag tag = modelsTag.getCompound(String.valueOf(i));
 
                 wandParts.add(Model.fromNbt(tag));
             }
         } else {
-            wandParts.add(new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
+            wandParts.add(new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
         }
 
         return wandParts;
