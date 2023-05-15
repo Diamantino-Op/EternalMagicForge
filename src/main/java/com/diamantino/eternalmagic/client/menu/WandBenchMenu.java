@@ -1,9 +1,13 @@
 package com.diamantino.eternalmagic.client.menu;
 
+import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
+import com.diamantino.eternalmagic.client.model.Model;
+import com.diamantino.eternalmagic.client.model.ModelLoader;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.diamantino.eternalmagic.registration.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -13,12 +17,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 public class WandBenchMenu extends AbstractContainerMenu {
     public final WandBenchBlockEntity blockEntity;
     private final Level level;
 
     private int selectedModelId;
+    private String selectedModelToAddId;
 
     public WandBenchMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
@@ -34,6 +40,7 @@ public class WandBenchMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.selectedModelId = 0;
+        this.selectedModelToAddId = "";
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 8, 125));
@@ -45,6 +52,16 @@ public class WandBenchMenu extends AbstractContainerMenu {
 
     public void setSelectedModelId(int selectedModelId) {
         this.selectedModelId = selectedModelId;
+    }
+
+    public void setSelectedModelToAddId(String selectedModelToAddId) {
+        this.selectedModelToAddId = selectedModelToAddId;
+    }
+
+    public void addSelectedModel() {
+        Model model = new Model(ModelLoader.loadedModels.getOrDefault(selectedModelToAddId, new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick")), blockEntity.getNextModelId(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+
+        blockEntity.addModelToItem(model);
     }
 
     public long getRequiredMana() {

@@ -33,13 +33,13 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 import java.util.*;
 
 public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     private static final ResourceLocation texture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench.png");
-    private static final ResourceLocation backgroundTexture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench_background.png");
     private static final ResourceLocation elementsTexture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench_elements.png");
     private IManaStorage manaStorage;
     private ManaInfoArea manaInfoArea;
@@ -47,14 +47,22 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     private ModelsScrollPanel availableModelsScrollPanel;
     private ModelsScrollPanel insertedModelsScrollPanel;
 
+    private int scale;
+    private int tranX;
+    private int tranY;
+
     public WandBenchScreen(WandBenchMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
 
-        imageWidth = 204;
-        imageHeight = 239;
+        this.imageWidth = 204;
+        this.imageHeight = 239;
 
-        inventoryLabelX += 14;
-        inventoryLabelY = 145;
+        this.inventoryLabelX += 14;
+        this.inventoryLabelY = 145;
+
+        this.tranX = 0;
+        this.tranY = 0;
+        this.scale = 1;
     }
 
     @Override
@@ -75,6 +83,43 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
         this.addRenderableWidget(this.availableModelsScrollPanel);
         this.addRenderableWidget(this.insertedModelsScrollPanel);
+
+        // Translation buttons
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 85, y + 14, 9, 7, 2, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 98, y + 14, 9, 7, 3, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 111, y + 14, 9, 7, 4, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 85, y + 28, 9, 7, 5, ButtonType.down_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 98, y + 28, 9, 7, 6, ButtonType.down_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 111, y + 28, 9, 7, 7, ButtonType.down_arrow, false, null, elementsTexture));
+
+        // Rotation buttons
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 85, y + 40, 9, 7, 8, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 98, y + 40, 9, 7, 9, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 111, y + 40, 9, 7, 10, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 85, y + 54, 9, 7, 11, ButtonType.down_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 98, y + 54, 9, 7, 12, ButtonType.down_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 111, y + 54, 9, 7, 13, ButtonType.down_arrow, false, null, elementsTexture));
+
+        // Scaling buttons
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 85, y + 66, 9, 7, 14, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 98, y + 66, 9, 7, 15, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 111, y + 66, 9, 7, 16, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 85, y + 80, 9, 7, 17, ButtonType.down_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 98, y + 80, 9, 7, 18, ButtonType.down_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 111, y + 80, 9, 7, 19, ButtonType.down_arrow, false, null, elementsTexture));
+
+        // Add / Remove
+        this.addRenderableWidget(new BenchButton(this, "Add", 0, x + 82, y + 89, 41, 14, 20, ButtonType.normal, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "Delete", 0, x + 82, y + 104, 41, 14, 21, ButtonType.normal, false, null, elementsTexture));
+
+        // Preview buttons
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 132, y + 104, 15, 15, 22, ButtonType.plus, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 148, y + 104, 15, 15, 23, ButtonType.minus, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 165, y + 104, 7, 15, 24, ButtonType.left_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 173, y + 104, 9, 7, 25, ButtonType.up_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 173, y + 112, 9, 7, 26, ButtonType.down_arrow, false, null, elementsTexture));
+        this.addRenderableWidget(new BenchButton(this, "", 0, x + 183, y + 104, 7, 15, 27, ButtonType.right_arrow, false, null, elementsTexture));
+
         assignManaInfoArea();
     }
 
@@ -109,17 +154,18 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
             stack.translate(x + 161, y + 62, -1);
             stack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
-            stack.scale(16.0F, 16.0F, 16.0F);
-
-            float currentRot = (Objects.requireNonNull(menu.blockEntity.getLevel()).getGameTime() + partialTicks) * 0.5f;
-            stack.mulPose(Axis.YP.rotationDegrees(currentRot));
+            stack.scale(20.0F, 20.0F, 20.0F);
 
             PoseStack itemPoseStack = new PoseStack();
             itemPoseStack.pushPose();
 
             itemPoseStack.mulPoseMatrix(stack.last().pose());
 
-            itemPoseStack.scale(5, 5, 5);
+            itemPoseStack.translate(tranX, tranY, 0);
+            itemPoseStack.scale(scale, scale, scale);
+
+            float currentRot = (Objects.requireNonNull(menu.blockEntity.getLevel()).getGameTime() + partialTicks) * 0.5f;
+            itemPoseStack.mulPose(Axis.YP.rotationDegrees(currentRot));
 
             MultiBufferSource.BufferSource src = Minecraft.getInstance().renderBuffers().bufferSource();
 
@@ -146,25 +192,28 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        poseStack.pushPose();
-
-        RenderSystem.setShaderTexture(0, backgroundTexture);
-
-        poseStack.translate(0, 0, -100);
-
-        blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
-
-        poseStack.translate(0, 0, -50);
-
-        renderItem(poseStack, partialTick, x, y);
-
-        poseStack.popPose();
-
         RenderSystem.setShaderTexture(0, texture);
 
         blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
 
+        enableScissor(x + 126, y + 8, x + 196, y + 102);
+
+        renderItem(poseStack, partialTick, x, y);
+
+        disableScissor();
+
         manaInfoArea.draw(poseStack, x, y);
+    }
+
+    public void previewBtnPressed(int btnId) {
+        switch (btnId) {
+            case 22 -> scale++;
+            case 23 -> scale--;
+            case 24 -> tranX++;
+            case 25 -> tranY--;
+            case 26 -> tranY++;
+            case 27 -> tranX--;
+        }
     }
 
     @Override
@@ -194,10 +243,13 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         public final String btnText;
         public final int modelId;
         private final ButtonType buttonType;
+        public boolean selected;
         private final ResourceLocation elementsTexture;
 
-        public BenchButton(WandBenchScreen screen, String btnText, int modelId, int x, int y, int width, int btnId, ButtonType buttonType, ResourceLocation elementsTexture) {
-            super(x, y, width, 14, Component.literal(btnText), button -> onButtonClicked(screen, btnId, modelId, btnText));
+        public BenchButton(WandBenchScreen screen, String btnText, int modelId, int x, int y, int width, int height, int btnId, ButtonType buttonType, boolean canBeSelected, @Nullable ModelsScrollPanel scrollPanel, ResourceLocation elementsTexture) {
+            super(x, y, width, height, Component.literal(btnText), button -> onButtonClicked(screen, btnId, modelId, btnText, canBeSelected, scrollPanel));
+
+            this.selected = false;
 
             this.baseY = y;
             this.btnText = btnText;
@@ -206,21 +258,39 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             this.elementsTexture = elementsTexture;
         }
 
-        public static void onButtonClicked(WandBenchScreen localScreen, int btnId, int modelId, String btnText) {
-            ModMessages.sendToServer(new WandBenchButtonC2SPacket(localScreen.menu.blockEntity.getBlockPos(), btnId, modelId, btnText));
+        public static void onButtonClicked(WandBenchScreen localScreen, int btnId, int modelId, String btnText, boolean canBeSelected, @Nullable ModelsScrollPanel scrollPanel) {
+            if (btnId <= 21)
+                ModMessages.sendToServer(new WandBenchButtonC2SPacket(localScreen.menu.blockEntity.getBlockPos(), btnId, modelId, btnText));
+            else
+                localScreen.previewBtnPressed(btnId);
+
+            if (scrollPanel != null && canBeSelected) {
+                scrollPanel.buttonPressed(btnText);
+            }
         }
 
         @Override
         public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
             Minecraft mc = Minecraft.getInstance();
-            int k = !this.active ? 0 : (this.isHovered() ? 2 : (this.isFocused() ? 1 : 0));
+            int k = !this.active ? 0 : (this.isHovered() ? 2 : ((this.isFocused() || selected) ? 1 : 0));
 
             RenderSystem.setShaderTexture(0, elementsTexture);
 
-            blit(poseStack, this.getX(), this.getY(), k * 58, 14, this.getWidth(), this.getHeight());
+            switch (buttonType) {
+                case model -> blit(poseStack, this.getX(), this.getY(), k * 58, 14, this.getWidth(), this.getHeight());
+                case normal -> blit(poseStack, this.getX(), this.getY(), 198, k * 14, this.getWidth(), this.getHeight());
+                case up_arrow -> blit(poseStack, this.getX(), this.getY(), 146 + (k * 9), 0, this.getWidth(), this.getHeight());
+                case down_arrow -> blit(poseStack, this.getX(), this.getY(), 146 + (k * 9), 7, this.getWidth(), this.getHeight());
+                case left_arrow -> blit(poseStack, this.getX(), this.getY(), 174, 15 + (k * 15), this.getWidth(), this.getHeight());
+                case right_arrow -> blit(poseStack, this.getX(), this.getY(), 181, 15 + (k * 15), this.getWidth(), this.getHeight());
+                case plus -> blit(poseStack, this.getX(), this.getY(), 144, 28 + (k * 15), this.getWidth(), this.getHeight());
+                case minus -> blit(poseStack, this.getX(), this.getY(), 159, 28 + (k * 15), this.getWidth(), this.getHeight());
+            }
 
-            final FormattedText buttonText = mc.font.ellipsize(this.getMessage(), this.width - 6); // Remove 6 pixels so that the text is always contained within the button's borders
-            drawCenteredString(poseStack, mc.font, Language.getInstance().getVisualOrder(buttonText), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, getFGColor());
+            if (buttonType == ButtonType.model || buttonType == ButtonType.normal) {
+                final FormattedText buttonText = mc.font.ellipsize(this.getMessage(), this.width - 6); // Remove 6 pixels so that the text is always contained within the button's borders
+                drawCenteredString(poseStack, mc.font, Language.getInstance().getVisualOrder(buttonText), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, getFGColor());
+            }
         }
 
         @Override
@@ -250,7 +320,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         }
 
         public void addAndUpdateButtons(WandBenchScreen screen, String modelName, int modelId) {
-            BenchButton modelButton = new BenchButton(screen, modelName, modelId, left, top + totalButtonHeight, this.width - 15, buttonsId, ButtonType.model, elementsTexture);
+            BenchButton modelButton = new BenchButton(screen, modelName, modelId, left, top + totalButtonHeight, this.width - 15, 14, buttonsId, ButtonType.model, buttonsId == 1, this, elementsTexture);
             this.buttons.add(modelButton);
             totalButtonHeight += modelButton.getHeight();
         }
@@ -259,6 +329,17 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             totalButtonHeight = 0;
 
             this.buttons.clear();
+        }
+
+        public void buttonPressed(String btnText) {
+            for (BenchButton btn : buttons) {
+                if (Objects.equals(btn.btnText, btnText)) {
+                    btn.selected = true;
+                } else {
+                    btn.setFocused(false);
+                    btn.selected = false;
+                }
+            }
         }
 
         public void searchContent(String search) {

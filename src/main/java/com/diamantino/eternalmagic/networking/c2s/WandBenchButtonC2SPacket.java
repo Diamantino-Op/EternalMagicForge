@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import org.joml.Vector3f;
 
@@ -46,12 +47,10 @@ public class WandBenchButtonC2SPacket {
         ServerPlayer player = context.getSender();
 
         context.enqueueWork(() -> {
-            if (player != null && player.level.getBlockEntity(pos) instanceof WandBenchBlockEntity blockEntity && player.containerMenu instanceof WandBenchMenu menu) {
+            if (player != null && player.level.getBlockEntity(pos) instanceof WandBenchBlockEntity blockEntity && player.containerMenu instanceof WandBenchMenu menu && blockEntity.getRenderStack() != ItemStack.EMPTY) {
                 switch (btnId) {
                     case 0 -> {
-                        Model model = new Model(ModelLoader.loadedModels.getOrDefault(btnText, new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick")), blockEntity.getNextModelId(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-
-                        blockEntity.addModelToItem(model);
+                        menu.setSelectedModelToAddId(btnText);
                     }
                     case 1 -> {
                         menu.setSelectedModelId(modelId);
