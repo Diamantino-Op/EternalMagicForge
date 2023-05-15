@@ -5,6 +5,7 @@ import com.diamantino.eternalmagic.networking.c2s.WandBenchButtonC2SPacket;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.RequiredManaSyncS2CPacket;
+import com.diamantino.eternalmagic.networking.s2c.WandBenchWandSyncS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -47,6 +48,12 @@ public class ModMessages {
                 .decoder(RequiredManaSyncS2CPacket::new)
                 .encoder(RequiredManaSyncS2CPacket::toBytes)
                 .consumerMainThread(RequiredManaSyncS2CPacket::handle)
+                .add();
+
+        net.messageBuilder(WandBenchWandSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(WandBenchWandSyncS2CPacket::new)
+                .encoder(WandBenchWandSyncS2CPacket::toBytes)
+                .consumerMainThread(WandBenchWandSyncS2CPacket::handle)
                 .add();
 
         // C2S

@@ -125,16 +125,18 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         assignManaInfoArea();
     }
 
-    public void updateAddedModels() {
-        ItemStack stack = menu.blockEntity.getRenderStack();
+    public void updateAddedModels(ItemStack stack) {
+        insertedModelsScrollPanel.clearContent();
 
-        List<Model> models = WandItem.loadPartsFromNbt(stack.getTag()).values().stream().toList();
+        if (stack != ItemStack.EMPTY) {
+            List<Model> models = WandItem.loadPartsFromNbt(stack.getTag()).values().stream().toList();
 
-        for (Model model : models)
-        {
-            String modelName = TextUtils.removeUnderscoresAndCapitalize(TextUtils.removeBeforeLastSlash(model.modelId().getPath()));
+            for (Model model : models)
+            {
+                String modelName = TextUtils.removeUnderscoresAndCapitalize(TextUtils.removeBeforeLastSlash(model.modelId().getPath()));
 
-            insertedModelsScrollPanel.addAndUpdateButtons(this, modelName, model.id());
+                insertedModelsScrollPanel.addAndUpdateButtons(this, modelName, model.id());
+            }
         }
     }
 

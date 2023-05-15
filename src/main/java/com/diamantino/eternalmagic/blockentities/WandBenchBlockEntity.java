@@ -8,6 +8,7 @@ import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.RequiredManaSyncS2CPacket;
+import com.diamantino.eternalmagic.networking.s2c.WandBenchWandSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import com.diamantino.eternalmagic.registration.ModCapabilities;
 import com.diamantino.eternalmagic.registration.ModItems;
@@ -45,6 +46,9 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
 
             if(level != null && !level.isClientSide()) {
                 ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
+
+                if (slot == 3)
+                    ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(this.getStackInSlot(3)));
             }
         }
 

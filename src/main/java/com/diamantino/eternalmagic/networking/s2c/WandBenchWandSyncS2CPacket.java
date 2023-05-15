@@ -30,7 +30,7 @@ public class WandBenchWandSyncS2CPacket {
 
         context.enqueueWork(() -> {
             if (mc.screen instanceof WandBenchScreen wandBenchScreen) {
-                wandBenchScreen.updateAddedModels();
+                wandBenchScreen.updateAddedModels(wandStack);
 
                 ModReferences.logger.warn("Updating added models list!");
             }
