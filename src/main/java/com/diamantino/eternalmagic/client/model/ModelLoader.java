@@ -148,7 +148,7 @@ public class ModelLoader
             List<BakedQuad> quads = new ArrayList<>(model.getQuads(null, null, randomSource, ModelData.EMPTY, null));
 
             if (stack.is(ModItems.wandItem.get())) {
-                List<Model> modelList = WandItem.loadPartsFromNbt(stack.getTag());
+                List<Model> modelList = WandItem.loadPartsFromNbt(stack.getTag()).values().stream().toList();
 
                 modelList.forEach(mdl -> {
                     BakedModel bakedModel = Minecraft.getInstance().getModelManager().getModel(mdl.modelId());

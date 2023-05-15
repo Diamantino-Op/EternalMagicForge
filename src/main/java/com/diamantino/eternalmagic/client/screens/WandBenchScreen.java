@@ -3,8 +3,10 @@ package com.diamantino.eternalmagic.client.screens;
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
+import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.client.model.ModelLoader;
 import com.diamantino.eternalmagic.client.screens.render.ManaInfoArea;
+import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.networking.c2s.WandBenchButtonC2SPacket;
 import com.diamantino.eternalmagic.registration.ModMessages;
 import com.diamantino.eternalmagic.utils.MouseUtils;
@@ -121,6 +123,19 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         this.addRenderableWidget(new BenchButton(this, "", 0, x + 183, y + 104, 7, 15, 27, ButtonType.right_arrow, false, null, elementsTexture));
 
         assignManaInfoArea();
+    }
+
+    public void updateAddedModels() {
+        ItemStack stack = menu.blockEntity.getRenderStack();
+
+        List<Model> models = WandItem.loadPartsFromNbt(stack.getTag()).values().stream().toList();
+
+        for (Model model : models)
+        {
+            String modelName = TextUtils.removeUnderscoresAndCapitalize(TextUtils.removeBeforeLastSlash(model.modelId().getPath()));
+
+            insertedModelsScrollPanel.addAndUpdateButtons(this, modelName, model.id());
+        }
     }
 
     private void assignManaInfoArea() {

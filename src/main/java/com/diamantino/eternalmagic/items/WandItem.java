@@ -9,7 +9,9 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WandItem extends Item {
     public WandItem(Properties properties) {
@@ -74,8 +76,8 @@ public class WandItem extends Item {
         }
     }
 
-    public static List<Model> loadPartsFromNbt(@Nullable CompoundTag nbt) {
-        List<Model> wandParts = new ArrayList<>();
+    public static Map<Integer, Model> loadPartsFromNbt(@Nullable CompoundTag nbt) {
+        Map<Integer, Model> wandParts = new LinkedHashMap<>();
 
         if (nbt != null && nbt.contains("models")) {
             CompoundTag modelsTag = nbt.getCompound("models");
@@ -85,10 +87,10 @@ public class WandItem extends Item {
             for(int i = 0; i < amount; i++) {
                 CompoundTag tag = modelsTag.getCompound(String.valueOf(i));
 
-                wandParts.add(Model.fromNbt(tag));
+                wandParts.put(i, Model.fromNbt(tag));
             }
         } else {
-            wandParts.add(new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
+            wandParts.put(0, new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
         }
 
         return wandParts;
