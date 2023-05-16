@@ -17,6 +17,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -125,7 +127,23 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         this.addRenderableWidget(new BenchButton(this, "DownArrow", 0, x + 173, y + 112, 9, 7, 26, ButtonType.down_arrow, false, null, elementsTexture));
         this.addRenderableWidget(new BenchButton(this, "RightArrow", 0, x + 183, y + 104, 7, 15, 27, ButtonType.right_arrow, false, null, elementsTexture));
 
+        BenchEditBox searchBox = new BenchEditBox(this.font, x + 7, y + 104, 73, 14, Component.literal("Search Models"));
+        searchBox.setCanLoseFocus(false);
+        searchBox.setTextColor(-1);
+        searchBox.setTextColorUneditable(-1);
+        searchBox.setBordered(false);
+        searchBox.setMaxLength(30);
+        searchBox.setResponder(this::onSearchBoxTextChanged);
+        searchBox.setValue("");
+
+        this.addWidget(searchBox);
+
         assignManaInfoArea();
+    }
+
+    private void onSearchBoxTextChanged(String text) {
+        insertedModelsScrollPanel.searchContent(text);
+        availableModelsScrollPanel.searchContent(text);
     }
 
     public void updateAddedModels(ItemStack stack) {
@@ -175,15 +193,15 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             scale = model.scale();
         }
 
-        this.font.draw(stack, Component.literal(String.valueOf((int) translation.x())), 85, 21, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf((int) translation.y())), 98, 21, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf((int) translation.z())), 111, 21, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf((int) rotation.x())), 85, 47, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf((int) rotation.y())), 98, 47, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf((int) rotation.z())), 111, 47, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf((int) scale.x())), 85, 73, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf((int) scale.y())), 98, 73, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf((int) scale.z())), 111, 73, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(translation.x())), 85, 21, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(translation.y())), 98, 21, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(translation.z())), 111, 21, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(rotation.x())), 85, 47, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(rotation.y())), 98, 47, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(rotation.z())), 111, 47, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(scale.x())), 85, 73, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(scale.y())), 98, 73, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(scale.z())), 111, 73, 4210752);
     }
 
     private void renderManaAreaTooltips(PoseStack poseStack, int mouseX, int mouseY, int x, int y) {
@@ -283,6 +301,12 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         right_arrow,
         plus,
         minus
+    }
+
+    public static class BenchEditBox extends EditBox {
+        public BenchEditBox(Font pFont, int pX, int pY, int pWidth, int pHeight, Component pMessage) {
+            super(pFont, pX, pY, pWidth, pHeight, pMessage);
+        }
     }
 
     public static class BenchButton extends ExtendedButton {

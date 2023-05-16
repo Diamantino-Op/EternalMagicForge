@@ -135,18 +135,24 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         ItemStack stack = itemHandler.getStackInSlot(3);
 
         WandItem.addPart(stack.getOrCreateTag(), model);
+
+        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack));
     }
 
     public void editModelToItem(int id, int transX, int transY, int transZ, int rotX, int rotY, int rotZ, int scaleX, int scaleY, int scaleZ) {
         ItemStack stack = itemHandler.getStackInSlot(3);
 
         WandItem.editPart(stack.getOrCreateTag(), id, transX, transY, transZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
+
+        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack));
     }
 
     public void removeModelFromItem(int id) {
         ItemStack stack = itemHandler.getStackInSlot(3);
 
         WandItem.removePart(stack.getOrCreateTag(), id);
+
+        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack));
     }
 
     @Override
