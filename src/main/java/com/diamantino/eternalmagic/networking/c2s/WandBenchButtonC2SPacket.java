@@ -46,7 +46,30 @@ public class WandBenchButtonC2SPacket {
                 switch (btnId) {
                     case 0 -> menu.setSelectedModelToAddId(btnText);
                     case 1 -> menu.setSelectedModelId(modelId);
+
+                    case 2 -> menu.editSelectedModel(1, 0, 0, 0, 0, 0, 0, 0, 0);
+                    case 3 -> menu.editSelectedModel(0, 1, 0, 0, 0, 0, 0, 0, 0);
+                    case 4 -> menu.editSelectedModel(0, 0, 1, 0, 0, 0, 0, 0, 0);
+                    case 5 -> menu.editSelectedModel(-1, 0, 0, 0, 0, 0, 0, 0, 0);
+                    case 6 -> menu.editSelectedModel(0, -1, 0, 0, 0, 0, 0, 0, 0);
+                    case 7 -> menu.editSelectedModel(0, 0, -1, 0, 0, 0, 0, 0, 0);
+
+                    case 8 -> menu.editSelectedModel(0, 0, 0, 1, 0, 0, 0, 0, 0);
+                    case 9 -> menu.editSelectedModel(0, 0, 0, 0, 1, 0, 0, 0, 0);
+                    case 10 -> menu.editSelectedModel(0, 0, 0, 0, 0, 1, 0, 0, 0);
+                    case 11 -> menu.editSelectedModel(0, 0, 0, -1, 0, 0, 0, 0, 0);
+                    case 12 -> menu.editSelectedModel(0, 0, 0, 0, -1, 0, 0, 0, 0);
+                    case 13 -> menu.editSelectedModel(0, 0, 0, 0, 0, -1, 0, 0, 0);
+
+                    case 14 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 1, 0, 0);
+                    case 15 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, 1, 0);
+                    case 16 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, 0, 1);
+                    case 17 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, -1, 0, 0);
+                    case 18 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, -1, 0);
+                    case 19 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, 0, -1);
+
                     case 20 -> menu.addSelectedModel();
+                    case 21 -> menu.removeSelectedModel();
                 }
             }
         });

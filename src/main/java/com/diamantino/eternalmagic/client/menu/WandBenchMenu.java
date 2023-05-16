@@ -19,6 +19,8 @@ import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
+import java.util.Objects;
+
 public class WandBenchMenu extends AbstractContainerMenu {
     public final WandBenchBlockEntity blockEntity;
     private final Level level;
@@ -39,7 +41,7 @@ public class WandBenchMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        this.selectedModelId = 0;
+        this.selectedModelId = -1;
         this.selectedModelToAddId = "";
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
@@ -54,14 +56,35 @@ public class WandBenchMenu extends AbstractContainerMenu {
         this.selectedModelId = selectedModelId;
     }
 
+    public int getSelectedModelId() {
+        return this.selectedModelId;
+    }
+
+    public void editSelectedModel(int transX, int transY, int transZ, int rotX, int rotY, int rotZ, int scaleX, int scaleY, int scaleZ) {
+        if (selectedModelId != -1 && blockEntity.getRenderStack() != ItemStack.EMPTY)
+            blockEntity.editModelToItem(selectedModelId, transX, transY, transZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
+    }
+
+    public void removeSelectedModel() {
+        if (selectedModelId != -1 && blockEntity.getRenderStack() != ItemStack.EMPTY) {
+            blockEntity.removeModelFromItem(selectedModelId);
+
+            selectedModelId = -1;
+        }
+    }
+
     public void setSelectedModelToAddId(String selectedModelToAddId) {
         this.selectedModelToAddId = selectedModelToAddId;
     }
 
     public void addSelectedModel() {
-        Model model = new Model(ModelLoader.loadedModels.getOrDefault(selectedModelToAddId, new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick")), blockEntity.getNextModelId(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+        if (!Objects.equals(selectedModelToAddId, "") && blockEntity.getRenderStack() != ItemStack.EMPTY) {
+            Model model = new Model(ModelLoader.loadedModels.getOrDefault(selectedModelToAddId, new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick")), blockEntity.getNextModelId(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
 
-        blockEntity.addModelToItem(model);
+            blockEntity.addModelToItem(model);
+
+            selectedModelToAddId = "";
+        }
     }
 
     public long getRequiredMana() {

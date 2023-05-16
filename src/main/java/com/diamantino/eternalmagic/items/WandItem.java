@@ -76,6 +76,43 @@ public class WandItem extends Item {
         }
     }
 
+    public static void removePart(CompoundTag nbt, int id) {
+        CompoundTag tag = nbt.getCompound("models");
+
+        tag.putInt("modelsAmount", tag.getInt("modelsAmount") - 1);
+
+        tag.remove(String.valueOf(id));
+
+        nbt.put("models", tag);
+    }
+
+    public static void editPart(CompoundTag nbt, int id, int transX, int transY, int transZ, int rotX, int rotY, int rotZ, int scaleX, int scaleY, int scaleZ) {
+        CompoundTag tag = nbt.getCompound("models");
+
+        CompoundTag modelTag = tag.getCompound(String.valueOf(id));
+
+        Model model = nbt.contains("models") ? Model.fromNbt(modelTag) : new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), id, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+
+        modelTag.putString("modelId", model.modelId().toString());
+        modelTag.putInt("id", model.id());
+        modelTag.putFloat("translationX", transX + model.translation().x());
+        modelTag.putFloat("translationY", transY + model.translation().y());
+        modelTag.putFloat("translationZ", transZ + model.translation().z());
+        modelTag.putFloat("rotationX", rotX + model.rotation().x());
+        modelTag.putFloat("rotationY", rotY + model.rotation().y());
+        modelTag.putFloat("rotationZ", rotZ + model.rotation().z());
+        modelTag.putFloat("scaleX", scaleX + model.scale().x());
+        modelTag.putFloat("scaleY", scaleY + model.scale().y());
+        modelTag.putFloat("scaleZ", scaleZ + model.scale().z());
+
+        tag.put(String.valueOf(id), modelTag);
+
+        if (nbt.contains("models"))
+            tag.putInt("modelsAmount", 1);
+
+        nbt.put("models", tag);
+    }
+
     public static Map<Integer, Model> loadPartsFromNbt(@Nullable CompoundTag nbt) {
         Map<Integer, Model> wandParts = new LinkedHashMap<>();
 
