@@ -51,6 +51,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
     private ModelsScrollPanel availableModelsScrollPanel;
     private ModelsScrollPanel insertedModelsScrollPanel;
+    private BenchEditBox searchBox;
 
     private Map<Integer, Model> loadedModels = new LinkedHashMap<>();
 
@@ -127,14 +128,14 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         this.addRenderableWidget(new BenchButton(this, "DownArrow", 0, x + 173, y + 112, 9, 7, 26, ButtonType.down_arrow, false, null, elementsTexture));
         this.addRenderableWidget(new BenchButton(this, "RightArrow", 0, x + 183, y + 104, 7, 15, 27, ButtonType.right_arrow, false, null, elementsTexture));
 
-        BenchEditBox searchBox = new BenchEditBox(this.font, x + 7, y + 104, 73, 14, Component.literal("Search Models"));
-        searchBox.setCanLoseFocus(false);
-        searchBox.setTextColor(-1);
-        searchBox.setTextColorUneditable(-1);
-        searchBox.setBordered(false);
-        searchBox.setMaxLength(30);
-        searchBox.setResponder(this::onSearchBoxTextChanged);
-        searchBox.setValue("");
+        this.searchBox = new BenchEditBox(this.font, x + 7, y + 104, 73, 14, Component.literal("Search Models"));
+        this.searchBox.setCanLoseFocus(false);
+        this.searchBox.setTextColor(-1);
+        this.searchBox.setTextColorUneditable(-1);
+        this.searchBox.setBordered(false);
+        this.searchBox.setMaxLength(30);
+        this.searchBox.setResponder(this::onSearchBoxTextChanged);
+        this.searchBox.setValue("");
 
         this.addWidget(searchBox);
 
@@ -177,10 +178,10 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
         renderManaAreaTooltips(poseStack, mouseX, mouseY, x, y);
 
-        renderModelText(poseStack, x, y);
+        renderModelText(poseStack);
     }
 
-    private void renderModelText(PoseStack stack, int x, int y) {
+    private void renderModelText(PoseStack stack) {
         Vector3f translation = new Vector3f(0, 0, 0);
         Vector3f rotation = new Vector3f(0, 0, 0);
         Vector3f scale = new Vector3f(0, 0, 0);
@@ -193,15 +194,15 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             scale = model.scale();
         }
 
-        this.font.draw(stack, Component.literal(String.valueOf(translation.x())), 85, 21, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(translation.y())), 98, 21, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(translation.z())), 111, 21, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(rotation.x())), 85, 47, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(rotation.y())), 98, 47, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(rotation.z())), 111, 47, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(scale.x())), 85, 73, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(scale.y())), 98, 73, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(scale.z())), 111, 73, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(translation.x())), 83, 21, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(translation.y())), 96, 21, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(translation.z())), 109, 21, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(rotation.x())), 83, 47, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(rotation.y())), 96, 47, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(rotation.z())), 109, 47, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(scale.x())), 83, 73, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(scale.y())), 96, 73, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(scale.z())), 109, 73, 4210752);
     }
 
     private void renderManaAreaTooltips(PoseStack poseStack, int mouseX, int mouseY, int x, int y) {
@@ -282,9 +283,26 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     }
 
     @Override
+    public void containerTick() {
+        super.containerTick();
+        this.searchBox.tick();
+    }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if (this.minecraft != null && this.minecraft.player != null && pKeyCode == 256) {
+            this.minecraft.player.closeContainer();
+        }
+
+        return this.searchBox.keyPressed(pKeyCode, pScanCode, pModifiers) || this.searchBox.canConsumeInput() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
+
+    @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
         renderBackground(poseStack);
         super.render(poseStack, mouseX, mouseY, partialTick);
+        searchBox.render(poseStack, mouseX, mouseY, partialTick);
+
         renderTooltip(poseStack, mouseX, mouseY);
     }
 
