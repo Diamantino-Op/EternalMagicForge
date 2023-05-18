@@ -32,7 +32,9 @@ import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.*;
 import java.util.function.Function;
@@ -154,7 +156,16 @@ public class ModelLoader
                     BakedModel bakedModel = Minecraft.getInstance().getModelManager().getModel(mdl.modelId());
                     List<BakedQuad> tempQuads = new ArrayList<>(bakedModel.getQuads(null, null, randomSource, ModelData.EMPTY, null));
 
-                    Transformation translation = new Transformation(mdl.translation(), new Quaternionf(), mdl.scale(), new Quaternionf(mdl.rotation().x(), mdl.rotation().y(), mdl.rotation().z(), 1));
+                    if (mdl.selected()) {
+                        IQuadTransformer colorTransformer = QuadTransformers.applyingColor(127, 0, 0, 0);
+
+                        tempQuads = colorTransformer.process(tempQuads);
+                    }
+
+                    Quaternionf leftRot = new Quaternionf().rotationXYZ((float) Math.toRadians(-mdl.rotation().x()), (float) Math.toRadians(-mdl.rotation().y()), (float) Math.toRadians(-mdl.rotation().z()));
+                    Quaternionf rightRot = new Quaternionf().rotationXYZ((float) Math.toRadians(mdl.rotation().x()), (float) Math.toRadians(mdl.rotation().y()), (float) Math.toRadians(mdl.rotation().z()));
+
+                    Transformation translation = new Transformation(mdl.translation(), leftRot, mdl.scale(), rightRot);
                     IQuadTransformer transformer = QuadTransformers.applying(translation);
 
                     quads.addAll(transformer.process(tempQuads));

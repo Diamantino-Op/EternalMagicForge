@@ -67,7 +67,7 @@ public class WandItem extends Item {
         } else {
             CompoundTag tag = new CompoundTag();
 
-            tag.put("0", new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)).toNbt());
+            tag.put("0", new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)).toNbt());
             tag.put("1", model.toNbt());
 
             tag.putInt("modelsAmount", 2);
@@ -91,10 +91,11 @@ public class WandItem extends Item {
 
         CompoundTag modelTag = tag.getCompound(String.valueOf(id));
 
-        Model model = nbt.contains("models") ? Model.fromNbt(modelTag) : new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), id, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+        Model model = nbt.contains("models") ? Model.fromNbt(modelTag) : new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), id, false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
 
         modelTag.putString("modelId", model.modelId().toString());
         modelTag.putInt("id", model.id());
+        modelTag.putBoolean("selected", model.selected());
         modelTag.putFloat("translationX", transX + model.translation().x());
         modelTag.putFloat("translationY", transY + model.translation().y());
         modelTag.putFloat("translationZ", transZ + model.translation().z());
@@ -107,7 +108,7 @@ public class WandItem extends Item {
 
         tag.put(String.valueOf(id), modelTag);
 
-        if (nbt.contains("models"))
+        if (!nbt.contains("models"))
             tag.putInt("modelsAmount", 1);
 
         nbt.put("models", tag);
@@ -127,7 +128,7 @@ public class WandItem extends Item {
                 wandParts.put(i, Model.fromNbt(tag));
             }
         } else {
-            wandParts.put(0, new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
+            wandParts.put(0, new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, true, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
         }
 
         return wandParts;

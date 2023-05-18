@@ -79,7 +79,7 @@ public class WandBenchMenu extends AbstractContainerMenu {
 
     public void addSelectedModel() {
         if (!Objects.equals(selectedModelToAddId, "") && blockEntity.getRenderStack() != ItemStack.EMPTY) {
-            Model model = new Model(ModelLoader.loadedModels.getOrDefault(selectedModelToAddId, new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick")), blockEntity.getNextModelId(), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+            Model model = new Model(ModelLoader.loadedModels.getOrDefault(selectedModelToAddId, new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick")), blockEntity.getNextModelId(), false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
 
             blockEntity.addModelToItem(model);
 

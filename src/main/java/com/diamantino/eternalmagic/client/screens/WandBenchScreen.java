@@ -18,6 +18,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -86,7 +87,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
         for (String modelName : ModelLoader.loadedModels.keySet().stream().toList())
         {
-            availableModelsScrollPanel.addAndUpdateButtons(this, modelName, 0, false);
+            availableModelsScrollPanel.addAndUpdateButtons(this, modelName.replace(".json", ""), 0, false);
         }
 
         this.addRenderableWidget(this.availableModelsScrollPanel);
@@ -128,16 +129,13 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         this.addRenderableWidget(new BenchButton(this, "DownArrow", 0, x + 173, y + 112, 9, 7, 26, ButtonType.down_arrow, false, null, elementsTexture));
         this.addRenderableWidget(new BenchButton(this, "RightArrow", 0, x + 183, y + 104, 7, 15, 27, ButtonType.right_arrow, false, null, elementsTexture));
 
-        this.searchBox = new BenchEditBox(this.font, x + 7, y + 104, 73, 14, Component.literal("Search Models"));
-        this.searchBox.setCanLoseFocus(false);
+        this.searchBox = new BenchEditBox(this.font, x + 7, y + 104, 73, 14, Component.literal("Search Models"), elementsTexture);
         this.searchBox.setTextColor(-1);
         this.searchBox.setTextColorUneditable(-1);
-        this.searchBox.setBordered(false);
         this.searchBox.setMaxLength(30);
-        this.searchBox.setResponder(this::onSearchBoxTextChanged);
         this.searchBox.setValue("");
 
-        this.addWidget(searchBox);
+        this.addRenderableWidget(searchBox);
 
         assignManaInfoArea();
     }
@@ -268,7 +266,17 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
         disableScissor();
 
+        searchBox.render(poseStack, mouseX, mouseY, partialTick);
+
         manaInfoArea.draw(poseStack, x, y);
+    }
+
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
+
+        return isMouseAboveArea((int) pMouseX, (int) pMouseY, x, y, 7, 104, 73, 14) && pButton == 0 ? searchBox.mouseClicked(pMouseX, pMouseY, pButton) : super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
     public void previewBtnPressed(int btnId) {
@@ -294,15 +302,27 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             this.minecraft.player.closeContainer();
         }
 
-        return this.searchBox.keyPressed(pKeyCode, pScanCode, pModifiers) || this.searchBox.canConsumeInput() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        boolean f = this.searchBox.keyPressed(pKeyCode, pScanCode, pModifiers);
+
+        onSearchBoxTextChanged(searchBox.getValue());
+
+        return f || this.searchBox.canConsumeInput() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
+
+    @Override
+    public boolean charTyped(char pCodePoint, int pModifiers) {
+        boolean f = this.searchBox.charTyped(pCodePoint, pModifiers);
+
+        onSearchBoxTextChanged(searchBox.getValue());
+
+        return f;
+    }
+
 
     @Override
     public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
         renderBackground(poseStack);
         super.render(poseStack, mouseX, mouseY, partialTick);
-        searchBox.render(poseStack, mouseX, mouseY, partialTick);
-
         renderTooltip(poseStack, mouseX, mouseY);
     }
 
@@ -322,8 +342,73 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     }
 
     public static class BenchEditBox extends EditBox {
-        public BenchEditBox(Font pFont, int pX, int pY, int pWidth, int pHeight, Component pMessage) {
+        private final ResourceLocation elementsTexture;
+
+        public BenchEditBox(Font pFont, int pX, int pY, int pWidth, int pHeight, Component pMessage, ResourceLocation elementsTexture) {
             super(pFont, pX, pY, pWidth, pHeight, pMessage);
+
+            this.elementsTexture = elementsTexture;
+        }
+
+        @Override
+        public void renderWidget(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+            if (this.isVisible()) {
+                RenderSystem.setShaderTexture(0, elementsTexture);
+
+                blit(poseStack, this.getX(), this.getY(), (this.isFocused() ? 1 : 0) * 73, 0, 73, 14);
+
+                int i2 = this.isEditable ? this.textColor : this.textColorUneditable;
+                int j = this.cursorPos - this.displayPos;
+                int k = this.highlightPos - this.displayPos;
+                String s = this.font.plainSubstrByWidth(this.value.substring(this.displayPos), this.getInnerWidth());
+                boolean flag = j >= 0 && j <= s.length();
+                boolean flag1 = this.isFocused() && this.frame / 6 % 2 == 0 && flag;
+                int l = this.bordered ? this.getX() + 4 : this.getX();
+                int i1 = this.bordered ? this.getY() + (this.height - 8) / 2 : this.getY();
+                int j1 = l;
+                if (k > s.length()) {
+                    k = s.length();
+                }
+
+                if (!s.isEmpty()) {
+                    String s1 = flag ? s.substring(0, j) : s;
+                    j1 = this.font.drawShadow(poseStack, this.formatter.apply(s1, this.displayPos), (float)l, (float)i1, i2);
+                }
+
+                boolean flag2 = this.cursorPos < this.value.length() || this.value.length() >= this.getMaxLength();
+                int k1 = j1;
+                if (!flag) {
+                    k1 = j > 0 ? l + this.width : l;
+                } else if (flag2) {
+                    k1 = j1 - 1;
+                    --j1;
+                }
+
+                if (!s.isEmpty() && flag && j < s.length()) {
+                    this.font.drawShadow(poseStack, this.formatter.apply(s.substring(j), this.cursorPos), (float)j1, (float)i1, i2);
+                }
+
+                if (this.hint != null && s.isEmpty() && !this.isFocused()) {
+                    this.font.drawShadow(poseStack, this.hint, (float)j1, (float)i1, i2);
+                }
+
+                if (!flag2 && this.suggestion != null) {
+                    this.font.drawShadow(poseStack, this.suggestion, (float)(k1 - 1), (float)i1, -8355712);
+                }
+
+                if (flag1) {
+                    if (flag2) {
+                        GuiComponent.fill(poseStack, k1, i1 - 1, k1 + 1, i1 + 1 + 9, -3092272);
+                    } else {
+                        this.font.drawShadow(poseStack, "_", (float)k1, (float)i1, i2);
+                    }
+                }
+
+                if (k != j) {
+                    int l1 = l + this.font.width(s.substring(0, k));
+                    this.renderHighlight(poseStack, k1, i1 - 1, l1 - 1, i1 + 1 + 9);
+                }
+            }
         }
     }
 
@@ -397,7 +482,8 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     }
 
     public static class ModelsScrollPanel extends ScrollPanel {
-        private final List<BenchButton> buttons = new ArrayList<>();
+        private final List<BenchButton> originalButtons = new ArrayList<>();
+        private final List<BenchButton> sortedButtons = new ArrayList<>();
         private boolean scrolling;
         public int totalButtonHeight;
         private final int buttonsId;
@@ -415,18 +501,20 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             BenchButton modelButton = new BenchButton(screen, modelName, modelId, left, top + totalButtonHeight, this.width - 15, 14, buttonsId, ButtonType.model, buttonsId == 1, this, elementsTexture);
             modelButton.setFocused(isFocused);
             modelButton.selected = isFocused;
-            this.buttons.add(modelButton);
+            this.originalButtons.add(modelButton);
+            this.sortedButtons.add(modelButton);
             totalButtonHeight += modelButton.getHeight();
         }
 
         public void clearContent() {
             totalButtonHeight = 0;
 
-            this.buttons.clear();
+            this.sortedButtons.clear();
+            this.originalButtons.clear();
         }
 
         public void buttonPressed(String btnText) {
-            for (BenchButton btn : buttons) {
+            for (BenchButton btn : sortedButtons) {
                 if (Objects.equals(btn.btnText, btnText)) {
                     btn.selected = true;
                 } else {
@@ -440,16 +528,18 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             List<BenchButton> tempButtons = new ArrayList<>();
             int tempTotalButtonsHeight = 0;
 
-            for (BenchButton btn : this.buttons) {
+            ModReferences.logger.warn(String.valueOf(originalButtons.size()));
+
+            for (BenchButton btn : this.originalButtons) {
                 if (btn.btnText.contains(search)) {
                     tempTotalButtonsHeight += btn.getHeight();
                     tempButtons.add(btn);
                 }
             }
 
-            clearContent();
+            this.sortedButtons.clear();
 
-            this.buttons.addAll(tempButtons);
+            this.sortedButtons.addAll(tempButtons);
             this.totalButtonHeight = tempTotalButtonsHeight;
         }
 
@@ -509,7 +599,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         @Override
         public List<? extends GuiEventListener> children()
         {
-            return this.buttons;
+            return this.sortedButtons;
         }
 
         @Override
@@ -521,7 +611,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         @Override
         protected void drawPanel(PoseStack stack, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
         {
-            for (BenchButton button : this.buttons)
+            for (BenchButton button : this.sortedButtons)
             {
                 button.scrollButton((int) this.scrollDistance);
                 button.render(stack, mouseX, mouseY, 0);

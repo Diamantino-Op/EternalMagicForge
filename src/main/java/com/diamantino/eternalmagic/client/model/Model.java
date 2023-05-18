@@ -4,12 +4,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector3f;
 
-public record Model(ResourceLocation modelId, int id, Vector3f translation, Vector3f rotation, Vector3f scale) {
+public record Model(ResourceLocation modelId, int id, boolean selected, Vector3f translation, Vector3f rotation, Vector3f scale) {
     public CompoundTag toNbt() {
         CompoundTag tag = new CompoundTag();
 
         tag.putString("modelId", modelId.toString());
         tag.putInt("id", id);
+        tag.putBoolean("selected", selected);
         tag.putFloat("translationX", translation.x());
         tag.putFloat("translationY", translation.y());
         tag.putFloat("translationZ", translation.z());
@@ -27,6 +28,7 @@ public record Model(ResourceLocation modelId, int id, Vector3f translation, Vect
         return new Model(
                 new ResourceLocation(tag.getString("modelId")),
                 tag.getInt("id"),
+                tag.getBoolean("selected"),
                 new Vector3f(tag.getFloat("translationX"), tag.getFloat("translation"), tag.getFloat("translationZ")),
                 new Vector3f(tag.getFloat("rotationX"), tag.getFloat("rotation"), tag.getFloat("rotationZ")),
                 new Vector3f(tag.getFloat("scaleX"), tag.getFloat("scaleY"), tag.getFloat("scaleZ"))
