@@ -18,6 +18,7 @@ public class EternalMagic {
         ModMenuTypes.registerMenuTypes(modEventBus);
         ModCapabilities.registerCapabilities();
         ModMessages.register();
+        ModCreativeTabs.registerCreativeTabs();
 
         MinecraftForge.EVENT_BUS.register(this);
     }

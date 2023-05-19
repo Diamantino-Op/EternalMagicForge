@@ -3,5 +3,10 @@
 
   "block.eternalmagic.wand_bench": "Wand Bench",
 
-  "item.eternalmagic.wand": "Wand"
+  "item.eternalmagic.wand": "Wand",
+
+  "itemGroup.eternalmagic.functional_blocks": "Eternal Magic Functional Blocks",
+  "itemGroup.eternalmagic.decorative_blocks": "Eternal Magic Decorative Blocks",
+  "itemGroup.eternalmagic.items": "Eternal Magic Items",
+  "itemGroup.eternalmagic.resources": "Eternal Magic Resources"
 }
