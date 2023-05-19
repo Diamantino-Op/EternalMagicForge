@@ -29,8 +29,8 @@ public record Model(ResourceLocation modelId, int id, boolean selected, Vector3f
                 new ResourceLocation(tag.getString("modelId")),
                 tag.getInt("id"),
                 tag.getBoolean("selected"),
-                new Vector3f(tag.getFloat("translationX"), tag.getFloat("translation"), tag.getFloat("translationZ")),
-                new Vector3f(tag.getFloat("rotationX"), tag.getFloat("rotation"), tag.getFloat("rotationZ")),
+                new Vector3f(tag.getFloat("translationX"), tag.getFloat("translationY"), tag.getFloat("translationZ")),
+                new Vector3f(tag.getFloat("rotationX"), tag.getFloat("rotationY"), tag.getFloat("rotationZ")),
                 new Vector3f(tag.getFloat("scaleX"), tag.getFloat("scaleY"), tag.getFloat("scaleZ"))
         );
     }

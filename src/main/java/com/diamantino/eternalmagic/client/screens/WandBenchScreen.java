@@ -442,7 +442,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
                 localScreen.previewBtnPressed(btnId);
 
             if (scrollPanel != null && canBeSelected) {
-                scrollPanel.buttonPressed(btnText);
+                scrollPanel.buttonPressed(btnText, modelId, btnId == 1);
             }
         }
 
@@ -513,9 +513,9 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             this.originalButtons.clear();
         }
 
-        public void buttonPressed(String btnText) {
+        public void buttonPressed(String btnText, int modelId, boolean isAvailable) {
             for (BenchButton btn : sortedButtons) {
-                if (Objects.equals(btn.btnText, btnText)) {
+                if ((Objects.equals(btn.btnText, btnText) && !isAvailable) || (btn.modelId == modelId && isAvailable)) {
                     btn.selected = true;
                 } else {
                     btn.setFocused(false);
@@ -527,8 +527,6 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         public void searchContent(String search) {
             List<BenchButton> tempButtons = new ArrayList<>();
             int tempTotalButtonsHeight = 0;
-
-            ModReferences.logger.warn(String.valueOf(originalButtons.size()));
 
             for (BenchButton btn : this.originalButtons) {
                 if (btn.btnText.contains(search)) {
