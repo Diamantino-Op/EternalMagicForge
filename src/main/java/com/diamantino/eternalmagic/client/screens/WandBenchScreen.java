@@ -90,6 +90,8 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             availableModelsScrollPanel.addAndUpdateButtons(this, modelName.replace(".json", ""), 0, false);
         }
 
+        updateAddedModels(menu.blockEntity.getRenderStack());
+
         this.addRenderableWidget(this.availableModelsScrollPanel);
         this.addRenderableWidget(this.insertedModelsScrollPanel);
 
