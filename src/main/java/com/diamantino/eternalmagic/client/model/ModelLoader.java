@@ -165,8 +165,8 @@ public class ModelLoader
                     Quaternionf leftRot = new Quaternionf().rotationXYZ((float) Math.toRadians(-mdl.rotation().x()), (float) Math.toRadians(-mdl.rotation().y()), (float) Math.toRadians(-mdl.rotation().z()));
                     Quaternionf rightRot = new Quaternionf().rotationXYZ((float) Math.toRadians(mdl.rotation().x()), (float) Math.toRadians(mdl.rotation().y()), (float) Math.toRadians(mdl.rotation().z()));
 
-                    Transformation translation = new Transformation(mdl.translation(), leftRot, mdl.scale(), rightRot);
-                    IQuadTransformer transformer = QuadTransformers.applying(translation);
+                    Transformation translation = new Transformation(mdl.translation(), leftRot, mdl.scale(), null);
+                    IQuadTransformer transformer = QuadTransformers.applying(translation.applyOrigin(new Vector3f(.5F, .5F, .5F)));
 
                     quads.addAll(transformer.process(tempQuads));
                 });
