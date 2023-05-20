@@ -37,14 +37,14 @@ public class WandItem extends Item {
 
         long storedMana = tag.getLong("storedMana");
         long maxStoredMana = tag.getLong("maxStoredMana");
-        String coreElement = tag.getString("coreElement");
+        String coreElement = WandCoreItem.WandCoreElement.fromId(tag.getInt("coreElement")).getName();
         int coreLevel = tag.getInt("coreLevel");
         int usedSpellSlots = spellsTag.getInt("usedSlots");
         int totalSpellSlots = spellsTag.getInt("totalSlots");
         float cooldownReduction = tag.getFloat("cooldownReduction");
 
         pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".stored_mana", TextUtils.formatNumberWithPrefix(storedMana), TextUtils.formatNumberWithPrefix(maxStoredMana)).withStyle(ChatFormatting.AQUA));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_element", coreElement.equals("") ? "None" : coreElement).withStyle(ChatFormatting.BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_element", coreElement).withStyle(ChatFormatting.BLUE));
         pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_level", coreLevel).withStyle(ChatFormatting.DARK_BLUE));
         pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".spell_slots", usedSpellSlots, totalSpellSlots).withStyle(ChatFormatting.GREEN));
         pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".cooldown_reduction", cooldownReduction + "%").withStyle(ChatFormatting.GOLD));

@@ -4,15 +4,37 @@
   "block.eternalmagic.wand_bench": "Wand Bench",
 
   "item.eternalmagic.wand": "Wand",
+  "item.eternalmagic.wand_earth_core": "Wand Earth Core",
+  "item.eternalmagic.wand_air_core": "Wand Air Core",
+  "item.eternalmagic.wand_water_core": "Wand Water Core",
+  "item.eternalmagic.wand_fire_core": "Wand Fire Core",
+  "item.eternalmagic.wand_electricity_core": "Wand Electricity Core",
+  "item.eternalmagic.wand_darkness_core": "Wand Darkness Core",
+  "item.eternalmagic.wand_light_core": "Wand Light Core",
+  "item.eternalmagic.wand_ice_core": "Wand Ice Core",
+  "item.eternalmagic.wand_magma_core": "Wand Magma Core",
+  "item.eternalmagic.wand_infinity_core": "Wand Infinity Core",
 
-  "itemGroup.eternalmagic.functional_blocks": "Eternal Magic Functional Blocks",
-  "itemGroup.eternalmagic.decorative_blocks": "Eternal Magic Decorative Blocks",
-  "itemGroup.eternalmagic.items": "Eternal Magic Items",
-  "itemGroup.eternalmagic.resources": "Eternal Magic Resources",
+  "itemGroup.eternalmagic.functional_blocks": "Eternal Magic - Functional Blocks",
+  "itemGroup.eternalmagic.decorative_blocks": "Eternal Magic - Decorative Blocks",
+  "itemGroup.eternalmagic.items": "Eternal Magic - Items",
+  "itemGroup.eternalmagic.resources": "Eternal Magic - Resources",
 
   "tooltip.wand_item.eternalmagic.stored_mana": "Stored Mana: %s/ %s",
   "tooltip.wand_item.eternalmagic.core_element": "Core Element: %s",
   "tooltip.wand_item.eternalmagic.core_level": "Core Level: %d",
   "tooltip.wand_item.eternalmagic.spell_slots": "Spell Slots: %d/%d",
-  "tooltip.wand_item.eternalmagic.cooldown_reduction": "Cooldown Reduction: %s"
+  "tooltip.wand_item.eternalmagic.cooldown_reduction": "Cooldown Reduction: %s",
+  
+  "element.eternalmagic.none": "None",
+  "element.eternalmagic.earth": "Earth",
+  "element.eternalmagic.air": "Air",
+  "element.eternalmagic.water": "Water",
+  "element.eternalmagic.fire": "Fire",
+  "element.eternalmagic.electricity": "Electricity",
+  "element.eternalmagic.darkness": "Darkness",
+  "element.eternalmagic.light": "Light",
+  "element.eternalmagic.ice": "Ice",
+  "element.eternalmagic.magma": "Magma",
+  "element.eternalmagic.infinity": "Infinity"
 }

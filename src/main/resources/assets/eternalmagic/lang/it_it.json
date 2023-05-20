@@ -1,0 +1,40 @@
+{
+  "menu.eternalmagic.wand_bench": "Banco Per Bacchetta",
+
+  "block.eternalmagic.wand_bench": "Banco Per Bacchetta",
+
+  "item.eternalmagic.wand": "Bacchetta",
+  "item.eternalmagic.wand_earth_core": "Nucleo Di Terra Della Bacchetta",
+  "item.eternalmagic.wand_air_core": "Nucleo Di Aria Della Bacchetta",
+  "item.eternalmagic.wand_water_core": "Nucleo D'Acqua Della Bacchetta",
+  "item.eternalmagic.wand_fire_core": "Nucleo Di Fuoco Della Bacchetta",
+  "item.eternalmagic.wand_electricity_core": "Nucleo Di Elettricità Della Bacchetta",
+  "item.eternalmagic.wand_darkness_core": "Nucleo D'Oscurità Della Bacchetta",
+  "item.eternalmagic.wand_light_core": "Nucleo Di Luce Della Bacchetta",
+  "item.eternalmagic.wand_ice_core": "Nucleo Di Ghiaccio Della Bacchetta",
+  "item.eternalmagic.wand_magma_core": "Nucleo Di Magma Della Bacchetta",
+  "item.eternalmagic.wand_infinity_core": "Nucleo Dell'Infinito Della Bacchetta",
+
+  "itemGroup.eternalmagic.functional_blocks": "Eternal Magic - Blocchi Funzionali",
+  "itemGroup.eternalmagic.decorative_blocks": "Eternal Magic - Blocchi Decorativi",
+  "itemGroup.eternalmagic.items": "Eternal Magic - Oggetti",
+  "itemGroup.eternalmagic.resources": "Eternal Magic - Risorse",
+
+  "tooltip.wand_item.eternalmagic.stored_mana": "Mana Immagazzinato: %s/ %s",
+  "tooltip.wand_item.eternalmagic.core_element": "Elemento Del Nucleo: %s",
+  "tooltip.wand_item.eternalmagic.core_level": "Livello Nucleo: %d",
+  "tooltip.wand_item.eternalmagic.spell_slots": "Posti Incantesimo: %d/%d",
+  "tooltip.wand_item.eternalmagic.cooldown_reduction": "Riduzione Tempo Di Recupero: %s",
+  
+  "element.eternalmagic.none": "Nessuno",
+  "element.eternalmagic.earth": "Terra",
+  "element.eternalmagic.air": "Aria",
+  "element.eternalmagic.water": "Acqua",
+  "element.eternalmagic.fire": "Fuoco",
+  "element.eternalmagic.electricity": "Elettricità",
+  "element.eternalmagic.darkness": "Oscurità",
+  "element.eternalmagic.light": "Luce",
+  "element.eternalmagic.ice": "Ghiaccio",
+  "element.eternalmagic.magma": "Magma",
+  "element.eternalmagic.infinity": "Infinito"
+}

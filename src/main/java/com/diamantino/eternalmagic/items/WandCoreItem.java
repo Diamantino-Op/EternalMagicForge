@@ -1,5 +1,7 @@
 package com.diamantino.eternalmagic.items;
 
+import com.diamantino.eternalmagic.ModReferences;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 
 import java.util.Objects;
@@ -18,30 +20,37 @@ public class WandCoreItem extends Item {
     }
 
     public enum WandCoreElement {
-        earth("Earth"),
-        air("Air"),
-        water("Water"),
-        fire("Fire"),
-        electricity("Electricity"),
-        darkness("Darkness"),
-        light("Light"),
-        ice("Ice"),
-        magma("Magma"),
-        infinity("Infinity");
+        none(0, Component.translatable("element." + ModReferences.modId + ".none")),
+        earth(1, Component.translatable("element." + ModReferences.modId + ".earth")),
+        air(2, Component.translatable("element." + ModReferences.modId + ".air")),
+        water(3, Component.translatable("element." + ModReferences.modId + ".water")),
+        fire(4, Component.translatable("element." + ModReferences.modId + ".fire")),
+        electricity(5, Component.translatable("element." + ModReferences.modId + ".electricity")),
+        darkness(6, Component.translatable("element." + ModReferences.modId + ".darkness")),
+        light(7, Component.translatable("element." + ModReferences.modId + ".light")),
+        ice(8, Component.translatable("element." + ModReferences.modId + ".ice")),
+        magma(9, Component.translatable("element." + ModReferences.modId + ".magma")),
+        infinity(10, Component.translatable("element." + ModReferences.modId + ".infinity"));
 
-        private final String name;
+        private final int id;
+        private final Component name;
 
-        WandCoreElement(String name) {
+        WandCoreElement(int id, Component name) {
+            this.id = id;
             this.name = name;
         }
 
         public String getName() {
-            return name;
+            return name.getString();
         }
 
-        public static WandCoreElement fromString(String element) {
+        public int getId() {
+            return id;
+        }
+
+        public static WandCoreElement fromId(int elementId) {
             for (WandCoreElement elem : WandCoreElement.values()) {
-                if (Objects.equals(elem.name, element))
+                if (elem.id == elementId)
                     return elem;
             }
 
