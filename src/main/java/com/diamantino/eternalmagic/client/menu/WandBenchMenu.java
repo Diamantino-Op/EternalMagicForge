@@ -52,8 +52,17 @@ public class WandBenchMenu extends AbstractContainerMenu {
         });
     }
 
+    @Override
+    public void removed(@NotNull Player pPlayer) {
+        blockEntity.setModelSelected(this.selectedModelId, false);
+
+        super.removed(pPlayer);
+    }
+
     public void setSelectedModelId(int selectedModelId) {
+        this.blockEntity.setModelSelected(this.selectedModelId, false);
         this.selectedModelId = selectedModelId;
+        this.blockEntity.setModelSelected(this.selectedModelId, true);
     }
 
     public int getSelectedModelId() {

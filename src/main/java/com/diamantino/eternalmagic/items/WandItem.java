@@ -86,16 +86,16 @@ public class WandItem extends Item {
         nbt.put("models", tag);
     }
 
-    public static void editPart(CompoundTag nbt, int id, int transX, int transY, int transZ, int rotX, int rotY, int rotZ, int scaleX, int scaleY, int scaleZ) {
+    public static void editPart(CompoundTag nbt, int id, int transX, int transY, int transZ, int rotX, int rotY, int rotZ, int scaleX, int scaleY, int scaleZ, boolean selected, boolean isEditing) {
         CompoundTag tag = nbt.getCompound("models");
 
         CompoundTag modelTag = tag.getCompound(String.valueOf(id));
 
-        Model model = nbt.contains("models") ? Model.fromNbt(modelTag) : new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), id, false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+        Model model = nbt.contains("models") ? Model.fromNbt(modelTag) : new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), id, selected, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
 
         modelTag.putString("modelId", model.modelId().toString());
         modelTag.putInt("id", model.id());
-        modelTag.putBoolean("selected", model.selected());
+        modelTag.putBoolean("selected", isEditing ? model.selected() : selected);
         modelTag.putFloat("translationX", transX + model.translation().x());
         modelTag.putFloat("translationY", transY + model.translation().y());
         modelTag.putFloat("translationZ", transZ + model.translation().z());
