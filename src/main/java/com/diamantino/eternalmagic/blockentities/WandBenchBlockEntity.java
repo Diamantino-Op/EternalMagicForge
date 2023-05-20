@@ -48,7 +48,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
                 ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
 
                 if (slot == 3)
-                    ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(this.getStackInSlot(3)));
+                    ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(this.getStackInSlot(3), true));
             }
         }
 
@@ -136,7 +136,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
 
         WandItem.addPart(stack.getOrCreateTag(), model);
 
-        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack));
+        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack, false));
     }
 
     public void setModelSelected(int id, boolean val) {
@@ -144,7 +144,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
 
         WandItem.editPart(stack.getOrCreateTag(), id, 0, 0, 0, 0, 0, 0, 0, 0, 0, val, false);
 
-        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack));
+        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack, false));
     }
 
     public void editModelToItem(int id, int transX, int transY, int transZ, int rotX, int rotY, int rotZ, int scaleX, int scaleY, int scaleZ) {
@@ -152,7 +152,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
 
         WandItem.editPart(stack.getOrCreateTag(), id, transX, transY, transZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, false, true);
 
-        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack));
+        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack, false));
     }
 
     public void removeModelFromItem(int id) {
@@ -160,7 +160,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
 
         WandItem.removePart(stack.getOrCreateTag(), id);
 
-        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack));
+        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack, false));
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.client.model.ModelLoader;
+import com.diamantino.eternalmagic.client.screens.components.EMSlot;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.diamantino.eternalmagic.registration.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -48,7 +49,7 @@ public class WandBenchMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, 0, 8, 125));
             this.addSlot(new SlotItemHandler(handler, 1, 108, 125));
             this.addSlot(new SlotItemHandler(handler, 2, 126, 125));
-            this.addSlot(new SlotItemHandler(handler, 3, 180, 125));
+            this.addSlot(new EMSlot(handler, 3, 180, 125, this));
         });
     }
 

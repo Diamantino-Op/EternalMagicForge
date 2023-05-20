@@ -6,4 +6,8 @@ public class WandCoreItem extends Item {
     public WandCoreItem(Properties pProperties) {
         super(pProperties);
     }
+
+    public enum WandCoreElement {
+
+    }
 }

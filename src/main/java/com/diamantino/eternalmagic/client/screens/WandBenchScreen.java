@@ -92,6 +92,8 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
         updateAddedModels(menu.blockEntity.getRenderStack());
 
+        selectFirstModel();
+
         this.addRenderableWidget(this.availableModelsScrollPanel);
         this.addRenderableWidget(this.insertedModelsScrollPanel);
 
@@ -140,6 +142,16 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         this.addRenderableWidget(searchBox);
 
         assignManaInfoArea();
+    }
+
+    public void selectFirstModel() {
+        if (insertedModelsScrollPanel.sortedButtons.size() > 0) {
+            BenchButton btn = insertedModelsScrollPanel.sortedButtons.get(0);
+
+            btn.mouseClicked(btn.getX() + 1, btn.getY() + 1, 0);
+            btn.setFocused(true);
+            btn.selected = true;
+        }
     }
 
     private void onSearchBoxTextChanged(String text) {
