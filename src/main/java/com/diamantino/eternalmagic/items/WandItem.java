@@ -2,9 +2,16 @@ package com.diamantino.eternalmagic.items;
 
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.client.model.Model;
+import com.diamantino.eternalmagic.utils.TextUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -16,6 +23,31 @@ import java.util.Map;
 public class WandItem extends Item {
     public WandItem(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public boolean isEnchantable(@NotNull ItemStack pStack) {
+        return false;
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
+        CompoundTag tag = pStack.getOrCreateTag();
+        CompoundTag spellsTag = tag.getCompound("spells");
+
+        long storedMana = tag.getLong("storedMana");
+        long maxStoredMana = tag.getLong("maxStoredMana");
+        String coreType = tag.getString("coreType");
+        int coreLevel = tag.getInt("coreLevel");
+        int usedSpellSlots = spellsTag.getInt("usedSlots");
+        int totalSpellSlots = spellsTag.getInt("totalSlots");
+        float cooldownReduction = tag.getFloat("cooldownReduction");
+
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".stored_mana", TextUtils.formatNumberWithPrefix(storedMana), TextUtils.formatNumberWithPrefix(maxStoredMana)).withStyle(ChatFormatting.AQUA));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_type", coreType.equals("") ? "None" : coreType).withStyle(ChatFormatting.BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_level", coreLevel).withStyle(ChatFormatting.DARK_BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".spell_slots", usedSpellSlots, totalSpellSlots).withStyle(ChatFormatting.GREEN));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".cooldown_reduction", cooldownReduction + "%").withStyle(ChatFormatting.GOLD));
     }
 
     public static void savePartsToNbt(CompoundTag nbt, List<Model> wandParts) {
@@ -128,7 +160,7 @@ public class WandItem extends Item {
                 wandParts.put(i, Model.fromNbt(tag));
             }
         } else {
-            wandParts.put(0, new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, true, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
+            wandParts.put(0, new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
         }
 
         return wandParts;

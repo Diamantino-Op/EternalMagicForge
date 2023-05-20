@@ -8,5 +8,11 @@
   "itemGroup.eternalmagic.functional_blocks": "Eternal Magic Functional Blocks",
   "itemGroup.eternalmagic.decorative_blocks": "Eternal Magic Decorative Blocks",
   "itemGroup.eternalmagic.items": "Eternal Magic Items",
-  "itemGroup.eternalmagic.resources": "Eternal Magic Resources"
+  "itemGroup.eternalmagic.resources": "Eternal Magic Resources",
+
+  "tooltip.wand_item.eternalmagic.stored_mana": "Stored Mana: %s/%s",
+  "tooltip.wand_item.eternalmagic.core_type": "Core Type: %s",
+  "tooltip.wand_item.eternalmagic.core_level": "Core Level: %d",
+  "tooltip.wand_item.eternalmagic.spell_slots": "Spell Slots: %d/%d",
+  "tooltip.wand_item.eternalmagic.cooldown_reduction": "Cooldown Reduction: %s"
 }

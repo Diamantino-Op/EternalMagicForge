@@ -60,7 +60,9 @@ public class WandBenchMenu extends AbstractContainerMenu {
     }
 
     public void setSelectedModelId(int selectedModelId) {
-        this.blockEntity.setModelSelected(this.selectedModelId, false);
+        if (this.selectedModelId != -1)
+            this.blockEntity.setModelSelected(this.selectedModelId, false);
+
         this.selectedModelId = selectedModelId;
         this.blockEntity.setModelSelected(this.selectedModelId, true);
     }

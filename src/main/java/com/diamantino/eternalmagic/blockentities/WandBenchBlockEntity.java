@@ -63,7 +63,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
-    private final ModManaStorage manaStorage = new ModManaStorage(1000000, 1024, 500000) {
+    private final ModManaStorage manaStorage = new ModManaStorage(1000000, 1024) {
         @Override
         public void onManaChanged() {
             setChanged();

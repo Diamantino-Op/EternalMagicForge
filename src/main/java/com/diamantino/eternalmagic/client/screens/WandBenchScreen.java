@@ -194,15 +194,21 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             scale = model.scale();
         }
 
-        this.font.draw(stack, Component.literal(String.valueOf(translation.x())), 83, 21, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(translation.y())), 96, 21, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(translation.z())), 109, 21, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(rotation.x())), 83, 47, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(rotation.y())), 96, 47, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(rotation.z())), 109, 47, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(scale.x())), 83, 73, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(scale.y())), 96, 73, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(scale.z())), 109, 73, 4210752);
+        stack.pushPose();
+
+        stack.scale(0.5f, 0.6f, 0.5f);
+
+        this.font.draw(stack, Component.literal(String.valueOf(translation.x())), 172, 37, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(translation.y())), 198, 37, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(translation.z())), 224, 37, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(rotation.x())), 172, 80.5f, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(rotation.y())), 198, 80.5f, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(rotation.z())), 224, 80.5f, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(scale.x())), 172, 124, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(scale.y())), 198, 124, 4210752);
+        this.font.draw(stack, Component.literal(String.valueOf(scale.z())), 224, 124, 4210752);
+
+        stack.popPose();
     }
 
     private void renderManaAreaTooltips(PoseStack poseStack, int mouseX, int mouseY, int x, int y) {
