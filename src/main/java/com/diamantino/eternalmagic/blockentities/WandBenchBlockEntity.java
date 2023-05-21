@@ -4,14 +4,15 @@ import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.model.Model;
+import com.diamantino.eternalmagic.items.WandCoreItem;
 import com.diamantino.eternalmagic.items.WandItem;
+import com.diamantino.eternalmagic.items.WandUpgradeItem;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.RequiredManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.WandBenchWandSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import com.diamantino.eternalmagic.registration.ModCapabilities;
-import com.diamantino.eternalmagic.registration.ModItems;
 import com.diamantino.eternalmagic.registration.ModMessages;
 import com.diamantino.eternalmagic.storage.mana.ModManaStorage;
 import net.minecraft.core.BlockPos;
@@ -56,9 +57,10 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             return switch (slot) {
-                case 0 -> stack.getCapability(ModCapabilities.mana).isPresent();
-                case 1, 2 -> true;
-                case 3 -> stack.is(ModItems.wandItem.get());
+                case 0 -> stack.getCapability(ModCapabilities.mana).isPresent() && !(stack.getItem() instanceof WandItem);
+                case 1 -> stack.getItem() instanceof WandUpgradeItem;
+                case 2 -> stack.getItem() instanceof WandCoreItem;
+                case 3 -> stack.getItem() instanceof WandItem;
                 default -> super.isItemValid(slot, stack);
             };
         }
@@ -190,11 +192,11 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
+            return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, lazyItemHandler);
         }
 
         if (cap == ModCapabilities.mana) {
-            return lazyManaHandler.cast();
+            return ModCapabilities.mana.orEmpty(cap, lazyManaHandler);
         }
 
         return super.getCapability(cap, side);

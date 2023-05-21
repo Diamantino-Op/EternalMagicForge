@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.items;
 
 import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.api.mana.ItemStackManaStorage;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.utils.TextUtils;
 import net.minecraft.ChatFormatting;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -31,23 +33,41 @@ public class WandItem extends Item {
     }
 
     @Override
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new ItemStackManaStorage(stack);
+    }
+
+    @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         CompoundTag tag = pStack.getOrCreateTag();
         CompoundTag spellsTag = tag.getCompound("spells");
+        CompoundTag coreTag = tag.getCompound("core");
 
         long storedMana = tag.getLong("storedMana");
         long maxStoredMana = tag.getLong("maxStoredMana");
-        String coreElement = WandCoreItem.WandCoreElement.fromId(tag.getInt("coreElement")).getName();
-        int coreLevel = tag.getInt("coreLevel");
+        float manaUsageReduction = tag.getFloat("manaUsageReduction");
+        String coreElement = WandCoreItem.WandCoreElement.fromId(coreTag.getInt("element")).getName();
+        int coreLevel = coreTag.getInt("level");
         int usedSpellSlots = spellsTag.getInt("usedSlots");
         int totalSpellSlots = spellsTag.getInt("totalSlots");
         float cooldownReduction = tag.getFloat("cooldownReduction");
+        float castTimeReduction = tag.getFloat("castTimeReduction");
 
         pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".stored_mana", TextUtils.formatNumberWithPrefix(storedMana), TextUtils.formatNumberWithPrefix(maxStoredMana)).withStyle(ChatFormatting.AQUA));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_element", coreElement).withStyle(ChatFormatting.BLUE));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_level", coreLevel).withStyle(ChatFormatting.DARK_BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_element", coreElement).withStyle(ChatFormatting.DARK_BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_level", coreLevel < 10 ? String.valueOf(coreLevel) : "MAX").withStyle(ChatFormatting.DARK_BLUE));
         pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".spell_slots", usedSpellSlots, totalSpellSlots).withStyle(ChatFormatting.GREEN));
         pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".cooldown_reduction", cooldownReduction + "%").withStyle(ChatFormatting.GOLD));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".cast_time_reduction", castTimeReduction + "%").withStyle(ChatFormatting.GOLD));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".mana_usage_reduction", manaUsageReduction + "%").withStyle(ChatFormatting.GOLD));
+    }
+
+    public static float getTotalCooldownReduction(CompoundTag nbt) {
+        CompoundTag tag = nbt.getCompound("upgrades");
+
+        if (tag.contains(WandUpgradeItem.WandUpgradeType.cooldownReduction.regName)) {
+
+        }
     }
 
     public static void savePartsToNbt(CompoundTag nbt, List<Model> wandParts) {

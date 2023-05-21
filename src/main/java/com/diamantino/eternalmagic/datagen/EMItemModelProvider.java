@@ -31,8 +31,8 @@ public class EMItemModelProvider extends ItemModelProvider {
         ResourceLocation itemLoc = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
 
         getBuilder(item.toString()).parent(new ModelFile.ExistingModelFile(parent, existingFileHelper))
-                .texture("particle", new ResourceLocation(itemLoc.getNamespace(), "item/" + itemLoc.getPath() + "_center"))
-                .texture("wand_core_internal", new ResourceLocation(itemLoc.getNamespace(), "item/" + itemLoc.getPath() + "_center"))
-                .texture("wand_core_external", new ResourceLocation(itemLoc.getNamespace(), "item/" + itemLoc.getPath() + "_external"));
+                .texture("particle", new ResourceLocation(itemLoc.getNamespace(), "item/wand_cores/" + itemLoc.getPath() + "_center"))
+                .texture("wand_core_internal", new ResourceLocation(itemLoc.getNamespace(), "item/wand_cores/" + itemLoc.getPath() + "_center"))
+                .texture("wand_core_external", new ResourceLocation(itemLoc.getNamespace(), "item/wand_cores/" + itemLoc.getPath() + "_external"));
     }
 }

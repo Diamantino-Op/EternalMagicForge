@@ -54,9 +54,9 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     private ModelsScrollPanel insertedModelsScrollPanel;
     private BenchEditBox searchBox;
 
-    private Map<Integer, Model> loadedModels = new LinkedHashMap<>();
+    private final Map<Integer, Model> loadedModels = new LinkedHashMap<>();
 
-    private List<BenchButton> moveButtons = new ArrayList<>();
+    private final List<BenchButton> moveButtons = new ArrayList<>();
 
     private int scale;
     private int tranX;
@@ -170,7 +170,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         loadedModels.clear();
 
         if (stack != ItemStack.EMPTY) {
-            loadedModels = WandItem.loadPartsFromNbt(stack.getTag());
+            loadedModels.putAll(WandItem.loadPartsFromNbt(stack.getTag()));
 
             for (Model model : loadedModels.values())
             {

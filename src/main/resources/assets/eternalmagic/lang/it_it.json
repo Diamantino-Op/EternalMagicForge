@@ -22,9 +22,16 @@
 
   "tooltip.wand_item.eternalmagic.stored_mana": "Mana Immagazzinato: %s/ %s",
   "tooltip.wand_item.eternalmagic.core_element": "Elemento Del Nucleo: %s",
-  "tooltip.wand_item.eternalmagic.core_level": "Livello Nucleo: %d",
+  "tooltip.wand_item.eternalmagic.core_level": "Livello Nucleo: %s",
   "tooltip.wand_item.eternalmagic.spell_slots": "Posti Incantesimo: %d/%d",
   "tooltip.wand_item.eternalmagic.cooldown_reduction": "Riduzione Tempo Di Recupero: %s",
+  "tooltip.wand_item.eternalmagic.cast_time_reduction": "Riduzione Tempo Di Lancio: %s",
+  "tooltip.wand_item.eternalmagic.mana_usage_reduction": "Riduzione Uso Mana: %s",
+  "tooltip.wand_core_item.eternalmagic.element": "Elemento: %s",
+  "tooltip.wand_core_item.eternalmagic.level": "Livello: %s",
+  "tooltip.wand_upgrade.eternalmagic.type": "Tipo: %s",
+  "tooltip.wand_upgrade.eternalmagic.rarity": "Rarità: %s",
+  "tooltip.wand_upgrade.eternalmagic.value": "Valore: %s",
   
   "element.eternalmagic.none": "Nessuno",
   "element.eternalmagic.earth": "Terra",
@@ -36,5 +43,19 @@
   "element.eternalmagic.light": "Luce",
   "element.eternalmagic.ice": "Ghiaccio",
   "element.eternalmagic.magma": "Magma",
-  "element.eternalmagic.infinity": "Infinito"
+  "element.eternalmagic.infinity": "Infinito",
+  
+  "rarity.eternalmagic.common": "Comune",
+  "rarity.eternalmagic.uncommon": "Non Comune",
+  "rarity.eternalmagic.rare": "Raro",
+  "rarity.eternalmagic.epic": "Epico",
+  "rarity.eternalmagic.legendary": "Leggendario",
+  "rarity.eternalmagic.mythic": "Mitico",
+  
+  "upgrade.wand.eternalmagic.none": "Nessuno",
+  "upgrade.wand.eternalmagic.cooldown_reduction": "Riduzione Tempo Di Recupero",
+  "upgrade.wand.eternalmagic.cast_time_reduction": "Riduzione Tempo Di Lancio",
+  "upgrade.wand.eternalmagic.mana_usage_reduction": "Riduzione Uso Di Mana",
+  "upgrade.wand.eternalmagic.mana_capacity": "Capacità Mana",
+  "upgrade.wand.eternalmagic.slot": "Posto"
 }

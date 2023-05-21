@@ -15,16 +15,16 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-group = 'com.diamantino'
-version = '1.0.0'
+group = "${mod_group}"
+version = "${mod_version}"
 
 java {
-    archivesBaseName = 'EternalMagic'
+    archivesBaseName = "${mod_name}"
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.19.4'
+    mappings channel: "${mappings_channel}", version: "${mappings_version}-${mc_version}"
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -36,7 +36,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'eternalmagic'
+            property 'forge.enabledGameTestNamespaces', "${mod_id}"
             
             mods {
                 eternalmagic {
@@ -52,7 +52,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'eternalmagic'
+            property 'forge.enabledGameTestNamespaces', "${mod_id}"
             
             mods {
                 eternalmagic {
@@ -68,7 +68,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'eternalmagic'
+            property 'forge.enabledGameTestNamespaces', "${mod_id}"
 
             mods {
                 eternalmagic {
@@ -84,7 +84,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'eternalmagic', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', "${mod_id}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 eternalmagic {
@@ -96,34 +96,40 @@ minecraft {
 }
 
 mixin {
-    add sourceSets.main, "eternalmagic.refmap.json"
+    add sourceSets.main, "${mod_id}.refmap.json"
 
-    config "eternalmagic.mixins.json"
+    config "${mod_id}.mixins.json"
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+
     // flatDir {
     //     dir 'libs'
     // }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.4-45.0.55'
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
-    // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}"))
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    annotationProcessor "org.spongepowered:mixin:${mixin_processor_version}:processor"
 }
 
 jar {
     manifest {
         attributes([
-                "Specification-Title": "eternalmagic",
+                "Specification-Title": "${mod_name}",
                 "Specification-Vendor": "DiamantinoOp",
-                "Specification-Version": "1.0.0",
+                "Specification-Version": "${mod_version}",
                 "Implementation-Title": project.name,
                 "Implementation-Version": project.jar.archiveVersion,
                 "Implementation-Vendor": "DiamantinoOp",

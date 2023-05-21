@@ -34,6 +34,10 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
         this.mana = Math.max(0, Math.min(capacity, mana));
     }
 
+    public void setCapacity(long capacity) {
+        this.capacity = capacity;
+    }
+
     @Override
     public long receiveMana(long maxReceive, boolean simulate)
     {
