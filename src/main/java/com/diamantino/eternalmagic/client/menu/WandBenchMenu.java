@@ -72,7 +72,7 @@ public class WandBenchMenu extends AbstractContainerMenu {
         return this.selectedModelId;
     }
 
-    public void editSelectedModel(int transX, int transY, int transZ, int rotX, int rotY, int rotZ, int scaleX, int scaleY, int scaleZ) {
+    public void editSelectedModel(float transX, float transY, float transZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ) {
         if (selectedModelId != -1 && blockEntity.getRenderStack() != ItemStack.EMPTY)
             blockEntity.editModelToItem(selectedModelId, transX, transY, transZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
     }

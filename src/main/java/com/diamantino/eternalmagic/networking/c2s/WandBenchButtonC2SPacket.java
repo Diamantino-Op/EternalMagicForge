@@ -15,12 +15,14 @@ public class WandBenchButtonC2SPacket {
     private final int btnId;
     private final int modelId;
     private final String btnText;
+    private final boolean isShifted;
 
-    public WandBenchButtonC2SPacket(BlockPos pos, int btnId, int modelId, String btnText) {
+    public WandBenchButtonC2SPacket(BlockPos pos, int btnId, int modelId, String btnText, boolean isShifted) {
         this.pos = pos;
         this.btnId = btnId;
         this.modelId = modelId;
         this.btnText = btnText;
+        this.isShifted = isShifted;
     }
 
     public WandBenchButtonC2SPacket(FriendlyByteBuf buf) {
@@ -28,6 +30,7 @@ public class WandBenchButtonC2SPacket {
         this.btnId = buf.readInt();
         this.modelId = buf.readInt();
         this.btnText = buf.readUtf();
+        this.isShifted = buf.readBoolean();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -35,6 +38,11 @@ public class WandBenchButtonC2SPacket {
         buf.writeInt(btnId);
         buf.writeInt(modelId);
         buf.writeUtf(btnText);
+        buf.writeBoolean(isShifted);
+    }
+
+    private float getMov() {
+        return isShifted ? 0.1f : 1;
     }
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
@@ -47,26 +55,26 @@ public class WandBenchButtonC2SPacket {
                     case 0 -> menu.setSelectedModelToAddId(btnText);
                     case 1 -> menu.setSelectedModelId(modelId);
 
-                    case 2 -> menu.editSelectedModel(1, 0, 0, 0, 0, 0, 0, 0, 0);
-                    case 3 -> menu.editSelectedModel(0, 1, 0, 0, 0, 0, 0, 0, 0);
-                    case 4 -> menu.editSelectedModel(0, 0, 1, 0, 0, 0, 0, 0, 0);
-                    case 5 -> menu.editSelectedModel(-1, 0, 0, 0, 0, 0, 0, 0, 0);
-                    case 6 -> menu.editSelectedModel(0, -1, 0, 0, 0, 0, 0, 0, 0);
-                    case 7 -> menu.editSelectedModel(0, 0, -1, 0, 0, 0, 0, 0, 0);
+                    case 2 -> menu.editSelectedModel(getMov(), 0, 0, 0, 0, 0, 0, 0, 0);
+                    case 3 -> menu.editSelectedModel(0, getMov(), 0, 0, 0, 0, 0, 0, 0);
+                    case 4 -> menu.editSelectedModel(0, 0, getMov(), 0, 0, 0, 0, 0, 0);
+                    case 5 -> menu.editSelectedModel(-getMov(), 0, 0, 0, 0, 0, 0, 0, 0);
+                    case 6 -> menu.editSelectedModel(0, -getMov(), 0, 0, 0, 0, 0, 0, 0);
+                    case 7 -> menu.editSelectedModel(0, 0, -getMov(), 0, 0, 0, 0, 0, 0);
 
-                    case 8 -> menu.editSelectedModel(0, 0, 0, 1, 0, 0, 0, 0, 0);
-                    case 9 -> menu.editSelectedModel(0, 0, 0, 0, 1, 0, 0, 0, 0);
-                    case 10 -> menu.editSelectedModel(0, 0, 0, 0, 0, 1, 0, 0, 0);
-                    case 11 -> menu.editSelectedModel(0, 0, 0, -1, 0, 0, 0, 0, 0);
-                    case 12 -> menu.editSelectedModel(0, 0, 0, 0, -1, 0, 0, 0, 0);
-                    case 13 -> menu.editSelectedModel(0, 0, 0, 0, 0, -1, 0, 0, 0);
+                    case 8 -> menu.editSelectedModel(0, 0, 0, getMov(), 0, 0, 0, 0, 0);
+                    case 9 -> menu.editSelectedModel(0, 0, 0, 0, getMov(), 0, 0, 0, 0);
+                    case 10 -> menu.editSelectedModel(0, 0, 0, 0, 0, getMov(), 0, 0, 0);
+                    case 11 -> menu.editSelectedModel(0, 0, 0, -getMov(), 0, 0, 0, 0, 0);
+                    case 12 -> menu.editSelectedModel(0, 0, 0, 0, -getMov(), 0, 0, 0, 0);
+                    case 13 -> menu.editSelectedModel(0, 0, 0, 0, 0, -getMov(), 0, 0, 0);
 
-                    case 14 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 1, 0, 0);
-                    case 15 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, 1, 0);
-                    case 16 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, 0, 1);
-                    case 17 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, -1, 0, 0);
-                    case 18 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, -1, 0);
-                    case 19 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, 0, -1);
+                    case 14 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, getMov(), 0, 0);
+                    case 15 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, getMov(), 0);
+                    case 16 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, 0, getMov());
+                    case 17 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, -getMov(), 0, 0);
+                    case 18 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, -getMov(), 0);
+                    case 19 -> menu.editSelectedModel(0, 0, 0, 0, 0, 0, 0, 0, -getMov());
 
                     case 20 -> menu.addSelectedModel();
                     case 21 -> menu.removeSelectedModel();

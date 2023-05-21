@@ -56,6 +56,8 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
     private Map<Integer, Model> loadedModels = new LinkedHashMap<>();
 
+    private List<BenchButton> moveButtons = new ArrayList<>();
+
     private int scale;
     private int tranX;
     private int tranY;
@@ -85,45 +87,36 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         this.availableModelsScrollPanel = new ModelsScrollPanel(7, 15, 73, 42, x, y, 0, elementsTexture);
         this.insertedModelsScrollPanel = new ModelsScrollPanel(7, 61, 73, 42, x, y, 1, elementsTexture);
 
-        for (String modelName : ModelLoader.loadedModels.keySet().stream().toList())
-        {
-            availableModelsScrollPanel.addAndUpdateButtons(this, modelName.replace(".json", ""), 0, false);
-        }
-
-        updateAddedModels(menu.blockEntity.getRenderStack());
-
-        selectFirstModel();
-
         this.addRenderableWidget(this.availableModelsScrollPanel);
         this.addRenderableWidget(this.insertedModelsScrollPanel);
 
         // Translation buttons
-        this.addRenderableWidget(new BenchButton(this, "UpX", 0, x + 85, y + 14, 9, 7, 2, ButtonType.up_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "UpY", 0, x + 98, y + 14, 9, 7, 3, ButtonType.up_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "UpZ", 0, x + 111, y + 14, 9, 7, 4, ButtonType.up_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "DownX", 0, x + 85, y + 28, 9, 7, 5, ButtonType.down_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "DownY", 0, x + 98, y + 28, 9, 7, 6, ButtonType.down_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "DownZ", 0, x + 111, y + 28, 9, 7, 7, ButtonType.down_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "UpX", 0, x + 85, y + 14, 9, 7, 2, ButtonType.up_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "UpY", 0, x + 98, y + 14, 9, 7, 3, ButtonType.up_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "UpZ", 0, x + 111, y + 14, 9, 7, 4, ButtonType.up_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "DownX", 0, x + 85, y + 28, 9, 7, 5, ButtonType.down_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "DownY", 0, x + 98, y + 28, 9, 7, 6, ButtonType.down_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "DownZ", 0, x + 111, y + 28, 9, 7, 7, ButtonType.down_arrow, false, null, elementsTexture));
 
         // Rotation buttons
-        this.addRenderableWidget(new BenchButton(this, "UpX", 0, x + 85, y + 40, 9, 7, 8, ButtonType.up_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "UpY", 0, x + 98, y + 40, 9, 7, 9, ButtonType.up_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "UpZ", 0, x + 111, y + 40, 9, 7, 10, ButtonType.up_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "DownX", 0, x + 85, y + 54, 9, 7, 11, ButtonType.down_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "DownY", 0, x + 98, y + 54, 9, 7, 12, ButtonType.down_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "DownZ", 0, x + 111, y + 54, 9, 7, 13, ButtonType.down_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "UpX", 0, x + 85, y + 40, 9, 7, 8, ButtonType.up_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "UpY", 0, x + 98, y + 40, 9, 7, 9, ButtonType.up_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "UpZ", 0, x + 111, y + 40, 9, 7, 10, ButtonType.up_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "DownX", 0, x + 85, y + 54, 9, 7, 11, ButtonType.down_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "DownY", 0, x + 98, y + 54, 9, 7, 12, ButtonType.down_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "DownZ", 0, x + 111, y + 54, 9, 7, 13, ButtonType.down_arrow, false, null, elementsTexture));
 
         // Scaling buttons
-        this.addRenderableWidget(new BenchButton(this, "UpX", 0, x + 85, y + 66, 9, 7, 14, ButtonType.up_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "UpY", 0, x + 98, y + 66, 9, 7, 15, ButtonType.up_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "UpZ", 0, x + 111, y + 66, 9, 7, 16, ButtonType.up_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "DownX", 0, x + 85, y + 80, 9, 7, 17, ButtonType.down_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "DownY", 0, x + 98, y + 80, 9, 7, 18, ButtonType.down_arrow, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "DownZ", 0, x + 111, y + 80, 9, 7, 19, ButtonType.down_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "UpX", 0, x + 85, y + 66, 9, 7, 14, ButtonType.up_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "UpY", 0, x + 98, y + 66, 9, 7, 15, ButtonType.up_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "UpZ", 0, x + 111, y + 66, 9, 7, 16, ButtonType.up_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "DownX", 0, x + 85, y + 80, 9, 7, 17, ButtonType.down_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "DownY", 0, x + 98, y + 80, 9, 7, 18, ButtonType.down_arrow, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "DownZ", 0, x + 111, y + 80, 9, 7, 19, ButtonType.down_arrow, false, null, elementsTexture));
 
         // Add / Remove
-        this.addRenderableWidget(new BenchButton(this, "Add", 0, x + 82, y + 89, 41, 14, 20, ButtonType.normal, false, null, elementsTexture));
-        this.addRenderableWidget(new BenchButton(this, "Delete", 0, x + 82, y + 104, 41, 14, 21, ButtonType.normal, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "Add", 0, x + 82, y + 89, 41, 14, 20, ButtonType.normal, false, null, elementsTexture));
+        this.moveButtons.add(new BenchButton(this, "Delete", 0, x + 82, y + 104, 41, 14, 21, ButtonType.normal, false, null, elementsTexture));
 
         // Preview buttons
         this.addRenderableWidget(new BenchButton(this, "Plus", 0, x + 132, y + 104, 15, 15, 22, ButtonType.plus, false, null, elementsTexture));
@@ -132,6 +125,19 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         this.addRenderableWidget(new BenchButton(this, "UpArrow", 0, x + 173, y + 104, 9, 7, 25, ButtonType.up_arrow, false, null, elementsTexture));
         this.addRenderableWidget(new BenchButton(this, "DownArrow", 0, x + 173, y + 112, 9, 7, 26, ButtonType.down_arrow, false, null, elementsTexture));
         this.addRenderableWidget(new BenchButton(this, "RightArrow", 0, x + 183, y + 104, 7, 15, 27, ButtonType.right_arrow, false, null, elementsTexture));
+
+        for (String modelName : ModelLoader.loadedModels.keySet().stream().toList())
+        {
+            availableModelsScrollPanel.addAndUpdateButtons(this, modelName.replace(".json", ""), 0, false);
+        }
+
+        for (BenchButton btn : moveButtons) {
+            this.addRenderableWidget(btn);
+        }
+
+        updateAddedModels(menu.blockEntity.getRenderStack());
+
+        selectFirstModel();
 
         this.searchBox = new BenchEditBox(this.font, x + 7, y + 104, 73, 14, Component.literal("Search Models"), elementsTexture);
         this.searchBox.setTextColor(-1);
@@ -172,6 +178,16 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
                 insertedModelsScrollPanel.addAndUpdateButtons(this, modelName, model.id(), menu.getSelectedModelId() == model.id());
             }
+
+            updateMoveButtons(true);
+        } else {
+            updateMoveButtons(false);
+        }
+    }
+
+    private void updateMoveButtons(boolean active) {
+        for (BenchButton btn : moveButtons) {
+            btn.active = active;
         }
     }
 
@@ -456,8 +472,8 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             if (btnId == 1)
                 localScreen.menu.setSelectedModelId(modelId);
 
-            if (btnId <= 21)
-                ModMessages.sendToServer(new WandBenchButtonC2SPacket(localScreen.menu.blockEntity.getBlockPos(), btnId, modelId, btnText));
+            if (btnId <= 21 && Minecraft.getInstance().player != null)
+                ModMessages.sendToServer(new WandBenchButtonC2SPacket(localScreen.menu.blockEntity.getBlockPos(), btnId, modelId, btnText, Minecraft.getInstance().player.isShiftKeyDown()));
             else
                 localScreen.previewBtnPressed(btnId);
 
@@ -469,7 +485,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         @Override
         public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
             Minecraft mc = Minecraft.getInstance();
-            int k = !this.active ? 0 : (this.isHovered() ? 2 : ((this.isFocused() || selected) ? 1 : 0));
+            int k = !this.active ? 1 : (this.isHovered() ? 2 : ((this.isFocused() || selected) ? 1 : 0));
 
             RenderSystem.setShaderTexture(0, elementsTexture);
 

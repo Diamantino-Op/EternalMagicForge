@@ -118,7 +118,7 @@ public class WandItem extends Item {
         nbt.put("models", tag);
     }
 
-    public static void editPart(CompoundTag nbt, int id, int transX, int transY, int transZ, int rotX, int rotY, int rotZ, int scaleX, int scaleY, int scaleZ, boolean selected, boolean isEditing) {
+    public static void editPart(CompoundTag nbt, int id, float transX, float transY, float transZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, boolean selected, boolean isEditing) {
         CompoundTag tag = nbt.getCompound("models");
 
         CompoundTag modelTag = tag.getCompound(String.valueOf(id));
