@@ -26,7 +26,7 @@ public class WandCoreItem extends Item {
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         CompoundTag tag = pStack.getOrCreateTag();
 
-        String level = getLevel(tag);
+        String level = getLevelStr(tag);
 
         pTooltipComponents.add(Component.translatable("tooltip.wand_core_item." + ModReferences.modId + ".element", element.getName()).withStyle(ChatFormatting.DARK_BLUE));
         pTooltipComponents.add(Component.translatable("tooltip.wand_core_item." + ModReferences.modId + ".level", level).withStyle(ChatFormatting.DARK_BLUE));
@@ -44,10 +44,18 @@ public class WandCoreItem extends Item {
         return false;
     }
 
-    public static String getLevel(CompoundTag nbt) {
+    public static String getLevelStr(CompoundTag nbt) {
         int level = nbt.getInt("level");
 
         return level < 10 ? String.valueOf(level) : "MAX";
+    }
+
+    public static int getLevel(CompoundTag nbt) {
+        return nbt.getInt("level");
+    }
+
+    public static WandCoreElement getElement(CompoundTag nbt) {
+        return WandCoreItem.WandCoreElement.fromId(nbt.getInt("element"));
     }
 
     public WandCoreElement getElement() {

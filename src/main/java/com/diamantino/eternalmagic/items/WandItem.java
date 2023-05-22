@@ -1,18 +1,18 @@
 package com.diamantino.eternalmagic.items;
 
 import com.diamantino.eternalmagic.ModReferences;
-import com.diamantino.eternalmagic.api.mana.ItemStackManaStorage;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.utils.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 public class WandItem extends Item {
+    public static long baseStoredMana = 10000;
+    public static int baseSlots = 4;
+
     public WandItem(Properties properties) {
         super(properties);
     }
@@ -33,18 +36,19 @@ public class WandItem extends Item {
     }
 
     @Override
-    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new ItemStackManaStorage(stack);
+    public @Nullable CompoundTag getShareTag(ItemStack stack) {
+        return super.getShareTag(stack);
     }
 
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         CompoundTag tag = pStack.getOrCreateTag();
+        CompoundTag manaTag = tag.getCompound("mana");
         CompoundTag spellsTag = tag.getCompound("spells");
         CompoundTag coreTag = tag.getCompound("core");
 
-        long storedMana = tag.getLong("storedMana");
-        long maxStoredMana = tag.getLong("maxStoredMana");
+        long storedMana = manaTag.getLong("stored");
+        long maxStoredMana = manaTag.getLong("maxStored");
         float manaUsageReduction = tag.getFloat("manaUsageReduction");
         String coreElement = WandCoreItem.WandCoreElement.fromId(coreTag.getInt("element")).getName();
         int coreLevel = coreTag.getInt("level");
@@ -63,11 +67,167 @@ public class WandItem extends Item {
     }
 
     public static float getTotalCooldownReduction(CompoundTag nbt) {
-        CompoundTag tag = nbt.getCompound("upgrades");
+        List<WandUpgradeItem.WandUpgrade> upgrades = getUpgrades(nbt);
 
-        if (tag.contains(WandUpgradeItem.WandUpgradeType.cooldownReduction.regName)) {
+        float totalCooldownReduction = 0;
 
+        for (WandUpgradeItem.WandUpgrade upgrade : upgrades) {
+            if (upgrade.upgradeType == WandUpgradeItem.WandUpgradeType.cooldownReduction) {
+                totalCooldownReduction += upgrade.getValue();
+            }
         }
+
+        return totalCooldownReduction;
+    }
+
+    public static float getTotalCastTimeReduction(CompoundTag nbt) {
+        List<WandUpgradeItem.WandUpgrade> upgrades = getUpgrades(nbt);
+
+        float totalCastTimeReduction = 0;
+
+        for (WandUpgradeItem.WandUpgrade upgrade : upgrades) {
+            if (upgrade.upgradeType == WandUpgradeItem.WandUpgradeType.castTimeReduction) {
+                totalCastTimeReduction += upgrade.getValue();
+            }
+        }
+
+        return totalCastTimeReduction;
+    }
+
+    public static float getTotalManaUsageReduction(CompoundTag nbt) {
+        List<WandUpgradeItem.WandUpgrade> upgrades = getUpgrades(nbt);
+
+        float totalManaUsageReduction = 0;
+
+        for (WandUpgradeItem.WandUpgrade upgrade : upgrades) {
+            if (upgrade.upgradeType == WandUpgradeItem.WandUpgradeType.manaUsageReduction) {
+                totalManaUsageReduction += upgrade.getValue();
+            }
+        }
+
+        return totalManaUsageReduction;
+    }
+
+    public static long getTotalManaCapacity(CompoundTag nbt) {
+        List<WandUpgradeItem.WandUpgrade> upgrades = getUpgrades(nbt);
+        CompoundTag coreTag = nbt.getCompound("core");
+        int coreLevel = coreTag.getInt("level");
+
+        long totalManaCapacity = baseStoredMana;
+
+        for (WandUpgradeItem.WandUpgrade upgrade : upgrades) {
+            if (upgrade.upgradeType == WandUpgradeItem.WandUpgradeType.manaCapacity) {
+                totalManaCapacity += upgrade.getValue();
+            }
+        }
+
+        return totalManaCapacity * Math.max(1, coreLevel);
+    }
+
+    public static int getTotalSlots(CompoundTag nbt) {
+        List<WandUpgradeItem.WandUpgrade> upgrades = getUpgrades(nbt);
+
+        int totalSlots = baseSlots;
+
+        for (WandUpgradeItem.WandUpgrade upgrade : upgrades) {
+            if (upgrade.upgradeType == WandUpgradeItem.WandUpgradeType.slot) {
+                totalSlots += upgrade.getValue();
+            }
+        }
+
+        return totalSlots;
+    }
+
+    public static void setCore(CompoundTag nbt, CompoundTag coreNbt) {
+        CompoundTag coreTag = nbt.getCompound("core");
+
+        WandCoreItem.WandCoreElement element = WandCoreItem.getElement(coreNbt);
+        int level = WandCoreItem.getLevel(coreNbt);
+
+        coreTag.putInt("element", element.getId());
+        coreTag.putInt("level", level);
+
+        nbt.put("core", coreTag);
+    }
+
+    public static void addUpgrade(CompoundTag nbt, WandUpgradeItem.WandUpgrade upgrade) {
+        CompoundTag manaTag = nbt.getCompound("mana");
+        List<WandUpgradeItem.WandUpgrade> upgrades = getUpgrades(nbt);
+        List<Tag> upgradesTags = new ArrayList<>();
+
+        upgrades.add(upgrade);
+
+        for (WandUpgradeItem.WandUpgrade upg : upgrades) {
+            CompoundTag tag = new CompoundTag();
+            upg.toNBT(tag);
+            upgradesTags.add(tag);
+        }
+
+        ListTag tag = new ListTag(upgradesTags, (byte) 10);
+
+        nbt.put("upgrades", tag);
+
+        nbt.putFloat("cooldownReduction", getTotalCooldownReduction(nbt));
+        nbt.putFloat("castTimeReduction", getTotalCastTimeReduction(nbt));
+        nbt.putFloat("manaUsageReduction", getTotalManaUsageReduction(nbt));
+        manaTag.putLong("maxStored", getTotalManaCapacity(nbt));
+        nbt.put("mana", manaTag);
+        nbt.putInt("totalSlots", getTotalSlots(nbt));
+    }
+
+    public static void setMana(CompoundTag nbt, long amount) {
+        CompoundTag manaTag = nbt.getCompound("mana");
+
+        manaTag.putLong("stored", amount);
+
+        nbt.put("mana", manaTag);
+    }
+
+    public static long receiveMana(CompoundTag nbt, long maxReceive, boolean simulate)
+    {
+        CompoundTag manaTag = nbt.getCompound("mana");
+        CompoundTag coreTag = nbt.getCompound("core");
+        int coreLevel = coreTag.getInt("level");
+        long manaStored = manaTag.getLong("stored");
+        long maxStored = manaTag.getLong("maxStored");
+
+        long manaReceived = Math.min(maxStored - manaStored, Math.min(Math.max(2048L, coreLevel * 2048L), maxReceive));
+        if (!simulate)
+            manaStored += manaReceived;
+
+        manaTag.putLong("stored", manaStored);
+        nbt.put("mana", manaTag);
+
+        return manaReceived;
+    }
+
+    public static long extractMana(CompoundTag nbt, long maxExtract, boolean simulate)
+    {
+        CompoundTag manaTag = nbt.getCompound("mana");
+        CompoundTag coreTag = nbt.getCompound("core");
+        int coreLevel = coreTag.getInt("level");
+        long manaStored = manaTag.getLong("stored");
+
+        long manaExtracted = Math.min(manaStored, Math.min(Math.max(2048L, coreLevel * 2048L), maxExtract));
+        if (!simulate)
+            manaStored -= manaExtracted;
+
+        manaTag.putLong("stored", manaStored);
+        nbt.put("mana", manaTag);
+
+        return manaExtracted;
+    }
+
+    public static List<WandUpgradeItem.WandUpgrade> getUpgrades(CompoundTag tag) {
+        ListTag upgradeTag = tag.getList("upgrades", 10);
+
+        List<WandUpgradeItem.WandUpgrade> upgrades = new ArrayList<>();
+
+        for (Tag nbt : upgradeTag) {
+            upgrades.add(WandUpgradeItem.WandUpgrade.fromNBT((CompoundTag) nbt));
+        }
+
+        return upgrades;
     }
 
     public static void savePartsToNbt(CompoundTag nbt, List<Model> wandParts) {

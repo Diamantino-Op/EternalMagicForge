@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.items;
 
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.utils.Rarity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -15,21 +16,23 @@ import java.util.List;
 import java.util.Random;
 
 public class WandUpgradeItem extends Item {
-    public WandUpgradeType upgradeType;
+    public final WandUpgradeType upgradeType;
+    public final float value;
 
-    public WandUpgradeItem(Properties pProperties, WandUpgradeType upgradeType) {
+    public WandUpgradeItem(Properties pProperties, WandUpgradeType upgradeType, float value) {
         super(pProperties);
 
         this.upgradeType = upgradeType;
+        this.value = value;
     }
 
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         WandUpgrade upgrade = getUpgrade(pStack);
 
-        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModReferences.modId + ".type", upgrade.upgradeType.getName()));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModReferences.modId + ".rarity", upgrade.rarity.getName()));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModReferences.modId + ".value", String.valueOf(upgrade.value)));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModReferences.modId + ".type", upgrade.upgradeType.getName()).withStyle(ChatFormatting.DARK_BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModReferences.modId + ".rarity", upgrade.rarity.getName()).withStyle(upgrade.rarity.color));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModReferences.modId + ".value", String.valueOf(upgrade.value)).withStyle(ChatFormatting.GREEN));
     }
 
     public static void rerollRarity(ItemStack stack) {
@@ -65,6 +68,7 @@ public class WandUpgradeItem extends Item {
     public static WandUpgrade getUpgrade(ItemStack stack) {
         WandUpgrade upgrade = WandUpgrade.fromNBT(stack.getOrCreateTag());
         upgrade.upgradeType = ((WandUpgradeItem) stack.getItem()).upgradeType;
+        upgrade.value = ((WandUpgradeItem) stack.getItem()).value;
 
         return upgrade;
     }
@@ -72,7 +76,7 @@ public class WandUpgradeItem extends Item {
     public static class WandUpgrade {
         public WandUpgradeType upgradeType;
         public Rarity rarity;
-        private final float value;
+        private float value;
 
         public WandUpgrade(WandUpgradeType type, Rarity rarity, float value) {
             this.upgradeType = type;
@@ -83,7 +87,7 @@ public class WandUpgradeItem extends Item {
         public float getValue() {
             float finalVal = value * rarity.multiplier;
 
-            if (upgradeType == WandUpgradeType.slot)
+            if (upgradeType == WandUpgradeType.slot || upgradeType == WandUpgradeType.manaCapacity)
                 return Math.round(finalVal);
 
             return finalVal;

@@ -57,7 +57,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             return switch (slot) {
-                case 0 -> stack.getCapability(ModCapabilities.mana).isPresent() && !(stack.getItem() instanceof WandItem);
+                case 0 -> stack.getOrCreateTag().contains("mana") && !(stack.getItem() instanceof WandItem);
                 case 1 -> stack.getItem() instanceof WandUpgradeItem;
                 case 2 -> stack.getItem() instanceof WandCoreItem;
                 case 3 -> stack.getItem() instanceof WandItem;
@@ -228,11 +228,15 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
             Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-    private static void extractMana(WandBenchBlockEntity blockEntity, int amount) {
+    private static void extractMana(WandBenchBlockEntity blockEntity, long amount) {
         blockEntity.manaStorage.extractMana(amount, false);
     }
 
-    private static boolean hasEnoughMana(WandBenchBlockEntity blockEntity, int requiredMana) {
+    private static void receiveMana(WandBenchBlockEntity blockEntity, long amount) {
+        blockEntity.manaStorage.receiveMana(amount, false);
+    }
+
+    private static boolean hasEnoughMana(WandBenchBlockEntity blockEntity, long requiredMana) {
         return blockEntity.manaStorage.getManaStored() >= requiredMana;
     }
 }
