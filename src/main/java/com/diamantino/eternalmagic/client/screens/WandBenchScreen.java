@@ -302,9 +302,17 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
         disableScissor();
 
+        renderProgressArrow(poseStack, x, y);
+
         searchBox.render(poseStack, mouseX, mouseY, partialTick);
 
         manaInfoArea.draw(poseStack, x, y);
+    }
+
+    private void renderProgressArrow(PoseStack pPoseStack, int x, int y) {
+        if(menu.isCrafting()) {
+            blit(pPoseStack, x + 150, y + 125, 122, 28, menu.getScaledProgress(), 16);
+        }
     }
 
     @Override

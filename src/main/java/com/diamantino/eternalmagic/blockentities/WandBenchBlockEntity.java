@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
+import com.diamantino.eternalmagic.api.mana.ItemStackManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.items.WandCoreItem;
@@ -25,9 +26,9 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
@@ -38,48 +39,68 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
+public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuProvider {
     private long requiredMana = 0;
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-
-            if(level != null && !level.isClientSide()) {
-                ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
-
-                if (slot == 3)
-                    ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(this.getStackInSlot(3), true));
-            }
-        }
-
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return switch (slot) {
-                case 0 -> stack.getOrCreateTag().contains("mana") && !(stack.getItem() instanceof WandItem);
-                case 1 -> stack.getItem() instanceof WandUpgradeItem;
-                case 2 -> stack.getItem() instanceof WandCoreItem;
-                case 3 -> stack.getItem() instanceof WandItem;
-                default -> super.isItemValid(slot, stack);
-            };
-        }
-    };
-
-    private final ModManaStorage manaStorage = new ModManaStorage(1000000, 1024) {
-        @Override
-        public void onManaChanged() {
-            setChanged();
-
-            ModMessages.sendToClients(new ManaSyncS2CPacket(this.mana, getBlockPos()));
-        }
-    };
+    private final ItemStackHandler itemHandler;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    private LazyOptional<IManaStorage> lazyManaHandler = LazyOptional.empty();
+
+    protected final ContainerData data;
+    private int progress = 0;
+    private int maxProgress = 78;
 
     public WandBenchBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntityTypes.wandBenchBlockEntity.get(), pos, state);
+        super(ModBlockEntityTypes.wandBenchBlockEntity.get(), pos, state, 1000000, 1024);
+
+        this.itemHandler = new ItemStackHandler(4) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                setChanged();
+
+                if(level != null && !level.isClientSide()) {
+                    ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
+
+                    if (slot == 3)
+                        ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(this.getStackInSlot(3), true));
+                }
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                return switch (slot) {
+                    case 0 -> stack.getCapability(ItemStackManaStorage.itemStackManaStorageCapability).isPresent() && !(stack.getItem() instanceof WandItem);
+                    case 1 -> stack.getItem() instanceof WandUpgradeItem;
+                    case 2 -> stack.getItem() instanceof WandCoreItem;
+                    case 3 -> stack.getItem() instanceof WandItem;
+                    default -> super.isItemValid(slot, stack);
+                };
+            }
+        };
+
+        this.data = new ContainerData() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> WandBenchBlockEntity.this.progress;
+                    case 1 -> WandBenchBlockEntity.this.maxProgress;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {
+                switch (index) {
+                    case 0 -> WandBenchBlockEntity.this.progress = value;
+                    case 1 -> WandBenchBlockEntity.this.maxProgress = value;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
     }
 
     @Override
@@ -119,16 +140,9 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory, @NotNull Player player) {
-        ModMessages.sendToClients(new ManaSyncS2CPacket(this.manaStorage.getManaStored(), getBlockPos()));
-        return new WandBenchMenu(id, inventory, this);
-    }
+        syncMana();
 
-    public IManaStorage getManaStorage() {
-        return manaStorage;
-    }
-
-    public void setManaLevel(long mana) {
-        this.manaStorage.setMana(mana);
+        return new WandBenchMenu(id, inventory, this, this.data);
     }
 
     public void setHandler(ItemStackHandler itemStackHandler) {
@@ -173,10 +187,14 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         ModMessages.sendToClients(new WandBenchWandSyncS2CPacket(stack, false));
     }
 
+    private void resetProgress() {
+        this.progress = 0;
+    }
+
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.put("manaStorage", manaStorage.serializeNBT());
+        nbt.putInt("progress", this.progress);
 
         super.saveAdditional(nbt);
     }
@@ -184,7 +202,7 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public void load(@NotNull CompoundTag nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        manaStorage.deserializeNBT(nbt.get("manaStorage"));
+        progress = nbt.getInt("progress");
 
         super.load(nbt);
     }
@@ -195,10 +213,6 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
             return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, lazyItemHandler);
         }
 
-        if (cap == ModCapabilities.mana) {
-            return ModCapabilities.mana.orEmpty(cap, lazyManaHandler);
-        }
-
         return super.getCapability(cap, side);
     }
 
@@ -207,7 +221,6 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         super.onLoad();
 
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
-        lazyManaHandler = LazyOptional.of(() -> manaStorage);
     }
 
     @Override
@@ -215,7 +228,6 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
         super.invalidateCaps();
 
         lazyItemHandler.invalidate();
-        lazyManaHandler.invalidate();
     }
 
     public void dropContent() {
@@ -226,17 +238,5 @@ public class WandBenchBlockEntity extends BlockEntity implements MenuProvider {
 
         if (this.level != null)
             Containers.dropContents(this.level, this.worldPosition, inventory);
-    }
-
-    private static void extractMana(WandBenchBlockEntity blockEntity, long amount) {
-        blockEntity.manaStorage.extractMana(amount, false);
-    }
-
-    private static void receiveMana(WandBenchBlockEntity blockEntity, long amount) {
-        blockEntity.manaStorage.receiveMana(amount, false);
-    }
-
-    private static boolean hasEnoughMana(WandBenchBlockEntity blockEntity, long requiredMana) {
-        return blockEntity.manaStorage.getManaStored() >= requiredMana;
     }
 }

@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.datagen;
 
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.items.WandCoreItem;
+import com.diamantino.eternalmagic.items.WandUpgradeItem;
 import com.diamantino.eternalmagic.registration.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +25,10 @@ public class EMItemModelProvider extends ItemModelProvider {
         for (RegistryObject<WandCoreItem> item : ModItems.wandCores.values()) {
             wandCore(item.get(), new ResourceLocation(ModReferences.modId, "item/wand_core_base"));
         }
+
+        for (RegistryObject<WandUpgradeItem> item : ModItems.wandUpgrades.values()) {
+            wandUpgrade(item.get());
+        }
     }
 
     public void wandCore(Item item, ResourceLocation parent)
@@ -34,5 +39,13 @@ public class EMItemModelProvider extends ItemModelProvider {
                 .texture("particle", new ResourceLocation(itemLoc.getNamespace(), "item/wand_cores/" + itemLoc.getPath() + "_center"))
                 .texture("wand_core_internal", new ResourceLocation(itemLoc.getNamespace(), "item/wand_cores/" + itemLoc.getPath() + "_center"))
                 .texture("wand_core_external", new ResourceLocation(itemLoc.getNamespace(), "item/wand_cores/" + itemLoc.getPath() + "_external"));
+    }
+
+    public void wandUpgrade(Item item)
+    {
+        ResourceLocation itemLoc = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+
+        getBuilder(item.toString()).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", new ResourceLocation(itemLoc.getNamespace(), "item/upgrades/" + itemLoc.getPath()));
     }
 }

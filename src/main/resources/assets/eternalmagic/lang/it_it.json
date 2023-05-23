@@ -1,7 +1,7 @@
 {
-  "menu.eternalmagic.wand_bench": "Banco Per Bacchetta",
+  "menu.eternalmagic.wand_bench": "Banco Delle Bacchette",
 
-  "block.eternalmagic.wand_bench": "Banco Per Bacchetta",
+  "block.eternalmagic.wand_bench": "Banco Delle Bacchette",
 
   "item.eternalmagic.wand": "Bacchetta",
   "item.eternalmagic.wand_earth_core": "Nucleo Di Terra Della Bacchetta",
@@ -13,7 +13,13 @@
   "item.eternalmagic.wand_light_core": "Nucleo Di Luce Della Bacchetta",
   "item.eternalmagic.wand_ice_core": "Nucleo Di Ghiaccio Della Bacchetta",
   "item.eternalmagic.wand_magma_core": "Nucleo Di Magma Della Bacchetta",
-  "item.eternalmagic.wand_infinity_core": "Nucleo Dell'Infinito Della Bacchetta",
+  "item.eternalmagic.wand_infinity_core": "Nucleo Dell'Infinito Della Bacchetta",,
+  "item.eternalmagic.blank_upgrade": "Potenziamento Vuoto",
+  "item.eternalmagic.wand_cooldown_reduction_upgrade": "Potenziamento Riduzione Tempo di Recupero Della Bacchetta",
+  "item.eternalmagic.wand_cast_time_reduction_upgrade": "Potenziamento Riduzione Tempo di Lancio Della Bacchetta",
+  "item.eternalmagic.wand_mana_usage_reduction_upgrade": "Potenziamento Riduzione Consumo Mana Della Bacchetta",
+  "item.eternalmagic.wand_mana_capacity_upgrade": "Potenziamento Capacità Mana Della Bacchetta",
+  "item.eternalmagic.wand_slot_upgrade": "Potenziamento Slot Della Bacchetta",
 
   "itemGroup.eternalmagic.functional_blocks": "Eternal Magic - Blocchi Funzionali",
   "itemGroup.eternalmagic.decorative_blocks": "Eternal Magic - Blocchi Decorativi",
@@ -26,7 +32,7 @@
   "tooltip.wand_item.eternalmagic.spell_slots": "Posti Incantesimo: %d/%d",
   "tooltip.wand_item.eternalmagic.cooldown_reduction": "Riduzione Tempo Di Recupero: %s",
   "tooltip.wand_item.eternalmagic.cast_time_reduction": "Riduzione Tempo Di Lancio: %s",
-  "tooltip.wand_item.eternalmagic.mana_usage_reduction": "Riduzione Uso Mana: %s",
+  "tooltip.wand_item.eternalmagic.mana_usage_reduction": "Riduzione Consumo Mana: %s",
   "tooltip.wand_core_item.eternalmagic.element": "Elemento: %s",
   "tooltip.wand_core_item.eternalmagic.level": "Livello: %s",
   "tooltip.wand_upgrade.eternalmagic.type": "Tipo: %s",
@@ -53,9 +59,9 @@
   "rarity.eternalmagic.mythic": "Mitico",
   
   "upgrade.wand.eternalmagic.none": "Nessuno",
-  "upgrade.wand.eternalmagic.cooldown_reduction": "Riduzione Tempo Di Recupero",
-  "upgrade.wand.eternalmagic.cast_time_reduction": "Riduzione Tempo Di Lancio",
-  "upgrade.wand.eternalmagic.mana_usage_reduction": "Riduzione Uso Di Mana",
+  "upgrade.wand.eternalmagic.cooldown_reduction": "Riduzione Tempo di Recupero",
+  "upgrade.wand.eternalmagic.cast_time_reduction": "Riduzione Tempo di Lancio",
+  "upgrade.wand.eternalmagic.mana_usage_reduction": "Riduzione Consumo Mana",
   "upgrade.wand.eternalmagic.mana_capacity": "Capacità Mana",
-  "upgrade.wand.eternalmagic.slot": "Posto"
+  "upgrade.wand.eternalmagic.slot": "Slot"
 }

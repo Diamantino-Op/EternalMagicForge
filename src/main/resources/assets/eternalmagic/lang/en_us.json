@@ -14,6 +14,12 @@
   "item.eternalmagic.wand_ice_core": "Wand Ice Core",
   "item.eternalmagic.wand_magma_core": "Wand Magma Core",
   "item.eternalmagic.wand_infinity_core": "Wand Infinity Core",
+  "item.eternalmagic.blank_upgrade": "Blank Upgrade",
+  "item.eternalmagic.wand_cooldown_reduction_upgrade": "Wand Cooldown Reduction Upgrade",
+  "item.eternalmagic.wand_cast_time_reduction_upgrade": "Wand Cast Time Reduction Upgrade",
+  "item.eternalmagic.wand_mana_usage_reduction_upgrade": "Wand Mana Usage Reduction Upgrade",
+  "item.eternalmagic.wand_mana_capacity_upgrade": "Wand Mana Capacity Upgrade",
+  "item.eternalmagic.wand_slot_upgrade": "Wand Slot Upgrade",
 
   "itemGroup.eternalmagic.functional_blocks": "Eternal Magic - Functional Blocks",
   "itemGroup.eternalmagic.decorative_blocks": "Eternal Magic - Decorative Blocks",

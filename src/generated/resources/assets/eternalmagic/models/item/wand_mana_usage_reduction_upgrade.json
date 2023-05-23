@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "eternalmagic:item/upgrades/wand_mana_usage_reduction_upgrade"
+  }
+}

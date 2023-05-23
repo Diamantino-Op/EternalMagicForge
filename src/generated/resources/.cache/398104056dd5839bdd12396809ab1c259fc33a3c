@@ -1,5 +1,7 @@
-// 1.19.4	2023-05-21T16:05:23.2366279	Item Models: eternalmagic
+// 1.19.4	2023-05-23T15:15:54.568657	Item Models: eternalmagic
 806ba935217e2722062bf8d3b68b320e17be0afd assets/eternalmagic/models/item/wand_air_core.json
+9c471c44c743bb60640083094ad9ad41141c196a assets/eternalmagic/models/item/wand_cast_time_reduction_upgrade.json
+628d624b4031cad19f92b2a1e670b8ca9d6b9821 assets/eternalmagic/models/item/wand_cooldown_reduction_upgrade.json
 149e2d0aef32713a5ba96e0edac9504cfd30fb2d assets/eternalmagic/models/item/wand_darkness_core.json
 4dbf3f3b260931a0174a129025ec3a0c6c1bad1d assets/eternalmagic/models/item/wand_earth_core.json
 23d2ceaab518406e1f9d0ee8e888a789a449fec9 assets/eternalmagic/models/item/wand_electricity_core.json
@@ -8,4 +10,7 @@ e2be3a7c6f2cb293247974b4c4691c97a752eb95 assets/eternalmagic/models/item/wand_fi
 570049ee52ba598b70037c04b455669b40a6fbf4 assets/eternalmagic/models/item/wand_infinity_core.json
 eb373fc89a831e59853b6bfc27c2ad4b40edff59 assets/eternalmagic/models/item/wand_light_core.json
 894747eaeeb8b64556fdd887ce02b0ea728d7a65 assets/eternalmagic/models/item/wand_magma_core.json
+37bd61c2fb0dc1cb2fa3fb9fb8669cf6684e518b assets/eternalmagic/models/item/wand_mana_capacity_upgrade.json
+37a5c7ebac7622a34b1e073591757a4f0bb15b8e assets/eternalmagic/models/item/wand_mana_usage_reduction_upgrade.json
+9948f500949c40cc0d89009c5caa62980c1dfc96 assets/eternalmagic/models/item/wand_slot_upgrade.json
 c06b1e2c982c96296c715350eca1a3a4f9022315 assets/eternalmagic/models/item/wand_water_core.json

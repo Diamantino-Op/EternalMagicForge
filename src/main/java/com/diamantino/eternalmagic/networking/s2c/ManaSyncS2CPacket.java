@@ -1,7 +1,6 @@
 package com.diamantino.eternalmagic.networking.s2c;
 
-import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
-import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
+import com.diamantino.eternalmagic.blockentities.ManaBlockEntityBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,7 +31,7 @@ public class ManaSyncS2CPacket {
         NetworkEvent.Context context = supplier.get();
 
         context.enqueueWork(() -> {
-            if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) instanceof WandBenchBlockEntity blockEntity) {
+            if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) instanceof ManaBlockEntityBase blockEntity) {
                 blockEntity.setManaLevel(mana);
             }
         });

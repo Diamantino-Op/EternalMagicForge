@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.items;
 
 import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.api.mana.ItemStackManaStorage;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.utils.TextUtils;
 import net.minecraft.ChatFormatting;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -22,12 +24,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WandItem extends Item {
-    public static long baseStoredMana = 10000;
+public class WandItem extends ManaItemBase {
     public static int baseSlots = 4;
 
     public WandItem(Properties properties) {
-        super(properties);
+        super(properties, 10000, 1000000);
     }
 
     @Override
@@ -36,19 +37,13 @@ public class WandItem extends Item {
     }
 
     @Override
-    public @Nullable CompoundTag getShareTag(ItemStack stack) {
-        return super.getShareTag(stack);
-    }
-
-    @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         CompoundTag tag = pStack.getOrCreateTag();
-        CompoundTag manaTag = tag.getCompound("mana");
         CompoundTag spellsTag = tag.getCompound("spells");
         CompoundTag coreTag = tag.getCompound("core");
 
-        long storedMana = manaTag.getLong("stored");
-        long maxStoredMana = manaTag.getLong("maxStored");
+        long storedMana = getManaLevel(pStack);
+        long maxStoredMana = getCapacity(pStack);
         float manaUsageReduction = tag.getFloat("manaUsageReduction");
         String coreElement = WandCoreItem.WandCoreElement.fromId(coreTag.getInt("element")).getName();
         int coreLevel = coreTag.getInt("level");
@@ -150,8 +145,8 @@ public class WandItem extends Item {
         nbt.put("core", coreTag);
     }
 
-    public static void addUpgrade(CompoundTag nbt, WandUpgradeItem.WandUpgrade upgrade) {
-        CompoundTag manaTag = nbt.getCompound("mana");
+    public static void addUpgrade(ItemStack stack, WandUpgradeItem.WandUpgrade upgrade) {
+        CompoundTag nbt = stack.getOrCreateTag();
         List<WandUpgradeItem.WandUpgrade> upgrades = getUpgrades(nbt);
         List<Tag> upgradesTags = new ArrayList<>();
 
@@ -170,52 +165,8 @@ public class WandItem extends Item {
         nbt.putFloat("cooldownReduction", getTotalCooldownReduction(nbt));
         nbt.putFloat("castTimeReduction", getTotalCastTimeReduction(nbt));
         nbt.putFloat("manaUsageReduction", getTotalManaUsageReduction(nbt));
-        manaTag.putLong("maxStored", getTotalManaCapacity(nbt));
-        nbt.put("mana", manaTag);
+        setCapacity(stack, getTotalManaCapacity(nbt));
         nbt.putInt("totalSlots", getTotalSlots(nbt));
-    }
-
-    public static void setMana(CompoundTag nbt, long amount) {
-        CompoundTag manaTag = nbt.getCompound("mana");
-
-        manaTag.putLong("stored", amount);
-
-        nbt.put("mana", manaTag);
-    }
-
-    public static long receiveMana(CompoundTag nbt, long maxReceive, boolean simulate)
-    {
-        CompoundTag manaTag = nbt.getCompound("mana");
-        CompoundTag coreTag = nbt.getCompound("core");
-        int coreLevel = coreTag.getInt("level");
-        long manaStored = manaTag.getLong("stored");
-        long maxStored = manaTag.getLong("maxStored");
-
-        long manaReceived = Math.min(maxStored - manaStored, Math.min(Math.max(2048L, coreLevel * 2048L), maxReceive));
-        if (!simulate)
-            manaStored += manaReceived;
-
-        manaTag.putLong("stored", manaStored);
-        nbt.put("mana", manaTag);
-
-        return manaReceived;
-    }
-
-    public static long extractMana(CompoundTag nbt, long maxExtract, boolean simulate)
-    {
-        CompoundTag manaTag = nbt.getCompound("mana");
-        CompoundTag coreTag = nbt.getCompound("core");
-        int coreLevel = coreTag.getInt("level");
-        long manaStored = manaTag.getLong("stored");
-
-        long manaExtracted = Math.min(manaStored, Math.min(Math.max(2048L, coreLevel * 2048L), maxExtract));
-        if (!simulate)
-            manaStored -= manaExtracted;
-
-        manaTag.putLong("stored", manaStored);
-        nbt.put("mana", manaTag);
-
-        return manaExtracted;
     }
 
     public static List<WandUpgradeItem.WandUpgrade> getUpgrades(CompoundTag tag) {

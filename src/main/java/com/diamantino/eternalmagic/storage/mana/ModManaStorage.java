@@ -7,8 +7,12 @@ public abstract class ModManaStorage extends ManaStorage {
         super(capacity, maxTransfer, maxTransfer);
     }
 
-    public ModManaStorage(long capacity, long maxTransfer, long mana) {
-        super(capacity, maxTransfer, maxTransfer, mana);
+    public ModManaStorage(long capacity, long maxReceive, long maxExtract) {
+        super(capacity, maxReceive, maxExtract);
+    }
+
+    public ModManaStorage(long capacity, long maxReceive, long maxExtract, long mana) {
+        super(capacity, maxReceive, maxExtract, mana);
     }
 
     @Override

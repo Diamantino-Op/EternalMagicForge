@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "eternalmagic:item/upgrades/wand_cast_time_reduction_upgrade"
+  }
+}

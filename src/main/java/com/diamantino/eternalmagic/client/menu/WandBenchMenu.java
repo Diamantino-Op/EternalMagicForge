@@ -27,15 +27,17 @@ public class WandBenchMenu extends AbstractContainerMenu {
     private final Level level;
 
     private int selectedModelId;
+    private final ContainerData data;
     private String selectedModelToAddId;
 
     public WandBenchMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
-    public WandBenchMenu(int id, Inventory inv, BlockEntity entity) {
+    public WandBenchMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.wandBenchMenu.get(), id);
         checkContainerSize(inv, 4);
+        this.data = data;
         blockEntity = (WandBenchBlockEntity) entity;
         this.level = inv.player.level;
 
@@ -51,6 +53,20 @@ public class WandBenchMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, 2, 126, 125));
             this.addSlot(new EMSlot(handler, 3, 180, 125, this));
         });
+
+        addDataSlots(data);
+    }
+
+    public boolean isCrafting() {
+        return data.get(0) > 0;
+    }
+
+    public int getScaledProgress() {
+        int progress = this.data.get(0);
+        int maxProgress = this.data.get(1);
+        int progressArrowSize = 22;
+
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
     @Override
