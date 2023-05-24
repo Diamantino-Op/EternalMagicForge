@@ -125,6 +125,10 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, WandBenchBlockEntity blockEntity) {
+        if(level.isClientSide()) {
+            return;
+        }
+
         if (hasItemInSlot(blockEntity, 0))
             transferManaToTank(blockEntity);
 
