@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "eternalmagic:block/mana_stone_slab",
+    "side": "eternalmagic:block/mana_stone_slab",
+    "top": "eternalmagic:block/mana_stone_slab"
+  }
+}

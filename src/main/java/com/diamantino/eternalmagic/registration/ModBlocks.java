@@ -34,11 +34,14 @@ public class ModBlocks {
     public static final RegistryObject<WandBenchBlock> wandBenchBlock = registerFunctionalBlock("wand_bench", false, () -> new WandBenchBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F, 6F).lightLevel(state -> 15).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(ModBlocks::never).isRedstoneConductor(ModBlocks::never).isSuffocating(ModBlocks::never).isViewBlocking(ModBlocks::never)));
 
     private static void registerSimpleDecorativeBlocksSet(String regName, Material material, float destroyTime, float explosionResistance) {
-        RegistryObject<Block> block = registerDecorativeBlock(regName + "_block", true, () -> new Block(BlockBehaviour.Properties.of(material).strength(destroyTime, explosionResistance).requiresCorrectToolForDrops()));
+        RegistryObject<Block> block = registerDecorativeBlock(regName, true, () -> new Block(BlockBehaviour.Properties.of(material).strength(destroyTime, explosionResistance).requiresCorrectToolForDrops()));
         registerDecorativeBlock(regName + "_bricks", true, () -> new Block(BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_bricks_slab", true, () -> new SlabBlock(BlockBehaviour.Properties.copy(block.get())));
         registerDecorativeBlock(regName + "_slab", true, () -> new SlabBlock(BlockBehaviour.Properties.copy(block.get())));
         registerDecorativeBlock(regName + "_pillar", true, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_bricks_stairs", true, () -> new StairBlock(() -> block.get().defaultBlockState(), BlockBehaviour.Properties.copy(block.get())));
         registerDecorativeBlock(regName + "_stairs", true, () -> new StairBlock(() -> block.get().defaultBlockState(), BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_bricks_wall", true, () -> new WallBlock(BlockBehaviour.Properties.copy(block.get())));
         registerDecorativeBlock(regName + "_wall", true, () -> new WallBlock(BlockBehaviour.Properties.copy(block.get())));
     }
 

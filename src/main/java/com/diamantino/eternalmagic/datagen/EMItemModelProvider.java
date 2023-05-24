@@ -8,7 +8,7 @@ import com.diamantino.eternalmagic.registration.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -37,7 +37,11 @@ public class EMItemModelProvider extends ItemModelProvider {
         }
 
         for (RegistryObject<? extends Block> block : ModBlocks.decorativeBlocks) {
-            this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath()));
+            if (block.getId().getPath().contains("_wall")) {
+                this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath() + "_post"));
+            } else {
+                this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath()));
+            }
         }
 
         for (RegistryObject<? extends Block> block : ModBlocks.resourcesBlocks) {

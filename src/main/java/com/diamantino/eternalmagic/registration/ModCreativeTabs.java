@@ -20,7 +20,7 @@ public class ModCreativeTabs {
     @SubscribeEvent
     public static void registerCreativeModeTabs(CreativeModeTabEvent.Register event) {
         functionalBlocksTab = event.registerCreativeModeTab(new ResourceLocation(ModReferences.modId, "functional_blocks_tab"), builder -> builder.icon(() -> new ItemStack(ModBlocks.wandBenchBlock.get())).title(Component.translatable("itemGroup." + ModReferences.modId + ".functional_blocks")).build());
-        decorativeBlocksTab = event.registerCreativeModeTab(new ResourceLocation(ModReferences.modId, "decorative_blocks_tab"), builder -> builder.icon(() -> new ItemStack(Blocks.IRON_BLOCK)).title(Component.translatable("itemGroup." + ModReferences.modId + ".decorative_blocks")).build());
+        decorativeBlocksTab = event.registerCreativeModeTab(new ResourceLocation(ModReferences.modId, "decorative_blocks_tab"), builder -> builder.icon(() -> new ItemStack(ModBlocks.decorativeBlocks.get(0).get())).title(Component.translatable("itemGroup." + ModReferences.modId + ".decorative_blocks")).build());
         itemsTab = event.registerCreativeModeTab(new ResourceLocation(ModReferences.modId, "items_tab"), builder -> builder.icon(() -> new ItemStack(ModItems.wandItem.get())).title(Component.translatable("itemGroup." + ModReferences.modId + ".items")).build());
         resourcesTab = event.registerCreativeModeTab(new ResourceLocation(ModReferences.modId, "resources_tab"), builder -> builder.icon(() -> new ItemStack(Blocks.IRON_ORE)).title(Component.translatable("itemGroup." + ModReferences.modId + ".resources")).build());
     }
