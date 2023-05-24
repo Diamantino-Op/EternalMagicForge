@@ -85,12 +85,16 @@ public class WandUpgradeItem extends Item {
         }
 
         public float getValue() {
-            float finalVal = value * rarity.multiplier;
+            if (upgradeType == WandUpgradeType.slot) {
+                return rarity.id;
+            } else {
+                float finalVal = value * rarity.multiplier;
 
-            if (upgradeType == WandUpgradeType.slot || upgradeType == WandUpgradeType.manaCapacity)
-                return Math.round(finalVal);
+                if (upgradeType == WandUpgradeType.manaCapacity)
+                    return Math.round(finalVal);
 
-            return finalVal;
+                return finalVal;
+            }
         }
 
         public void toNBT(CompoundTag tag) {

@@ -133,16 +133,30 @@ public class WandItem extends ManaItemBase {
         return totalSlots;
     }
 
-    public static void setCore(CompoundTag nbt, CompoundTag coreNbt) {
+    public static void setCore(ItemStack stack, CompoundTag coreNbt) {
+        CompoundTag nbt = stack.getOrCreateTag();
         CompoundTag coreTag = nbt.getCompound("core");
 
-        WandCoreItem.WandCoreElement element = WandCoreItem.getElement(coreNbt);
+        WandCoreItem.WandCoreElement element = ((WandCoreItem) stack.getItem()).getElement();
         int level = WandCoreItem.getLevel(coreNbt);
 
         coreTag.putInt("element", element.getId());
         coreTag.putInt("level", level);
 
         nbt.put("core", coreTag);
+    }
+
+    public static boolean canAddUpgrade(CompoundTag nbt, WandUpgradeItem.WandUpgradeType upgradeType) {
+        List<WandUpgradeItem.WandUpgrade> upgrades = getUpgrades(nbt);
+
+        int upgradeAmount = 0;
+
+        for (WandUpgradeItem.WandUpgrade upgrade : upgrades) {
+            if (upgrade.upgradeType == upgradeType)
+                upgradeAmount++;
+        }
+
+        return upgradeAmount < 16;
     }
 
     public static void addUpgrade(ItemStack stack, WandUpgradeItem.WandUpgrade upgrade) {

@@ -44,7 +44,7 @@ public class ModItems {
             if (upgrade == WandUpgradeItem.WandUpgradeType.none)
                 continue;
 
-            RegistryObject<WandUpgradeItem> item = modItems.register("wand_" + upgrade.regName + "_upgrade", () -> new WandUpgradeItem(new Item.Properties().stacksTo(1), upgrade, 5));
+            RegistryObject<WandUpgradeItem> item = modItems.register("wand_" + upgrade.regName + "_upgrade", () -> new WandUpgradeItem(new Item.Properties().stacksTo(16), upgrade, 5));
             wandUpgrades.put(upgrade, item);
             items.add(item);
         }

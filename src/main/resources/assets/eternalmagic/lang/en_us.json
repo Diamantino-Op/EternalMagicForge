@@ -39,6 +39,8 @@
   "tooltip.wand_upgrade.eternalmagic.rarity": "Rarity: %s",
   "tooltip.wand_upgrade.eternalmagic.value": "Value: %s",
   
+  "screen.eternalmagic.wand_bench.required_mana": "Required: %s/t",
+  
   "element.eternalmagic.none": "None",
   "element.eternalmagic.earth": "Earth",
   "element.eternalmagic.air": "Air",

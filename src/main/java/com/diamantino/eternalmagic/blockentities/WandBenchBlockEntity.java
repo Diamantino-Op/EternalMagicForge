@@ -1,7 +1,6 @@
 package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.ModReferences;
-import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.api.mana.ItemStackManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.model.Model;
@@ -9,13 +8,10 @@ import com.diamantino.eternalmagic.items.WandCoreItem;
 import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.items.WandUpgradeItem;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
-import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.RequiredManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.WandBenchWandSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
-import com.diamantino.eternalmagic.registration.ModCapabilities;
 import com.diamantino.eternalmagic.registration.ModMessages;
-import com.diamantino.eternalmagic.storage.mana.ModManaStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -48,7 +44,7 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
 
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 78;
+    private int maxProgress = 600;
 
     public WandBenchBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntityTypes.wandBenchBlockEntity.get(), pos, state, 1000000, 1024);
@@ -129,7 +125,62 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, WandBenchBlockEntity blockEntity) {
+        if (hasItemInSlot(blockEntity, 0))
+            transferManaToTank(blockEntity);
 
+        ItemStack upgradeStack = getItemInSlot(blockEntity, 1);
+        ItemStack coreStack = getItemInSlot(blockEntity, 2);
+        ItemStack wandStack = getItemInSlot(blockEntity, 3);
+
+        if (hasItemInSlot(blockEntity, 1) && hasItemInSlot(blockEntity, 3) && WandItem.canAddUpgrade(wandStack.getOrCreateTag(), WandUpgradeItem.getUpgrade(upgradeStack).upgradeType)) {
+            WandUpgradeItem.WandUpgrade upgrade = WandUpgradeItem.getUpgrade(upgradeStack);
+            long requiredMana = upgrade.rarity.id * 100L;
+            blockEntity.changeRequiredMana(requiredMana);
+
+            if (hasEnoughMana(blockEntity, requiredMana)) {
+                blockEntity.progress++;
+                extractMana(blockEntity, requiredMana, false);
+                setChanged(level, pos, state);
+
+                if(blockEntity.progress >= blockEntity.maxProgress) {
+                    WandItem.addUpgrade(wandStack, upgrade);
+                }
+            }
+        } else if (hasItemInSlot(blockEntity, 2) && hasItemInSlot(blockEntity, 3)) {
+            WandCoreItem.WandCoreElement coreElement = ((WandCoreItem) coreStack.getItem()).getElement();
+            long requiredMana = (Math.max(WandCoreItem.getLevel(coreStack.getOrCreateTag()), 1) * 1000L) * (coreElement == WandCoreItem.WandCoreElement.infinity ? 10 : 1);
+            blockEntity.changeRequiredMana(requiredMana);
+
+            if (hasEnoughMana(blockEntity, requiredMana)) {
+                blockEntity.progress++;
+                extractMana(blockEntity, requiredMana, false);
+                setChanged(level, pos, state);
+
+                if(blockEntity.progress >= blockEntity.maxProgress) {
+                    WandItem.setCore(wandStack, coreStack.getOrCreateTag());
+                }
+            }
+        } else {
+            blockEntity.resetProgress();
+            blockEntity.changeRequiredMana(0);
+            setChanged(level, pos, state);
+        }
+    }
+
+    public static void transferManaToTank(WandBenchBlockEntity blockEntity) {
+        blockEntity.itemHandler.getStackInSlot(0).getCapability(ItemStackManaStorage.itemStackManaStorageCapability).ifPresent(itemStackManaStorage -> {
+            long manaExtract = itemStackManaStorage.extractMana(blockEntity.manaStorage.getMaxManaStored() - blockEntity.manaStorage.getManaStored(), false);
+
+            receiveMana(blockEntity, manaExtract, false);
+        });
+    }
+
+    public static boolean hasItemInSlot(WandBenchBlockEntity blockEntity, int slot) {
+        return !blockEntity.itemHandler.getStackInSlot(slot).isEmpty();
+    }
+
+    public static ItemStack getItemInSlot(WandBenchBlockEntity blockEntity, int slot) {
+        return blockEntity.itemHandler.getStackInSlot(slot);
     }
 
     @Override

@@ -80,10 +80,18 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
         return this.maxExtract > 0;
     }
 
+    public long getMaxExtract() {
+        return maxExtract;
+    }
+
     @Override
     public boolean canReceive()
     {
         return this.maxReceive > 0;
+    }
+
+    public long getMaxReceive() {
+        return maxReceive;
     }
 
     @Override

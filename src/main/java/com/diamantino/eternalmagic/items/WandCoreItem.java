@@ -54,10 +54,6 @@ public class WandCoreItem extends Item {
         return nbt.getInt("level");
     }
 
-    public static WandCoreElement getElement(CompoundTag nbt) {
-        return WandCoreItem.WandCoreElement.fromId(nbt.getInt("element"));
-    }
-
     public WandCoreElement getElement() {
         return element;
     }
