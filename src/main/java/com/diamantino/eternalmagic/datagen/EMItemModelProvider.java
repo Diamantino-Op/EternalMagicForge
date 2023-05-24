@@ -3,10 +3,12 @@ package com.diamantino.eternalmagic.datagen;
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.items.WandCoreItem;
 import com.diamantino.eternalmagic.items.WandUpgradeItem;
+import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.diamantino.eternalmagic.registration.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -28,6 +30,18 @@ public class EMItemModelProvider extends ItemModelProvider {
 
         for (RegistryObject<WandUpgradeItem> item : ModItems.wandUpgrades.values()) {
             wandUpgrade(item.get());
+        }
+
+        for (RegistryObject<? extends Block> block : ModBlocks.functionalBlocks) {
+            this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath()));
+        }
+
+        for (RegistryObject<? extends Block> block : ModBlocks.decorativeBlocks) {
+            this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath()));
+        }
+
+        for (RegistryObject<? extends Block> block : ModBlocks.resourcesBlocks) {
+            this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath()));
         }
     }
 

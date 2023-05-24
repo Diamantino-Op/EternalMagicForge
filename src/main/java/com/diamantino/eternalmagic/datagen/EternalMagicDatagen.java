@@ -20,6 +20,7 @@ public class EternalMagicDatagen {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
+        generator.addProvider(event.includeClient(), new EMBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new EMItemModelProvider(packOutput, existingFileHelper));
     }
 }

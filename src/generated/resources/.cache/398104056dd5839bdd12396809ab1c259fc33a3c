@@ -1,5 +1,12 @@
-// 1.19.4	2023-05-23T15:15:54.568657	Item Models: eternalmagic
+// 1.19.4	2023-05-24T20:51:12.727173	Item Models: eternalmagic
+ab2f8f7d5e8397e129f84a4bff5e969d1a0df5dc assets/eternalmagic/models/item/mana_stone_block.json
+510255a6735ed69d99a4451db56e395937af8a49 assets/eternalmagic/models/item/mana_stone_bricks.json
+4fa10c01468274705abd13963a65d87fda01ae9b assets/eternalmagic/models/item/mana_stone_pillar.json
+cc592b8f19a3a21e6a6c00c0f31f93ca451e980c assets/eternalmagic/models/item/mana_stone_slab.json
+0a85d77fccafab10bea2f0b9c72f3483d65ae58c assets/eternalmagic/models/item/mana_stone_stairs.json
+9f989446d7a9794d52899402769c71c04bbe56e4 assets/eternalmagic/models/item/mana_stone_wall.json
 806ba935217e2722062bf8d3b68b320e17be0afd assets/eternalmagic/models/item/wand_air_core.json
+98f5f01c823ab92e209157f3ed7ad7f2b256d34c assets/eternalmagic/models/item/wand_bench.json
 9c471c44c743bb60640083094ad9ad41141c196a assets/eternalmagic/models/item/wand_cast_time_reduction_upgrade.json
 628d624b4031cad19f92b2a1e670b8ca9d6b9821 assets/eternalmagic/models/item/wand_cooldown_reduction_upgrade.json
 149e2d0aef32713a5ba96e0edac9504cfd30fb2d assets/eternalmagic/models/item/wand_darkness_core.json
