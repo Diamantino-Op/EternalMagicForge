@@ -3,6 +3,7 @@ package com.diamantino.eternalmagic.registration;
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.blocks.WandBenchBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -17,7 +18,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings("UnusedReturnValue")
@@ -31,44 +34,56 @@ public class ModBlocks {
 
     public static final List<RegistryObject<? extends Block>> simpleBlocks = new ArrayList<>();
 
-    public static final RegistryObject<WandBenchBlock> wandBenchBlock = registerFunctionalBlock("wand_bench", false, () -> new WandBenchBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F, 6F).lightLevel(state -> 15).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(ModBlocks::never).isRedstoneConductor(ModBlocks::never).isSuffocating(ModBlocks::never).isViewBlocking(ModBlocks::never)));
+    public static final Map<ResourceLocation, MineTool> mineToolMap = new LinkedHashMap<>();
+    public static final Map<ResourceLocation, MineLevel> mineLevelMap = new LinkedHashMap<>();
 
-    private static void registerSimpleDecorativeBlocksSet(String regName, Material material, float destroyTime, float explosionResistance) {
-        RegistryObject<Block> block = registerDecorativeBlock(regName, true, () -> new Block(BlockBehaviour.Properties.of(material).strength(destroyTime, explosionResistance).requiresCorrectToolForDrops()));
-        registerDecorativeBlock(regName + "_bricks", true, () -> new Block(BlockBehaviour.Properties.copy(block.get())));
-        registerDecorativeBlock(regName + "_bricks_slab", true, () -> new SlabBlock(BlockBehaviour.Properties.copy(block.get())));
-        registerDecorativeBlock(regName + "_slab", true, () -> new SlabBlock(BlockBehaviour.Properties.copy(block.get())));
-        registerDecorativeBlock(regName + "_pillar", true, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(block.get())));
-        registerDecorativeBlock(regName + "_bricks_stairs", true, () -> new StairBlock(() -> block.get().defaultBlockState(), BlockBehaviour.Properties.copy(block.get())));
-        registerDecorativeBlock(regName + "_stairs", true, () -> new StairBlock(() -> block.get().defaultBlockState(), BlockBehaviour.Properties.copy(block.get())));
-        registerDecorativeBlock(regName + "_bricks_wall", true, () -> new WallBlock(BlockBehaviour.Properties.copy(block.get())));
-        registerDecorativeBlock(regName + "_wall", true, () -> new WallBlock(BlockBehaviour.Properties.copy(block.get())));
+    public static final RegistryObject<WandBenchBlock> wandBenchBlock = registerFunctionalBlock("wand_bench", false, MineTool.pickaxe, MineLevel.wood, () -> new WandBenchBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F, 6F).lightLevel(state -> 15).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(ModBlocks::never).isRedstoneConductor(ModBlocks::never).isSuffocating(ModBlocks::never).isViewBlocking(ModBlocks::never)));
+
+    private static void registerSimpleDecorativeBlocksSet(String regName, MineTool tool, MineLevel mineLevel, Material material, float destroyTime, float explosionResistance) {
+        RegistryObject<Block> block = registerDecorativeBlock(regName, true, tool, mineLevel, () -> new Block(BlockBehaviour.Properties.of(material).strength(destroyTime, explosionResistance).requiresCorrectToolForDrops()));
+        registerDecorativeBlock(regName + "_bricks", true, tool, mineLevel, () -> new Block(BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_bricks_slab", true, tool, mineLevel, () -> new SlabBlock(BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_slab", true, tool, mineLevel, () -> new SlabBlock(BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_pillar", true, tool, mineLevel, () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_bricks_stairs", true, tool, mineLevel, () -> new StairBlock(() -> block.get().defaultBlockState(), BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_stairs", true, tool, mineLevel, () -> new StairBlock(() -> block.get().defaultBlockState(), BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_bricks_wall", true, tool, mineLevel, () -> new WallBlock(BlockBehaviour.Properties.copy(block.get())));
+        registerDecorativeBlock(regName + "_wall", true, tool, mineLevel, () -> new WallBlock(BlockBehaviour.Properties.copy(block.get())));
     }
 
-    private static <T extends Block> RegistryObject<T> registerFunctionalBlock(String name, boolean isSimple, Supplier<T> block) {
+    private static <T extends Block> RegistryObject<T> registerFunctionalBlock(String name, boolean isSimple, MineTool tool, MineLevel mineLevel, Supplier<T> block) {
         RegistryObject<T> toReturn = blocks.register(name, block);
         functionalBlocks.add(toReturn);
         registerBlockItem(name, toReturn);
 
+        mineToolMap.put(toReturn.getId(), tool);
+        mineLevelMap.put(toReturn.getId(), mineLevel);
+
         if (isSimple) simpleBlocks.add(toReturn);
 
         return toReturn;
     }
 
-    private static <T extends Block> RegistryObject<T> registerDecorativeBlock(String name, boolean isSimple, Supplier<T> block) {
+    private static <T extends Block> RegistryObject<T> registerDecorativeBlock(String name, boolean isSimple, MineTool tool, MineLevel mineLevel, Supplier<T> block) {
         RegistryObject<T> toReturn = blocks.register(name, block);
         decorativeBlocks.add(toReturn);
         registerBlockItem(name, toReturn);
 
+        mineToolMap.put(toReturn.getId(), tool);
+        mineLevelMap.put(toReturn.getId(), mineLevel);
+
         if (isSimple) simpleBlocks.add(toReturn);
 
         return toReturn;
     }
 
-    private static <T extends Block> RegistryObject<T> registerResourceBlock(String name, boolean isSimple, Supplier<T> block) {
+    private static <T extends Block> RegistryObject<T> registerResourceBlock(String name, boolean isSimple, MineTool tool, MineLevel mineLevel, Supplier<T> block) {
         RegistryObject<T> toReturn = blocks.register(name, block);
         resourcesBlocks.add(toReturn);
         registerBlockItem(name, toReturn);
+
+        mineToolMap.put(toReturn.getId(), tool);
+        mineLevelMap.put(toReturn.getId(), mineLevel);
 
         if (isSimple) simpleBlocks.add(toReturn);
 
@@ -90,6 +105,24 @@ public class ModBlocks {
     public static void registerBlocks(IEventBus bus) {
         blocks.register(bus);
 
-        registerSimpleDecorativeBlocksSet("mana_stone", Material.STONE, 1.5F, 6F);
+        registerSimpleDecorativeBlocksSet("mana_stone", MineTool.pickaxe, MineLevel.stone, Material.STONE, 1.5F, 6F);
+    }
+
+    public enum MineTool {
+        none,
+        pickaxe,
+        axe,
+        shovel,
+        hoe
+    }
+
+    public enum MineLevel {
+        none,
+        wood,
+        gold,
+        stone,
+        iron,
+        diamond,
+        netherite
     }
 }

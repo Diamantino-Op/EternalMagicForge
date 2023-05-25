@@ -4,7 +4,7 @@
       "model": "eternalmagic:block/mana_stone_slab"
     },
     "type=double": {
-      "model": "eternalmagic:block/mana_stone_slab"
+      "model": "eternalmagic:block/mana_stone"
     },
     "type=top": {
       "model": "eternalmagic:block/mana_stone_slab_top"

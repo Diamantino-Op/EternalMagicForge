@@ -17,10 +17,13 @@ public class EternalMagicDatagen {
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
+        EMBlockTagsProvider blockTagsProvider = new EMBlockTagsProvider(packOutput, existingFileHelper);
+        generator.addProvider(event.includeServer(), blockTagsProvider);
+        generator.addProvider(event.includeServer(), new EMItemTagsProvider(packOutput, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeClient(), new EMBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new EMItemModelProvider(packOutput, existingFileHelper));
+        generator.addProvider(event.includeServer(), new EMLootTableProvider(packOutput));
     }
 }
