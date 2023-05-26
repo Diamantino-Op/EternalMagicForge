@@ -1,7 +1,9 @@
 {
   "menu.eternalmagic.wand_bench": "Wand Bench",
+  "menu.eternalmagic.shrine_core": "Shrine Core",
 
   "block.eternalmagic.wand_bench": "Wand Bench",
+  "block.eternalmagic.shrine_core": "Shrine Core",
 
   "item.eternalmagic.wand": "Wand",
   "item.eternalmagic.earth_core": "Earth Core",

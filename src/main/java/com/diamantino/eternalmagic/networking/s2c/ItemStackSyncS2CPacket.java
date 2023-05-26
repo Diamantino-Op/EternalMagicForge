@@ -1,10 +1,12 @@
 package com.diamantino.eternalmagic.networking.s2c;
 
+import com.diamantino.eternalmagic.blockentities.ShrineCoreBlockEntity;
 import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -46,8 +48,13 @@ public class ItemStackSyncS2CPacket {
         NetworkEvent.Context context = supplier.get();
 
         context.enqueueWork(() -> {
-            if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) instanceof WandBenchBlockEntity blockEntity) {
-                blockEntity.setHandler(this.itemStackHandler);
+            if(Minecraft.getInstance().level != null) {
+                BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(pos);
+
+                if (blockEntity instanceof WandBenchBlockEntity wandBenchBlockEntity)
+                    wandBenchBlockEntity.setHandler(this.itemStackHandler);
+                else if (blockEntity instanceof ShrineCoreBlockEntity shrineCoreBlockEntity)
+                    shrineCoreBlockEntity.setHandler(this.itemStackHandler);
             }
         });
     }

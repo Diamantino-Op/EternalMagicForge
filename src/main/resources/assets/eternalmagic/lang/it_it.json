@@ -1,7 +1,9 @@
 {
   "menu.eternalmagic.wand_bench": "Banco Delle Bacchette",
+  "menu.eternalmagic.shrine_core": "Shrine Core",
 
   "block.eternalmagic.wand_bench": "Banco Delle Bacchette",
+  "block.eternalmagic.shrine_core": "Shrine Core",
 
   "item.eternalmagic.wand": "Bacchetta",
   "item.eternalmagic.earth_core": "Nucleo Di Terra",
