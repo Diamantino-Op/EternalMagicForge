@@ -33,7 +33,7 @@ public class ModItems {
             if (element == WandCoreItem.WandCoreElement.none)
                 continue;
 
-            RegistryObject<WandCoreItem> item = modItems.register("wand_" + element.toString() + "_core", () -> new WandCoreItem(new Item.Properties().stacksTo(1), element));
+            RegistryObject<WandCoreItem> item = modItems.register(element.toString() + "_core", () -> new WandCoreItem(new Item.Properties().stacksTo(1), element));
             wandCores.put(element, item);
             items.add(item);
         }

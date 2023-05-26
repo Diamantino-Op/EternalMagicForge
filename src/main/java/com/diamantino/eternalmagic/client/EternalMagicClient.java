@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.client;
 
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.client.model.ModelLoader;
+import com.diamantino.eternalmagic.client.model.entities.ShrineCoreInternalModel;
 import com.diamantino.eternalmagic.client.model.entities.WandBenchSphereModel;
 import com.diamantino.eternalmagic.client.renderers.blocks.WandBenchRenderer;
 import com.diamantino.eternalmagic.client.screens.WandBenchScreen;
@@ -31,6 +32,7 @@ public class EternalMagicClient {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(WandBenchSphereModel.layer, WandBenchSphereModel::createBodyLayer);
+        event.registerLayerDefinition(ShrineCoreInternalModel.layer, ShrineCoreInternalModel::createBodyLayer);
     }
 
     @SubscribeEvent

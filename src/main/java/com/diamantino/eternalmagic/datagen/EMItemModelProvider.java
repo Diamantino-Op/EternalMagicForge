@@ -25,7 +25,7 @@ public class EMItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         for (RegistryObject<WandCoreItem> item : ModItems.wandCores.values()) {
-            wandCore(item.get(), new ResourceLocation(ModReferences.modId, "item/wand_core_base"));
+            wandCore(item.get(), new ResourceLocation(ModReferences.modId, "item/core_base"));
         }
 
         for (RegistryObject<WandUpgradeItem> item : ModItems.wandUpgrades.values()) {
@@ -54,9 +54,9 @@ public class EMItemModelProvider extends ItemModelProvider {
         ResourceLocation itemLoc = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
 
         getBuilder(item.toString()).parent(new ModelFile.ExistingModelFile(parent, existingFileHelper))
-                .texture("particle", new ResourceLocation(itemLoc.getNamespace(), "item/wand_cores/" + itemLoc.getPath() + "_center"))
-                .texture("wand_core_internal", new ResourceLocation(itemLoc.getNamespace(), "item/wand_cores/" + itemLoc.getPath() + "_center"))
-                .texture("wand_core_external", new ResourceLocation(itemLoc.getNamespace(), "item/wand_cores/" + itemLoc.getPath() + "_external"));
+                .texture("particle", new ResourceLocation(itemLoc.getNamespace(), "item/cores/" + itemLoc.getPath() + "_center"))
+                .texture("core_internal", new ResourceLocation(itemLoc.getNamespace(), "item/cores/" + itemLoc.getPath() + "_center"))
+                .texture("core_external", new ResourceLocation(itemLoc.getNamespace(), "item/cores/" + itemLoc.getPath() + "_external"));
     }
 
     public void wandUpgrade(Item item)

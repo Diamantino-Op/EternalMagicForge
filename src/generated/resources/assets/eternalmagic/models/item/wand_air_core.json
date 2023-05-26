@@ -1,8 +1,0 @@
-{
-  "parent": "eternalmagic:item/wand_core_base",
-  "textures": {
-    "particle": "eternalmagic:item/wand_cores/wand_air_core_center",
-    "wand_core_external": "eternalmagic:item/wand_cores/wand_air_core_external",
-    "wand_core_internal": "eternalmagic:item/wand_cores/wand_air_core_center"
-  }
-}

@@ -1,0 +1,8 @@
+{
+  "parent": "eternalmagic:item/core_base",
+  "textures": {
+    "core_external": "eternalmagic:item/cores/darkness_core_external",
+    "core_internal": "eternalmagic:item/cores/darkness_core_center",
+    "particle": "eternalmagic:item/cores/darkness_core_center"
+  }
+}
