@@ -34,10 +34,6 @@ public class RequiredManaSyncS2CPacket {
         context.enqueueWork(() -> {
             if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) instanceof WandBenchBlockEntity blockEntity) {
                 blockEntity.setRequiredMana(requiredMana);
-
-                if(Minecraft.getInstance().player.containerMenu instanceof WandBenchMenu menu && menu.getBlockEntity().getBlockPos().equals(pos)) {
-                    blockEntity.setRequiredMana(requiredMana);
-                }
             }
         });
     }

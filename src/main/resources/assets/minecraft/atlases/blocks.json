@@ -8,6 +8,10 @@
     {
       "type": "single",
       "resource": "eternalmagic:entity/wand_bench_sphere"
+    },
+    {
+      "type": "single",
+      "resource": "eternalmagic:entity/shrine_core_internal"
     }
   ]
 }

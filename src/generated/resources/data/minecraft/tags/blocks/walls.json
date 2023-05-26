@@ -1,6 +1,8 @@
 {
   "values": [
     "eternalmagic:mana_stone_bricks_wall",
-    "eternalmagic:mana_stone_wall"
+    "eternalmagic:mana_stone_wall",
+    "eternalmagic:shrine_stone_bricks_wall",
+    "eternalmagic:shrine_stone_wall"
   ]
 }

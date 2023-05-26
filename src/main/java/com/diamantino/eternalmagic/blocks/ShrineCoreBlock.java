@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ShrineCoreBlock extends BaseEntityBlock {
-    protected ShrineCoreBlock(Properties pProperties) {
+    public ShrineCoreBlock(Properties pProperties) {
         super(pProperties);
     }
 
@@ -29,8 +29,8 @@ public class ShrineCoreBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
 
-            if (blockEntity instanceof ShrineCoreBlockEntity wandBenchBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer) player, wandBenchBlockEntity, pos);
+            if (blockEntity instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
+                NetworkHooks.openScreen((ServerPlayer) player, shrineCoreBlockEntity, pos);
             } else {
                 throw new IllegalStateException("Container provider is missing!");
             }
@@ -48,7 +48,7 @@ public class ShrineCoreBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, ModBlockEntityTypes.wandBenchBlockEntity.get(), ShrineCoreBlockEntity::tick);
+        return createTickerHelper(blockEntityType, ModBlockEntityTypes.shrineCoreBlockEntity.get(), ShrineCoreBlockEntity::tick);
     }
 
     @Override

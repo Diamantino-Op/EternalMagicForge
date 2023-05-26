@@ -1,7 +1,7 @@
 package com.diamantino.eternalmagic.datagen;
 
 import com.diamantino.eternalmagic.ModReferences;
-import com.diamantino.eternalmagic.items.WandCoreItem;
+import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.items.WandUpgradeItem;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.diamantino.eternalmagic.registration.ModItems;
@@ -24,7 +24,7 @@ public class EMItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        for (RegistryObject<WandCoreItem> item : ModItems.wandCores.values()) {
+        for (RegistryObject<CoreItem> item : ModItems.wandCores.values()) {
             wandCore(item.get(), new ResourceLocation(ModReferences.modId, "item/core_base"));
         }
 

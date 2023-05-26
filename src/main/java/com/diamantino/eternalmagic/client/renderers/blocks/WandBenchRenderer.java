@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class WandBenchRenderer implements BlockEntityRenderer<WandBenchBlockEntity> {
     public static final Material sphereLocation = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(ModReferences.modId, "entity/wand_bench_sphere"));
-    WandBenchSphereModel wandBenchSphereModel;
+    private final WandBenchSphereModel wandBenchSphereModel;
 
     public WandBenchRenderer(BlockEntityRendererProvider.Context pContext) {
         this.wandBenchSphereModel = new WandBenchSphereModel(pContext.bakeLayer(WandBenchSphereModel.layer));
@@ -48,6 +48,7 @@ public class WandBenchRenderer implements BlockEntityRenderer<WandBenchBlockEnti
             poseStack.translate(0F, 1F, 0F);
             poseStack.mulPose(Axis.XP.rotationDegrees(wandBenchSphereModel.ItemSpawn.xRot));
             poseStack.mulPose(Axis.YP.rotationDegrees(wandBenchSphereModel.ItemSpawn.yRot));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(wandBenchSphereModel.ItemSpawn.zRot));
             poseStack.scale(0.5f, 0.5f, 0.5f);
 
             itemRenderer.renderStatic(itemStack, ItemDisplayContext.GUI, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, 1);

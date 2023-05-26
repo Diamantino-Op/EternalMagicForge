@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "eternalmagic:block/shrine_core"
+      }
+    ]
+  }
+}

@@ -1,12 +1,11 @@
 package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.ModReferences;
-import com.diamantino.eternalmagic.api.mana.ItemStackManaStorage;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
-import com.diamantino.eternalmagic.items.WandCoreItem;
-import com.diamantino.eternalmagic.items.WandItem;
-import com.diamantino.eternalmagic.items.WandUpgradeItem;
+import com.diamantino.eternalmagic.items.CoreItem;
+import com.diamantino.eternalmagic.networking.s2c.GeneratingManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
+import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import com.diamantino.eternalmagic.registration.ModMessages;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +20,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
@@ -40,10 +38,12 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     protected final ContainerData data;
 
     private int progress = 0;
-    private int maxProgress = 600;
+    private int maxProgress = 20;
 
-    public ShrineCoreBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState, 10000, 2048);
+    private long generatingMana = 0;
+
+    public ShrineCoreBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(ModBlockEntityTypes.shrineCoreBlockEntity.get(), pPos, pBlockState, 10000, 2048);
 
         this.itemHandler = new ItemStackHandler(1) {
             @Override
@@ -57,13 +57,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                return switch (slot) {
-                    case 0 -> stack.getCapability(ItemStackManaStorage.itemStackManaStorageCapability).isPresent() && !(stack.getItem() instanceof WandItem);
-                    case 1 -> stack.getItem() instanceof WandUpgradeItem;
-                    case 2 -> stack.getItem() instanceof WandCoreItem;
-                    case 3 -> stack.getItem() instanceof WandItem;
-                    default -> super.isItemValid(slot, stack);
-                };
+                return slot == 0 ? (stack.getItem() instanceof CoreItem) : super.isItemValid(slot, stack);
             }
         };
 
@@ -103,8 +97,45 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
         return itemHandler.getStackInSlot(0);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, ShrineCoreBlockEntity blockEntity) {
+    public long getGeneratingMana() {
+        return generatingMana;
+    }
 
+    public void changeGeneratingMana(long generatingMana) {
+        setGeneratingMana(generatingMana);
+
+        ModMessages.sendToClients(new GeneratingManaSyncS2CPacket(generatingMana, worldPosition));
+    }
+
+    public void setGeneratingMana(long generatingMana) {
+        this.generatingMana = generatingMana;
+    }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, ShrineCoreBlockEntity blockEntity) {
+        if(level.isClientSide()) {
+            return;
+        }
+
+        ItemStack stack = blockEntity.itemHandler.getStackInSlot(0);
+
+        if (!stack.isEmpty()) {
+            blockEntity.progress++;
+
+            if (blockEntity.progress >= blockEntity.maxProgress) {
+                blockEntity.resetProgress();
+                receiveMana(blockEntity, blockEntity.getGeneratingMana(), false);
+            }
+
+            setChanged(level, pos, state);
+        } else {
+            blockEntity.resetProgress();
+            blockEntity.changeGeneratingMana(0);
+            setChanged(level, pos, state);
+        }
+    }
+
+    private void resetProgress() {
+        this.progress = 0;
     }
 
     @Override
@@ -130,6 +161,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("progress", this.progress);
+        nbt.putLong("generatingMana", this.getGeneratingMana());
 
         super.saveAdditional(nbt);
     }
@@ -138,6 +170,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     public void load(@NotNull CompoundTag nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("progress");
+        changeGeneratingMana(nbt.getLong("generatingMana"));
 
         super.load(nbt);
     }

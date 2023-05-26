@@ -1,7 +1,6 @@
 package com.diamantino.eternalmagic.client.menu;
 
 import com.diamantino.eternalmagic.blockentities.ShrineCoreBlockEntity;
-import com.diamantino.eternalmagic.client.screens.components.EMSlot;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.diamantino.eternalmagic.registration.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,7 +24,7 @@ public class ShrineCoreMenu extends AbstractContainerMenu {
     }
 
     public ShrineCoreMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.wandBenchMenu.get(), id);
+        super(ModMenuTypes.shrineCoreMenu.get(), id);
         checkContainerSize(inv, 1);
         blockEntity = (ShrineCoreBlockEntity) entity;
         this.level = inv.player.level;
@@ -35,7 +34,7 @@ public class ShrineCoreMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 8, 125));
+            this.addSlot(new SlotItemHandler(handler, 0, 82, 26));
         });
 
         addDataSlots(data);
@@ -51,6 +50,10 @@ public class ShrineCoreMenu extends AbstractContainerMenu {
         int progressArrowSize = 22;
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+    }
+
+    public long getGeneratingMana() {
+        return blockEntity.getGeneratingMana();
     }
 
     public ShrineCoreBlockEntity getBlockEntity() {
@@ -102,20 +105,20 @@ public class ShrineCoreMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.wandBenchBlock.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.shrineCoreBlock.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 22 + l * 18, 157 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 83 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 22 + i * 18, 215));
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 141));
         }
     }
 }

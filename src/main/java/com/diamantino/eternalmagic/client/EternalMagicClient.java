@@ -4,7 +4,9 @@ import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.client.model.ModelLoader;
 import com.diamantino.eternalmagic.client.model.entities.ShrineCoreInternalModel;
 import com.diamantino.eternalmagic.client.model.entities.WandBenchSphereModel;
+import com.diamantino.eternalmagic.client.renderers.blocks.ShrineCoreRenderer;
 import com.diamantino.eternalmagic.client.renderers.blocks.WandBenchRenderer;
+import com.diamantino.eternalmagic.client.screens.ShrineCoreScreen;
 import com.diamantino.eternalmagic.client.screens.WandBenchScreen;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import com.diamantino.eternalmagic.registration.ModMenuTypes;
@@ -21,6 +23,7 @@ public class EternalMagicClient {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         MenuScreens.register(ModMenuTypes.wandBenchMenu.get(), WandBenchScreen::new);
+        MenuScreens.register(ModMenuTypes.shrineCoreMenu.get(), ShrineCoreScreen::new);
     }
 
     @SubscribeEvent
@@ -38,6 +41,7 @@ public class EternalMagicClient {
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntityTypes.wandBenchBlockEntity.get(), WandBenchRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntityTypes.shrineCoreBlockEntity.get(), ShrineCoreRenderer::new);
     }
 
     @SubscribeEvent

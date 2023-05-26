@@ -1,4 +1,4 @@
-// 1.19.4	2023-05-26T15:51:05.2310822	Item Models: eternalmagic
+// 1.19.4	2023-05-26T20:45:58.4996792	Item Models: eternalmagic
 e54afb29afb210badd560f35f6e8d7cc0c7955f4 assets/eternalmagic/models/item/air_core.json
 6d4beb41af0bd92d8b934e31276aa85eba704d9d assets/eternalmagic/models/item/darkness_core.json
 f61d66e295c29ecf23dce264ba500bb055b0e496 assets/eternalmagic/models/item/earth_core.json
@@ -17,6 +17,16 @@ a3b010ed68fe64b971f536d4e1fedd55aa955c4c assets/eternalmagic/models/item/mana_st
 ab62c384901b71683030b8a65fff070e70c5118f assets/eternalmagic/models/item/mana_stone_slab.json
 12007f3f946907c9793e7e9a078c316d9466e10b assets/eternalmagic/models/item/mana_stone_stairs.json
 54f009609f17ba63bce94fa3040319c5461ce079 assets/eternalmagic/models/item/mana_stone_wall.json
+c7fd493174292f2f4793e36f9479d6d25f9987f1 assets/eternalmagic/models/item/shrine_core.json
+080897e935898f1dda7bcccb8319cd75d229af1d assets/eternalmagic/models/item/shrine_stone.json
+4eb0dc391bc7b0fb9c267cc3532daae85aff9de6 assets/eternalmagic/models/item/shrine_stone_bricks.json
+8b054d960e8956d2c72c70c81c8851cb004732bd assets/eternalmagic/models/item/shrine_stone_bricks_slab.json
+04159c466bc4f7d8a9ee61ff79bf85c92c9a8244 assets/eternalmagic/models/item/shrine_stone_bricks_stairs.json
+19ba6dc1e6cc72868c53edf26baf40b607c2e797 assets/eternalmagic/models/item/shrine_stone_bricks_wall.json
+15e337f2c697803d07e522393a3b325aa764ea95 assets/eternalmagic/models/item/shrine_stone_pillar.json
+b4990bbf2dd063c0fb1e311e672c20239decee55 assets/eternalmagic/models/item/shrine_stone_slab.json
+607d39d48f261e8191d68e73eb711bc9c97490e0 assets/eternalmagic/models/item/shrine_stone_stairs.json
+3057628ec7d7d38620e51157e2a427691d676eca assets/eternalmagic/models/item/shrine_stone_wall.json
 b7e3614b04fb54324be7505e3caea309c9d3c1f5 assets/eternalmagic/models/item/wand_bench.json
 9c471c44c743bb60640083094ad9ad41141c196a assets/eternalmagic/models/item/wand_cast_time_reduction_upgrade.json
 628d624b4031cad19f92b2a1e670b8ca9d6b9821 assets/eternalmagic/models/item/wand_cooldown_reduction_upgrade.json

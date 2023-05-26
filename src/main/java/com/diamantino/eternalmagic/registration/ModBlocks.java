@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.blocks.ShrineCoreBlock;
 import com.diamantino.eternalmagic.blocks.WandBenchBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +39,7 @@ public class ModBlocks {
     public static final Map<ResourceLocation, MineLevel> mineLevelMap = new LinkedHashMap<>();
 
     public static final RegistryObject<WandBenchBlock> wandBenchBlock = registerFunctionalBlock("wand_bench", false, MineTool.pickaxe, MineLevel.wood, () -> new WandBenchBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F, 6F).lightLevel(state -> 15).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(ModBlocks::never).isRedstoneConductor(ModBlocks::never).isSuffocating(ModBlocks::never).isViewBlocking(ModBlocks::never)));
+    public static final RegistryObject<ShrineCoreBlock> shrineCoreBlock = registerFunctionalBlock("shrine_core", false, MineTool.pickaxe, MineLevel.iron, () -> new ShrineCoreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F, 6F).lightLevel(state -> 15).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(ModBlocks::never).isRedstoneConductor(ModBlocks::never).isSuffocating(ModBlocks::never).isViewBlocking(ModBlocks::never)));
 
     private static void registerSimpleDecorativeBlocksSet(String regName, MineTool tool, MineLevel mineLevel, Material material, float destroyTime, float explosionResistance) {
         RegistryObject<Block> block = registerDecorativeBlock(regName, true, tool, mineLevel, () -> new Block(BlockBehaviour.Properties.of(material).strength(destroyTime, explosionResistance).requiresCorrectToolForDrops()));

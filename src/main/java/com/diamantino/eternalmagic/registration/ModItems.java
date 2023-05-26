@@ -1,7 +1,7 @@
 package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.ModReferences;
-import com.diamantino.eternalmagic.items.WandCoreItem;
+import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.items.WandUpgradeItem;
 import net.minecraft.world.item.Item;
@@ -22,18 +22,18 @@ public class ModItems {
     public static final List<RegistryObject<? extends Item>> items = new ArrayList<>();
     public static final List<RegistryObject<? extends Item>> resourcesItems = new ArrayList<>();
 
-    public static final Map<WandCoreItem.WandCoreElement, RegistryObject<WandCoreItem>> wandCores = new LinkedHashMap<>();
+    public static final Map<CoreItem.WandCoreElement, RegistryObject<CoreItem>> wandCores = new LinkedHashMap<>();
     public static final Map<WandUpgradeItem.WandUpgradeType, RegistryObject<WandUpgradeItem>> wandUpgrades = new LinkedHashMap<>();
 
     public static final RegistryObject<WandItem> wandItem = registerItem("wand", () -> new WandItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> emptyUpgrade = registerItem("blank_upgrade", () -> new Item(new Item.Properties().stacksTo(16)));
 
     private static void registerWandCores() {
-        for (WandCoreItem.WandCoreElement element : WandCoreItem.WandCoreElement.values()) {
-            if (element == WandCoreItem.WandCoreElement.none)
+        for (CoreItem.WandCoreElement element : CoreItem.WandCoreElement.values()) {
+            if (element == CoreItem.WandCoreElement.none)
                 continue;
 
-            RegistryObject<WandCoreItem> item = modItems.register(element.toString() + "_core", () -> new WandCoreItem(new Item.Properties().stacksTo(1), element));
+            RegistryObject<CoreItem> item = modItems.register(element.toString() + "_core", () -> new CoreItem(new Item.Properties().stacksTo(1), element));
             wandCores.put(element, item);
             items.add(item);
         }

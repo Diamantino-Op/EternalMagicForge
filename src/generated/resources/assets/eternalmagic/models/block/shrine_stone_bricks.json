@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "eternalmagic:block/shrine_stone_bricks"
+  }
+}

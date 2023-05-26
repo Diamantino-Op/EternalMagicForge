@@ -2,10 +2,7 @@ package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.networking.c2s.WandBenchButtonC2SPacket;
-import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
-import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
-import com.diamantino.eternalmagic.networking.s2c.RequiredManaSyncS2CPacket;
-import com.diamantino.eternalmagic.networking.s2c.WandBenchWandSyncS2CPacket;
+import com.diamantino.eternalmagic.networking.s2c.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -54,6 +51,12 @@ public class ModMessages {
                 .decoder(WandBenchWandSyncS2CPacket::new)
                 .encoder(WandBenchWandSyncS2CPacket::toBytes)
                 .consumerMainThread(WandBenchWandSyncS2CPacket::handle)
+                .add();
+
+        net.messageBuilder(GeneratingManaSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(GeneratingManaSyncS2CPacket::new)
+                .encoder(GeneratingManaSyncS2CPacket::toBytes)
+                .consumerMainThread(GeneratingManaSyncS2CPacket::handle)
                 .add();
 
         // C2S

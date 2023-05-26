@@ -192,7 +192,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     }
 
     private void assignManaInfoArea() {
-        manaInfoArea = new ManaInfoArea(0, 28, 26, 136, 80, 3, elementsTexture, manaStorage);
+        manaInfoArea = new ManaInfoArea(0, 28, 26, 136, 80, 5, elementsTexture, manaStorage);
     }
 
     @Override
@@ -240,7 +240,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     }
 
     private void renderManaAreaTooltips(PoseStack poseStack, int mouseX, int mouseY, int x, int y) {
-        if(isMouseAboveArea(mouseX, mouseY, x, y, 26, 136, 80, 3)) {
+        if(isMouseAboveArea(mouseX, mouseY, x, y, 26, 136, 80, 5)) {
             renderTooltip(poseStack, manaInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
         }
     }

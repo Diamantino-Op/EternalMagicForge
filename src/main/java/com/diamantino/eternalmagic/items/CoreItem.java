@@ -13,10 +13,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class WandCoreItem extends Item {
+public class CoreItem extends Item {
     private final WandCoreElement element;
 
-    public WandCoreItem(Properties pProperties, WandCoreElement element) {
+    public CoreItem(Properties pProperties, WandCoreElement element) {
         super(pProperties);
 
         this.element = element;

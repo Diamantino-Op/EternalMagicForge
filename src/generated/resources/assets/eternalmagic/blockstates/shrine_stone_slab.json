@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "eternalmagic:block/shrine_stone_slab"
+    },
+    "type=double": {
+      "model": "eternalmagic:block/shrine_stone"
+    },
+    "type=top": {
+      "model": "eternalmagic:block/shrine_stone_slab_top"
+    }
+  }
+}

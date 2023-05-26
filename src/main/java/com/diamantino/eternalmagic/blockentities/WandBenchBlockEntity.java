@@ -4,7 +4,7 @@ import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.api.mana.ItemStackManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.model.Model;
-import com.diamantino.eternalmagic.items.WandCoreItem;
+import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.items.WandUpgradeItem;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
@@ -67,7 +67,7 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
                 return switch (slot) {
                     case 0 -> stack.getCapability(ItemStackManaStorage.itemStackManaStorageCapability).isPresent() && !(stack.getItem() instanceof WandItem);
                     case 1 -> stack.getItem() instanceof WandUpgradeItem;
-                    case 2 -> stack.getItem() instanceof WandCoreItem;
+                    case 2 -> stack.getItem() instanceof CoreItem;
                     case 3 -> stack.getItem() instanceof WandItem;
                     default -> super.isItemValid(slot, stack);
                 };
@@ -151,8 +151,8 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
                 }
             }
         } else if (hasItemInSlot(blockEntity, 2) && hasItemInSlot(blockEntity, 3)) {
-            WandCoreItem.WandCoreElement coreElement = ((WandCoreItem) coreStack.getItem()).getElement();
-            long requiredMana = (Math.max(WandCoreItem.getLevel(coreStack.getOrCreateTag()), 1) * 1000L) * (coreElement == WandCoreItem.WandCoreElement.infinity ? 10 : 1);
+            CoreItem.WandCoreElement coreElement = ((CoreItem) coreStack.getItem()).getElement();
+            long requiredMana = (Math.max(CoreItem.getLevel(coreStack.getOrCreateTag()), 1) * 1000L) * (coreElement == CoreItem.WandCoreElement.infinity ? 10 : 1);
             blockEntity.changeRequiredMana(requiredMana);
 
             if (hasEnoughMana(blockEntity, requiredMana)) {

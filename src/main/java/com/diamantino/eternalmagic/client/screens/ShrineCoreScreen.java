@@ -5,22 +5,14 @@ import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.client.screens.render.ManaInfoArea;
 import com.diamantino.eternalmagic.utils.MouseUtils;
-import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
 
 import java.util.Optional;
 
@@ -32,8 +24,8 @@ public class ShrineCoreScreen extends AbstractContainerScreen<ShrineCoreMenu> {
     public ShrineCoreScreen(ShrineCoreMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
 
-        this.imageWidth = 204;
-        this.imageHeight = 239;
+        this.imageWidth = 176;
+        this.imageHeight = 165;
     }
 
     @Override
@@ -49,7 +41,7 @@ public class ShrineCoreScreen extends AbstractContainerScreen<ShrineCoreMenu> {
     }
 
     private void assignManaInfoArea() {
-        manaInfoArea = new ManaInfoArea(0, 28, 26, 136, 80, 3, texture, manaStorage);
+        manaInfoArea = new ManaInfoArea(176, 0, 50, 55, 80, 5, texture, manaStorage);
     }
 
     @Override
@@ -65,15 +57,15 @@ public class ShrineCoreScreen extends AbstractContainerScreen<ShrineCoreMenu> {
     }
 
     private void renderManaAreaTooltips(PoseStack poseStack, int mouseX, int mouseY, int x, int y) {
-        if(isMouseAboveArea(mouseX, mouseY, x, y, 26, 136, 80, 3)) {
+        if(isMouseAboveArea(mouseX, mouseY, x, y, 50, 55, 80, 5)) {
             renderTooltip(poseStack, manaInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
         }
     }
 
     private void renderProgressArrow(PoseStack pPoseStack, int x, int y) {
         if(menu.isCrafting()) {
-            blit(pPoseStack, x + 150, y + 125, 122, 28, menu.getScaledProgress(), 16);
-            blit(pPoseStack, x + 150, y + 125, 122, 28, menu.getScaledProgress(), 16);
+            blit(pPoseStack, x + 65, y + 32, 176, 5, 15, menu.getScaledProgress());
+            blit(pPoseStack, x + 100, y + 32, 191, 5, 15, menu.getScaledProgress());
         }
     }
 

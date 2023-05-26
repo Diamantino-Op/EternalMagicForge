@@ -1,4 +1,4 @@
-// 1.19.4	2023-05-26T15:51:05.2320824	Loot Tables
+// 1.19.4	2023-05-26T20:45:58.500678	Loot Tables
 d80fca136f2e20b28a5327363a9831526f150bd7 data/eternalmagic/loot_tables/blocks/mana_stone.json
 1d48aa633f49271086ffa545a441ac20684807c7 data/eternalmagic/loot_tables/blocks/mana_stone_bricks.json
 fce9b5726054863853bb14639ea74b78cf3644e0 data/eternalmagic/loot_tables/blocks/mana_stone_bricks_slab.json
@@ -8,4 +8,14 @@ e15f61f750ab537247937467031906cbcfbd2172 data/eternalmagic/loot_tables/blocks/ma
 5cd30d243d3c0755c600b0b9a1ad97cbb522fcdb data/eternalmagic/loot_tables/blocks/mana_stone_slab.json
 64c9184c6f0f752d1526df670ef5816e014f4409 data/eternalmagic/loot_tables/blocks/mana_stone_stairs.json
 c865f438fd4dd364aa63faf7d41c3e9af2f3ad40 data/eternalmagic/loot_tables/blocks/mana_stone_wall.json
+8dec7296c61eca1027f124d6bea02a5363c6a471 data/eternalmagic/loot_tables/blocks/shrine_core.json
+7ba4f9a5cceed460c37cc64217300a796b10ad9a data/eternalmagic/loot_tables/blocks/shrine_stone.json
+efc8974f7e38cd0e69490e8b7de20cd17569f5b1 data/eternalmagic/loot_tables/blocks/shrine_stone_bricks.json
+5dece1a952dcd7d1fe532f9b8df895250a5449cc data/eternalmagic/loot_tables/blocks/shrine_stone_bricks_slab.json
+3d22b7c4179e6de109d5e4a978ac6734f0a2a82d data/eternalmagic/loot_tables/blocks/shrine_stone_bricks_stairs.json
+84d2c41c044738cb20989827787c87ddd2656188 data/eternalmagic/loot_tables/blocks/shrine_stone_bricks_wall.json
+16d06d536a536f6b36a73d70857fabb955d43fa0 data/eternalmagic/loot_tables/blocks/shrine_stone_pillar.json
+073dfcd7199493516db490a02a006119f9df3dbf data/eternalmagic/loot_tables/blocks/shrine_stone_slab.json
+27206ad441ede5a84e91f8221d68dd4648540518 data/eternalmagic/loot_tables/blocks/shrine_stone_stairs.json
+5e47130d20825bc253c69709f0491e96d5ffd60b data/eternalmagic/loot_tables/blocks/shrine_stone_wall.json
 ba648a2e58cc5ae5dc620f15fb48c60072b568c5 data/eternalmagic/loot_tables/blocks/wand_bench.json
