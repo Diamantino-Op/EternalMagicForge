@@ -1,17 +1,14 @@
 package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.ModReferences;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.CreativeModeTabEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = ModReferences.modId)
 public class ModEvents {
-    private static void addCreative(CreativeModeTabEvent.BuildContents event) {
+    @SubscribeEvent
+    public static void addCreative(CreativeModeTabEvent.BuildContents event) {
         if (event.getTab() == ModCreativeTabs.functionalBlocksTab) {
             ModBlocks.functionalBlocks.forEach((item) -> event.accept(item.get()));
         }
@@ -37,8 +34,7 @@ public class ModEvents {
         event.addListener(cap::onCapabilityInvalidated);
     }*/
 
-    public static void registerEvents(IEventBus bus) {
-        bus.addListener(ModEvents::addCreative);
+    public static void registerModEvents() {
         //bus.addGenericListener(ItemStack.class, ModEvents::onAttachChunkCapabilities);
     }
 }

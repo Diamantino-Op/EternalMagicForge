@@ -49,6 +49,12 @@ public abstract class ManaItemBase extends Item {
         });
     }
 
+    public static void setMaxTransfer(ItemStack stack, long maxTransfer) {
+        stack.getCapability(ItemStackManaStorage.itemStackManaStorageCapability).ifPresent(itemStackManaStorage -> {
+            itemStackManaStorage.setMaxTransfer(maxTransfer);
+        });
+    }
+
     public static long getCapacity(ItemStack stack) {
         AtomicLong returnVal = new AtomicLong(0);
 

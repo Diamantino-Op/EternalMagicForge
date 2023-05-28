@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalmagic:block/shrine_output",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalmagic:block/shrine_output"
+    },
+    "facing=south": {
+      "model": "eternalmagic:block/shrine_output",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalmagic:block/shrine_output",
+      "y": 270
+    }
+  }
+}

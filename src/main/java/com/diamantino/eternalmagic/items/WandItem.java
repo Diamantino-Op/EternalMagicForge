@@ -25,7 +25,7 @@ public class WandItem extends ManaItemBase {
     public static int baseSlots = 4;
 
     public WandItem(Properties properties) {
-        super(properties, 10000, 1000000);
+        super(properties, 10000, 10000);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class WandItem extends ManaItemBase {
     public static long getTotalManaCapacity(CompoundTag nbt) {
         List<WandUpgradeItem.WandUpgrade> upgrades = getUpgrades(nbt);
         CompoundTag coreTag = nbt.getCompound("core");
-        int coreLevel = coreTag.getInt("level");
+        int coreLevel = Math.max(1, coreTag.getInt("level"));
 
         long totalManaCapacity = baseStoredMana;
 
@@ -113,7 +113,7 @@ public class WandItem extends ManaItemBase {
             }
         }
 
-        return totalManaCapacity * Math.max(1, coreLevel);
+        return totalManaCapacity * ((long) coreLevel * coreLevel);
     }
 
     public static int getTotalSlots(CompoundTag nbt) {
@@ -177,6 +177,7 @@ public class WandItem extends ManaItemBase {
         nbt.putFloat("castTimeReduction", getTotalCastTimeReduction(nbt));
         nbt.putFloat("manaUsageReduction", getTotalManaUsageReduction(nbt));
         setCapacity(stack, getTotalManaCapacity(nbt));
+        setMaxTransfer(stack, getTotalManaCapacity(nbt));
         nbt.putInt("totalSlots", getTotalSlots(nbt));
     }
 

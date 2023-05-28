@@ -1,4 +1,4 @@
-// 1.19.4	2023-05-26T20:45:58.5016789	Block States: eternalmagic
+// 1.19.4	2023-05-28T18:23:46.0614173	Block States: eternalmagic
 383f9b4887250b43aadd8628c779748fd31fec6d assets/eternalmagic/blockstates/mana_stone.json
 0148b764aff927456e26f43b1b986a2876061a66 assets/eternalmagic/blockstates/mana_stone_bricks.json
 41f3ebd07cc35aa1be6340f0b084e33217a7657e assets/eternalmagic/blockstates/mana_stone_bricks_slab.json
@@ -8,6 +8,7 @@
 672da2c4c5fe284914811759919d01525ad05f63 assets/eternalmagic/blockstates/mana_stone_slab.json
 0c4766818889093294e57440bb3c24fe38384347 assets/eternalmagic/blockstates/mana_stone_stairs.json
 1e48bb9b086c237149aeba7c4d00c53b5451d315 assets/eternalmagic/blockstates/mana_stone_wall.json
+3b87b78cc0b087f0a4f28cbe7352c07825ac9c07 assets/eternalmagic/blockstates/shrine_output.json
 c94beef758771a8f9c63972bc67d4e0d165e91d6 assets/eternalmagic/blockstates/shrine_stone.json
 eb37be0d276e8711827330739326e29896554306 assets/eternalmagic/blockstates/shrine_stone_bricks.json
 4d22b8c3986f11324fd1794f90d4369055698c60 assets/eternalmagic/blockstates/shrine_stone_bricks_slab.json
@@ -37,6 +38,7 @@ bf71cf6c86335b14a5118efb09dc668739d54bd5 assets/eternalmagic/models/block/mana_s
 1b75f39c76de60389c27df5cf84d98ecc1e0c825 assets/eternalmagic/models/block/mana_stone_wall_post.json
 79f52089eeebf55a2597f0e43095fc610474e6b7 assets/eternalmagic/models/block/mana_stone_wall_side.json
 d00963e0c82fd31102a8e076c3909f252cfbbfea assets/eternalmagic/models/block/mana_stone_wall_side_tall.json
+8338fb59c0198b5077e079aab833f81fe16f7641 assets/eternalmagic/models/block/shrine_output.json
 cfba7d9eec1afcc30f0fa9e16496f43434fbc32a assets/eternalmagic/models/block/shrine_stone.json
 6093a78183a214854586dde6f4f7177d37396299 assets/eternalmagic/models/block/shrine_stone_bricks.json
 548bac81a042414a77247bbe8826bdbc0419ce85 assets/eternalmagic/models/block/shrine_stone_bricks_slab.json

@@ -30,6 +30,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuProvider {
     private final ItemStackHandler itemHandler;
 
@@ -40,10 +43,14 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     private int progress = 0;
     private int maxProgress = 20;
 
+    public static long baseCapacity = 10000;
+    public static long baseGeneratedMana = 10;
+
     private long generatingMana = 0;
+    private int generatingManaMultiplier = 1;
 
     public ShrineCoreBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntityTypes.shrineCoreBlockEntity.get(), pPos, pBlockState, 10000, 2048);
+        super(ModBlockEntityTypes.shrineCoreBlockEntity.get(), pPos, pBlockState, baseCapacity);
 
         this.itemHandler = new ItemStackHandler(1) {
             @Override
@@ -52,6 +59,35 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
                 if(level != null && !level.isClientSide()) {
                     ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
+
+                    int coreLevel = Math.max(1, CoreItem.getLevel(getStackInSlot(slot).getOrCreateTag()));
+
+                    long newCapacity = baseCapacity * ((long) coreLevel * coreLevel);
+
+                    manaStorage.setCapacity(newCapacity);
+                    manaStorage.setMaxTransfer(newCapacity);
+
+                    if (level.getBlockEntity(getBlockPos().below(3).north(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                        shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
+                        shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
+                    }
+
+                    if (level.getBlockEntity(getBlockPos().below(3).east(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                        shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
+                        shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
+                    }
+
+                    if (level.getBlockEntity(getBlockPos().below(3).south(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                        shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
+                        shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
+                    }
+
+                    if (level.getBlockEntity(getBlockPos().below(3).west(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                        shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
+                        shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
+                    }
+
+                    changeGeneratingMana(getTotalGeneratingMana(coreLevel));
                 }
             }
 
@@ -84,6 +120,41 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
                 return 2;
             }
         };
+    }
+
+    @Override
+    public void syncMana() {
+        super.syncMana();
+
+        int coreLevel = Math.max(1, CoreItem.getLevel(itemHandler.getStackInSlot(0).getOrCreateTag()));
+
+        long newCapacity = baseCapacity * ((long) coreLevel * coreLevel);
+
+        if (level != null && !level.isClientSide()) {
+            if (level.getBlockEntity(getBlockPos().below(3).north(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
+                shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
+            }
+
+            if (level.getBlockEntity(getBlockPos().below(3).east(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
+                shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
+            }
+
+            if (level.getBlockEntity(getBlockPos().below(3).south(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
+                shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
+            }
+
+            if (level.getBlockEntity(getBlockPos().below(3).west(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
+                shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
+            }
+        }
+    }
+
+    public long getTotalGeneratingMana(int coreLevel) {
+        return (baseGeneratedMana * ((long) coreLevel * coreLevel)) * generatingManaMultiplier;
     }
 
     @Override
@@ -129,7 +200,6 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
             setChanged(level, pos, state);
         } else {
             blockEntity.resetProgress();
-            blockEntity.changeGeneratingMana(0);
             setChanged(level, pos, state);
         }
     }

@@ -34,6 +34,18 @@ public class ItemStackManaStorage  implements ICapabilityProvider, INBTSerializa
         this.manaStorage.setCapacity(capacity);
     }
 
+    public void setMaxTransfer(long maxTransfer) {
+        this.manaStorage.setMaxTransfer(maxTransfer);
+    }
+
+    public void setMaxReceive(long maxReceive) {
+        this.manaStorage.setMaxReceive(maxReceive);
+    }
+
+    public void setMaxExtract(long maxExtract) {
+        this.manaStorage.setMaxExtract(maxExtract);
+    }
+
     public long getCapacity() {
         return this.manaStorage.getMaxManaStored();
     }

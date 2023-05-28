@@ -1,6 +1,6 @@
-// 1.19.4	2023-05-26T20:45:58.4956774	Tags for minecraft:block mod id eternalmagic
+// 1.19.4	2023-05-28T17:57:06.1093148	Tags for minecraft:block mod id eternalmagic
 a7c00ccfdafe20ab59548c2d1957657e47928b19 data/forge/tags/blocks/needs_wood_tool.json
-93203bbe4b1fd905ffbaca0b2745cffd735b1258 data/minecraft/tags/blocks/mineable/pickaxe.json
-73cd8fc7d6f12130f293e9cad11b69369112d0e4 data/minecraft/tags/blocks/needs_iron_tool.json
+2d2b1404864436f9b6fde00195da84d9e2da14f8 data/minecraft/tags/blocks/mineable/pickaxe.json
+d2fc55afd963dade6703f1210cc9ee2cef39d5de data/minecraft/tags/blocks/needs_iron_tool.json
 866f370e3510f4691b1778e9024b5a874abe12aa data/minecraft/tags/blocks/needs_stone_tool.json
 d7677ea08902652cfcb24220496eeaa14f1eb3cb data/minecraft/tags/blocks/walls.json

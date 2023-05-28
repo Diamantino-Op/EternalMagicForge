@@ -11,7 +11,8 @@ public class EternalMagic {
     public EternalMagic() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        ModEvents.registerEvents(modEventBus);
+        ModEvents.registerModEvents();
+        ForgeEvents.registerForgeEvents();
         ModItems.registerItems(modEventBus);
         ModBlocks.registerBlocks(modEventBus);
         ModBlockEntityTypes.registerBlockEntityTypes(modEventBus);

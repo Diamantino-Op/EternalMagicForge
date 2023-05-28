@@ -21,6 +21,10 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
 
     private LazyOptional<IManaStorage> lazyManaHandler = LazyOptional.empty();
 
+    public ManaBlockEntityBase(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, long capacity) {
+        this(pType, pPos, pBlockState, capacity, capacity, capacity);
+    }
+
     public ManaBlockEntityBase(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, long capacity, long maxTransfer) {
         this(pType, pPos, pBlockState, capacity, maxTransfer, maxTransfer);
     }
@@ -39,7 +43,7 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
     }
 
     public void syncMana() {
-        ModMessages.sendToClients(new ManaSyncS2CPacket(this.manaStorage.getManaStored(), getBlockPos()));
+        ModMessages.sendToClients(new ManaSyncS2CPacket(this.manaStorage.getManaStored(), this.manaStorage.getMaxReceive(), this.manaStorage.getMaxExtract(), this.manaStorage.getCapacity(), getBlockPos()));
     }
 
     public IManaStorage getManaStorage() {
@@ -48,6 +52,22 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
 
     public void setManaLevel(long mana) {
         this.manaStorage.setMana(mana);
+    }
+
+    public void setCapacity(long capacity) {
+        this.manaStorage.setCapacity(capacity);
+    }
+
+    public void setMaxTransfer(long maxTransfer) {
+        this.manaStorage.setMaxTransfer(maxTransfer);
+    }
+
+    public void setMaxReceive(long maxReceive) {
+        this.manaStorage.setMaxReceive(maxReceive);
+    }
+
+    public void setMaxExtract(long maxExtract) {
+        this.manaStorage.setMaxExtract(maxExtract);
     }
 
     @Override

@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "eternalmagic:block/shrine_output",
+    "east": "eternalmagic:block/shrine_output",
+    "north": "eternalmagic:block/shrine_output_face",
+    "south": "eternalmagic:block/shrine_output",
+    "up": "eternalmagic:block/shrine_output",
+    "west": "eternalmagic:block/shrine_output"
+  }
+}

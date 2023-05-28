@@ -1,16 +1,16 @@
 package com.diamantino.eternalmagic.blockentities;
 
+import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class ShrineOutputBlockEntity extends ManaBlockEntityBase {
     public BlockPos corePos;
 
-    public ShrineOutputBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, long capacity, long maxTransfer) {
-        super(pType, pPos, pBlockState, capacity, maxTransfer);
+    public ShrineOutputBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(ModBlockEntityTypes.shrineOutputBlockEntity.get(), pPos, pBlockState, 0);
 
         this.corePos = new BlockPos(0, 0, 0);
     }

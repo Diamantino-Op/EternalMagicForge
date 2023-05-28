@@ -16,6 +16,34 @@ public abstract class ModManaStorage extends ManaStorage {
     }
 
     @Override
+    public void setCapacity(long capacity) {
+        super.setCapacity(capacity);
+
+        onManaChanged();
+    }
+
+    @Override
+    public void setMaxTransfer(long maxTransfer) {
+        super.setMaxTransfer(maxTransfer);
+
+        onManaChanged();
+    }
+
+    @Override
+    public void setMaxExtract(long maxExtract) {
+        super.setMaxExtract(maxExtract);
+
+        onManaChanged();
+    }
+
+    @Override
+    public void setMaxReceive(long maxReceive) {
+        super.setMaxReceive(maxReceive);
+
+        onManaChanged();
+    }
+
+    @Override
     public long extractMana(long maxExtract, boolean simulate) {
         long extractedMana = super.extractMana(maxExtract, simulate);
         if(extractedMana != 0) {
