@@ -30,9 +30,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuProvider {
     private final ItemStackHandler itemHandler;
 
@@ -67,26 +64,6 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
                     manaStorage.setCapacity(newCapacity);
                     manaStorage.setMaxTransfer(newCapacity);
 
-                    if (level.getBlockEntity(getBlockPos().below(3).north(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
-                        shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
-                        shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
-                    }
-
-                    if (level.getBlockEntity(getBlockPos().below(3).east(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
-                        shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
-                        shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
-                    }
-
-                    if (level.getBlockEntity(getBlockPos().below(3).south(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
-                        shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
-                        shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
-                    }
-
-                    if (level.getBlockEntity(getBlockPos().below(3).west(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
-                        shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
-                        shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
-                    }
-
                     changeGeneratingMana(getTotalGeneratingMana(coreLevel));
                 }
             }
@@ -120,37 +97,6 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
                 return 2;
             }
         };
-    }
-
-    @Override
-    public void syncMana() {
-        super.syncMana();
-
-        int coreLevel = Math.max(1, CoreItem.getLevel(itemHandler.getStackInSlot(0).getOrCreateTag()));
-
-        long newCapacity = baseCapacity * ((long) coreLevel * coreLevel);
-
-        if (level != null && !level.isClientSide()) {
-            if (level.getBlockEntity(getBlockPos().below(3).north(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
-                shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
-                shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
-            }
-
-            if (level.getBlockEntity(getBlockPos().below(3).east(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
-                shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
-                shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
-            }
-
-            if (level.getBlockEntity(getBlockPos().below(3).south(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
-                shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
-                shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
-            }
-
-            if (level.getBlockEntity(getBlockPos().below(3).west(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
-                shrineOutputBlockEntity.manaStorage.setCapacity(newCapacity);
-                shrineOutputBlockEntity.manaStorage.setMaxTransfer(newCapacity);
-            }
-        }
     }
 
     public long getTotalGeneratingMana(int coreLevel) {
@@ -194,7 +140,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
             if (blockEntity.progress >= blockEntity.maxProgress) {
                 blockEntity.resetProgress();
-                receiveMana(blockEntity, blockEntity.getGeneratingMana(), false);
+                blockEntity.receiveMana(blockEntity.getGeneratingMana(), false);
             }
 
             setChanged(level, pos, state);

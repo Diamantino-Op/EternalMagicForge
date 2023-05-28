@@ -107,15 +107,15 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
         lazyManaHandler.invalidate();
     }
 
-    public static long extractMana(ManaBlockEntityBase blockEntity, long amount, boolean simulate) {
-        return blockEntity.manaStorage.extractMana(amount, simulate);
+    public long extractMana(long amount, boolean simulate) {
+        return this.manaStorage.extractMana(amount, simulate);
     }
 
-    public static long receiveMana(ManaBlockEntityBase blockEntity, long amount, boolean simulate) {
-        return blockEntity.manaStorage.receiveMana(amount, simulate);
+    public long receiveMana(long amount, boolean simulate) {
+        return this.manaStorage.receiveMana(amount, simulate);
     }
 
-    public static boolean hasEnoughMana(ManaBlockEntityBase blockEntity, long requiredMana) {
-        return blockEntity.manaStorage.getManaStored() >= requiredMana;
+    public boolean hasEnoughMana(long requiredMana) {
+        return this.manaStorage.getManaStored() >= requiredMana;
     }
 }

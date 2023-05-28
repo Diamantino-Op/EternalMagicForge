@@ -141,9 +141,9 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
             long requiredMana = upgrade.rarity.id * 100L;
             blockEntity.changeRequiredMana(requiredMana);
 
-            if (hasEnoughMana(blockEntity, requiredMana)) {
+            if (blockEntity.hasEnoughMana(requiredMana)) {
                 blockEntity.progress++;
-                extractMana(blockEntity, requiredMana, false);
+                blockEntity.extractMana(requiredMana, false);
                 setChanged(level, pos, state);
 
                 if(blockEntity.progress >= blockEntity.maxProgress) {
@@ -155,9 +155,9 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
             long requiredMana = (Math.max(CoreItem.getLevel(coreStack.getOrCreateTag()), 1) * 1000L) * (coreElement == CoreItem.WandCoreElement.infinity ? 10 : 1);
             blockEntity.changeRequiredMana(requiredMana);
 
-            if (hasEnoughMana(blockEntity, requiredMana)) {
+            if (blockEntity.hasEnoughMana(requiredMana)) {
                 blockEntity.progress++;
-                extractMana(blockEntity, requiredMana, false);
+                blockEntity.extractMana(requiredMana, false);
                 setChanged(level, pos, state);
 
                 if(blockEntity.progress >= blockEntity.maxProgress) {
@@ -175,7 +175,7 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
         blockEntity.itemHandler.getStackInSlot(0).getCapability(ItemStackManaStorage.itemStackManaStorageCapability).ifPresent(itemStackManaStorage -> {
             long manaExtract = itemStackManaStorage.extractMana(blockEntity.manaStorage.getMaxManaStored() - blockEntity.manaStorage.getManaStored(), false);
 
-            receiveMana(blockEntity, manaExtract, false);
+            blockEntity.receiveMana(manaExtract, false);
         });
     }
 
