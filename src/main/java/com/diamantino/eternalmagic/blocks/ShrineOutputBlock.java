@@ -29,8 +29,8 @@ public class ShrineOutputBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return null;
+    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+        return new ShrineOutputBlockEntity(pPos, pState);
     }
 
     @Override

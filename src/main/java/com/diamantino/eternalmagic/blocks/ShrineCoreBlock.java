@@ -26,14 +26,15 @@ public class ShrineCoreBlock extends BaseEntityBlock {
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult hitResult) {
-        if (!level.isClientSide()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
 
-            if (blockEntity instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer) player, shrineCoreBlockEntity, pos);
-            } else {
-                throw new IllegalStateException("Container provider is missing!");
+        if (blockEntity instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
+            if (shrineCoreBlockEntity.onClick(player)) {
+                if (!level.isClientSide())
+                    NetworkHooks.openScreen((ServerPlayer) player, shrineCoreBlockEntity, pos);
             }
+        } else {
+            throw new IllegalStateException("Container provider is missing!");
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide());

@@ -1,5 +1,6 @@
 package com.diamantino.eternalmagic.networking.s2c;
 
+import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.blockentities.ManaBlockEntityBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -24,7 +25,7 @@ public class ManaSyncS2CPacket {
     }
 
     public ManaSyncS2CPacket(FriendlyByteBuf buf) {
-        this.manaStored = buf.readInt();
+        this.manaStored = buf.readLong();
         this.maxReceive = buf.readLong();
         this.maxExtract = buf.readLong();
         this.capacity = buf.readLong();

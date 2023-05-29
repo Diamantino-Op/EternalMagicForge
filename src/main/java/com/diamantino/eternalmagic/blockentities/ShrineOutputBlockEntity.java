@@ -14,12 +14,12 @@ public class ShrineOutputBlockEntity extends BlockEntity {
     public ShrineOutputBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntityTypes.shrineOutputBlockEntity.get(), pPos, pBlockState);
 
-        this.corePos = new BlockPos(0, 0, 0);
+        this.corePos = null;
         this.isLinked = false;
     }
 
     public long extractMana(long amount, boolean simulate) {
-        if (isLinked && level != null && !level.isClientSide() && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
+        if (isLinked && level != null && !level.isClientSide() && corePos != null && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
             return shrineCoreBlockEntity.extractMana(amount, simulate);
         }
 
@@ -27,7 +27,7 @@ public class ShrineOutputBlockEntity extends BlockEntity {
     }
 
     public long receiveMana(long amount, boolean simulate) {
-        if (isLinked && level != null && !level.isClientSide() && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
+        if (isLinked && level != null && !level.isClientSide() && corePos != null && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
             return shrineCoreBlockEntity.receiveMana(amount, simulate);
         }
 
@@ -35,7 +35,7 @@ public class ShrineOutputBlockEntity extends BlockEntity {
     }
 
     public boolean hasEnoughMana(long requiredMana) {
-        if (isLinked && level != null && !level.isClientSide() && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
+        if (isLinked && level != null && !level.isClientSide() && corePos != null && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
             return shrineCoreBlockEntity.hasEnoughMana(requiredMana);
         }
 
@@ -43,10 +43,13 @@ public class ShrineOutputBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        nbt.putInt("coreX", corePos.getX());
-        nbt.putInt("coreY", corePos.getY());
-        nbt.putInt("coreZ", corePos.getZ());
+    protected void saveAdditional(@NotNull CompoundTag nbt) {
+        if (corePos != null) {
+            nbt.putInt("coreX", corePos.getX());
+            nbt.putInt("coreY", corePos.getY());
+            nbt.putInt("coreZ", corePos.getZ());
+        }
+
         nbt.putBoolean("linked", isLinked);
 
         super.saveAdditional(nbt);
@@ -54,7 +57,8 @@ public class ShrineOutputBlockEntity extends BlockEntity {
 
     @Override
     public void load(@NotNull CompoundTag nbt) {
-        corePos = new BlockPos(nbt.getInt("coreX"), nbt.getInt("coreY"), nbt.getInt("coreZ"));
+        if (nbt.contains("coreX"))
+            corePos = new BlockPos(nbt.getInt("coreX"), nbt.getInt("coreY"), nbt.getInt("coreZ"));
         isLinked = nbt.getBoolean("linked");
 
         super.load(nbt);

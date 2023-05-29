@@ -1,5 +1,6 @@
 package com.diamantino.eternalmagic.blockentities;
 
+import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModCapabilities;
@@ -37,13 +38,15 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
             public void onManaChanged() {
                 setChanged();
 
-                syncMana();
+                if (level != null && !level.isClientSide()) {
+                    syncMana();
+                }
             }
         };
     }
 
     public void syncMana() {
-        ModMessages.sendToClients(new ManaSyncS2CPacket(this.manaStorage.getManaStored(), this.manaStorage.getMaxReceive(), this.manaStorage.getMaxExtract(), this.manaStorage.getCapacity(), getBlockPos()));
+        ModMessages.sendToClients(new ManaSyncS2CPacket(this.manaStorage.getManaStored(), this.manaStorage.getMaxReceive(), this.manaStorage.getMaxExtract(), this.manaStorage.getCapacity(), this.getBlockPos()));
     }
 
     public IManaStorage getManaStorage() {

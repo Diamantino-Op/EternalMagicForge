@@ -67,5 +67,7 @@
   "upgrade.wand.eternalmagic.cast_time_reduction": "Cast Time Reduction",
   "upgrade.wand.eternalmagic.mana_usage_reduction": "Mana Usage Reduction",
   "upgrade.wand.eternalmagic.mana_capacity": "Mana Capacity",
-  "upgrade.wand.eternalmagic.slot": "Slot"
+  "upgrade.wand.eternalmagic.slot": "Slot",
+  
+  "msg.eternalmagic.wrong_block_at": "Wrong Block At: %d %d %d, Found: %s, Expected: %s"
 }

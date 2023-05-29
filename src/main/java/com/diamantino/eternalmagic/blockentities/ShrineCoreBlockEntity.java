@@ -3,14 +3,22 @@ package com.diamantino.eternalmagic.blockentities;
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.items.CoreItem;
+import com.diamantino.eternalmagic.multiblocks.MultiblockUtils;
 import com.diamantino.eternalmagic.networking.s2c.GeneratingManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
+import com.diamantino.eternalmagic.networking.s2c.MultiblockBlockSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
+import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.diamantino.eternalmagic.registration.ModMessages;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -20,7 +28,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -30,10 +41,16 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuProvider {
     private final ItemStackHandler itemHandler;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+
+    public List<StructureTemplate.StructureBlockInfo> multiblockTemplateBlocks = new ArrayList<>();
+    public boolean isAssembled = false;
 
     protected final ContainerData data;
 
@@ -44,7 +61,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     public static long baseGeneratedMana = 10;
 
     private long generatingMana = 0;
-    private int generatingManaMultiplier = 1;
+    private float generatingManaMultiplier = 1F;
 
     public ShrineCoreBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntityTypes.shrineCoreBlockEntity.get(), pPos, pBlockState, baseCapacity);
@@ -100,7 +117,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     }
 
     public long getTotalGeneratingMana(int coreLevel) {
-        return (baseGeneratedMana * ((long) coreLevel * coreLevel)) * generatingManaMultiplier;
+        return Math.round((baseGeneratedMana * ((long) coreLevel * coreLevel)) * generatingManaMultiplier);
     }
 
     @Override
@@ -128,6 +145,89 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
         this.generatingMana = generatingMana;
     }
 
+    public boolean onClick(Player player) {
+        boolean ret = true;
+
+        this.generatingManaMultiplier = 1;
+
+        if (this.level != null && multiblockTemplateBlocks.size() > 0) {
+            for (StructureTemplate.StructureBlockInfo structureBlockInfo : multiblockTemplateBlocks) {
+                BlockPos pos = structureBlockInfo.pos.offset(-5, -4, -5);
+                BlockPos worldPos = this.getBlockPos().offset(pos.getX(), pos.getY(), pos.getZ());
+                BlockState state = structureBlockInfo.state;
+                BlockState worldState = this.level.getBlockState(worldPos);
+
+                if (state.is(Blocks.IRON_BLOCK)) {
+                    if (worldState.getBlock().getName().toString().contains("shrine_stone")) {
+                        this.generatingManaMultiplier += 0f;
+                    } else if (worldState.is(Blocks.IRON_BLOCK)) {
+                        this.generatingManaMultiplier += 0.15f;
+                    } else if (worldState.is(Blocks.GOLD_BLOCK)) {
+                        this.generatingManaMultiplier += 0.25f;
+                    } else if (worldState.is(Blocks.DIAMOND_BLOCK)) {
+                        this.generatingManaMultiplier += 0.5f;
+                    } else if (worldState.is(Blocks.EMERALD_BLOCK)) {
+                        this.generatingManaMultiplier += 0.75f;
+                    } else {
+                        ret = false;
+
+                        MultiblockUtils.sendWrongBlockMsg(player, worldPos, worldState.getBlock().getName().getString(), state.getBlock().getName().getString());
+
+                        break;
+                    }
+                } else {
+                    if (worldState != state) {
+                        ret = false;
+
+                        MultiblockUtils.sendWrongBlockMsg(player, worldPos, worldState.getBlock().getName().getString(), state.getBlock().getName().getString());
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (ret) {
+            assemble();
+        } else {
+            disassemble();
+        }
+
+        return ret;
+    }
+
+    private void assemble() {
+        this.isAssembled = true;
+
+        BlockPos basePos = this.getBlockPos().below(3);
+
+        if (this.level != null) {
+            if (this.level.getBlockEntity(basePos.north(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                shrineOutputBlockEntity.corePos = this.getBlockPos();
+                shrineOutputBlockEntity.isLinked = true;
+            }
+
+            if (this.level.getBlockEntity(basePos.east(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                shrineOutputBlockEntity.corePos = this.getBlockPos();
+                shrineOutputBlockEntity.isLinked = true;
+            }
+
+            if (this.level.getBlockEntity(basePos.south(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                shrineOutputBlockEntity.corePos = this.getBlockPos();
+                shrineOutputBlockEntity.isLinked = true;
+            }
+
+            if (this.level.getBlockEntity(basePos.west(5)) instanceof ShrineOutputBlockEntity shrineOutputBlockEntity) {
+                shrineOutputBlockEntity.corePos = this.getBlockPos();
+                shrineOutputBlockEntity.isLinked = true;
+            }
+        }
+    }
+
+    private void disassemble() {
+        this.isAssembled = false;
+    }
+
     public static void tick(Level level, BlockPos pos, BlockState state, ShrineCoreBlockEntity blockEntity) {
         if(level.isClientSide()) {
             return;
@@ -135,7 +235,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
         ItemStack stack = blockEntity.itemHandler.getStackInSlot(0);
 
-        if (!stack.isEmpty()) {
+        if (!stack.isEmpty() && !(blockEntity.manaStorage.getManaStored() == blockEntity.manaStorage.getCapacity())) {
             blockEntity.progress++;
 
             if (blockEntity.progress >= blockEntity.maxProgress) {
@@ -178,6 +278,8 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("progress", this.progress);
         nbt.putLong("generatingMana", this.getGeneratingMana());
+        nbt.putFloat("generatingManaMultiplier", this.generatingManaMultiplier);
+        nbt.putBoolean("isAssembled", this.isAssembled);
 
         super.saveAdditional(nbt);
     }
@@ -187,6 +289,8 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("progress");
         changeGeneratingMana(nbt.getLong("generatingMana"));
+        generatingManaMultiplier = nbt.getFloat("generatingManaMultiplier");
+        isAssembled = nbt.getBoolean("isAssembled");
 
         super.load(nbt);
     }
@@ -203,6 +307,20 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     @Override
     public void onLoad() {
         super.onLoad();
+
+        if (this.level != null) {
+            StructureTemplate multiblock = MultiblockUtils.loadMultiblockNbt(this.level, new ResourceLocation(ModReferences.modId, "shrine"));
+
+            if (multiblock != null) {
+                StructurePlaceSettings settings = new StructurePlaceSettings().setRandom(this.level.random);
+
+                multiblockTemplateBlocks.clear();
+
+                multiblockTemplateBlocks.addAll(settings.getRandomPalette(multiblock.palettes, this.getBlockPos()).blocks());
+
+                //ModMessages.sendToClients(new MultiblockBlockSyncS2CPacket(multiblockTemplateBlocks, this.getBlockPos()));
+            }
+        }
 
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
     }
