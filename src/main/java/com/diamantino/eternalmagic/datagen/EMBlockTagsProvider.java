@@ -25,7 +25,7 @@ public class EMBlockTagsProvider extends BlockTagsProvider implements DataProvid
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider pProvider) {
-        for (RegistryObject<? extends Block> block : ModBlocks.decorativeBlocks) {
+        for (RegistryObject<? extends Block> block : ModBlocks.decorativeBlocks.values()) {
             if (block.getId().getPath().contains("_wall")) {
                 tag(BlockTags.WALLS).add(block.get());
             }
@@ -34,12 +34,12 @@ public class EMBlockTagsProvider extends BlockTagsProvider implements DataProvid
             addBlockToMineLevelTag(block.get(), ModBlocks.mineLevelMap.get(block.getId()));
         }
 
-        for (RegistryObject<? extends Block> block : ModBlocks.functionalBlocks) {
+        for (RegistryObject<? extends Block> block : ModBlocks.functionalBlocks.values()) {
             addBlockToMineToolTag(block.get(), ModBlocks.mineToolMap.get(block.getId()));
             addBlockToMineLevelTag(block.get(), ModBlocks.mineLevelMap.get(block.getId()));
         }
 
-        for (RegistryObject<? extends Block> block : ModBlocks.resourcesBlocks) {
+        for (RegistryObject<? extends Block> block : ModBlocks.resourcesBlocks.values()) {
             addBlockToMineToolTag(block.get(), ModBlocks.mineToolMap.get(block.getId()));
             addBlockToMineLevelTag(block.get(), ModBlocks.mineLevelMap.get(block.getId()));
         }

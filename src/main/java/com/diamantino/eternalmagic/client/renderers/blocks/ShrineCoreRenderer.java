@@ -4,6 +4,8 @@ import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.blockentities.ShrineCoreBlockEntity;
 import com.diamantino.eternalmagic.client.model.entities.ShrineCoreInternalModel;
 import com.diamantino.eternalmagic.client.model.entities.WandBenchSphereModel;
+import com.diamantino.eternalmagic.multiblocks.MultiblockUtils;
+import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -28,11 +30,13 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,8 +44,16 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
     public static final Material coreLocation = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(ModReferences.modId, "entity/shrine_core_internal"));
     private final ShrineCoreInternalModel coreModel;
 
+    private final List<BlockState> multiplierBlocks = new ArrayList<>();
+
     public ShrineCoreRenderer(BlockEntityRendererProvider.Context pContext) {
         this.coreModel = new ShrineCoreInternalModel(pContext.bakeLayer(ShrineCoreInternalModel.layer));
+
+        this.multiplierBlocks.add(ModBlocks.decorativeBlocks.get("shrine_stone").get().defaultBlockState());
+        this.multiplierBlocks.add(Blocks.IRON_BLOCK.defaultBlockState());
+        this.multiplierBlocks.add(Blocks.GOLD_BLOCK.defaultBlockState());
+        this.multiplierBlocks.add(Blocks.DIAMOND_BLOCK.defaultBlockState());
+        this.multiplierBlocks.add(Blocks.EMERALD_BLOCK.defaultBlockState());
     }
 
     @Override
@@ -49,7 +61,8 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
         ItemStack itemStack = pBlockEntity.getRenderStack();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-        renderBuilding(pBlockEntity, pPartialTick, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay);
+        if (!pBlockEntity.isAssembled)
+            renderBuilding(pBlockEntity, pPoseStack, pBufferSource);
 
         pPoseStack.pushPose();
         pPoseStack.translate(0.5F, -0.5F, 0.5F);
@@ -73,7 +86,7 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
         pPoseStack.popPose();
     }
 
-    private void renderBuilding(ShrineCoreBlockEntity pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+    private void renderBuilding(ShrineCoreBlockEntity pBlockEntity, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource) {
         if (Minecraft.getInstance().level != null && pBlockEntity.multiblockTemplateBlocks.size() > 0) {
             for (StructureTemplate.StructureBlockInfo structureBlockInfo : pBlockEntity.multiblockTemplateBlocks) {
                 BlockPos pos = structureBlockInfo.pos.offset(-5, -4, -5);
@@ -81,13 +94,17 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
                 BlockState state = structureBlockInfo.state;
                 BlockState worldState = Minecraft.getInstance().level.getBlockState(worldPos);
 
-                BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
-
-                if (worldState.isAir()) {
+                if (state.is(Blocks.IRON_BLOCK)) {
                     pPoseStack.pushPose();
                     pPoseStack.translate(pos.getX(), pos.getY(), pos.getZ());
 
-                    translateAndRenderModel(pBlockEntity, state, pPoseStack, pBufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model, true);
+                    boolean valid = (worldState.isAir() || (worldState.is(ModBlocks.decorativeBlocks.get("shrine_stone").get())|| worldState.is(Blocks.IRON_BLOCK) || worldState.is(Blocks.GOLD_BLOCK) || worldState.is(Blocks.DIAMOND_BLOCK) || worldState.is(Blocks.EMERALD_BLOCK)));
+
+                    BlockState localState = multiplierBlocks.get(pBlockEntity.showingBlockId);
+
+                    BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(localState);
+
+                    translateAndRenderModel(pBlockEntity, localState, pPoseStack, pBufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model, valid);
                     renderBlockEntity(Minecraft.getInstance().level, pos, pPoseStack, pBufferSource);
 
                     pPoseStack.popPose();
@@ -95,7 +112,9 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
                     pPoseStack.pushPose();
                     pPoseStack.translate(pos.getX(), pos.getY(), pos.getZ());
 
-                    translateAndRenderModel(pBlockEntity, state, pPoseStack, pBufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model, false);
+                    BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
+
+                    translateAndRenderModel(pBlockEntity, state, pPoseStack, pBufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model, worldState.isAir());
                     renderBlockEntity(Minecraft.getInstance().level, pos, pPoseStack, pBufferSource);
 
                     pPoseStack.popPose();

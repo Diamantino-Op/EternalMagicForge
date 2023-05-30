@@ -41,11 +41,11 @@ public class EMLootTableProvider extends LootTableProvider {
 
         @Override
         public void generate() {
-            for (RegistryObject<? extends Block> block : ModBlocks.functionalBlocks) {
+            for (RegistryObject<? extends Block> block : ModBlocks.functionalBlocks.values()) {
                 dropSelf(block.get());
             }
 
-            for (RegistryObject<? extends Block> block : ModBlocks.decorativeBlocks) {
+            for (RegistryObject<? extends Block> block : ModBlocks.decorativeBlocks.values()) {
                 dropSelf(block.get());
             }
         }

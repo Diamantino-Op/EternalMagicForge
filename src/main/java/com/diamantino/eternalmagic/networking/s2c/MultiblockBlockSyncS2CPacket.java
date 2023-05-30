@@ -1,11 +1,15 @@
 package com.diamantino.eternalmagic.networking.s2c;
 
+import com.diamantino.eternalmagic.EternalMagic;
 import com.diamantino.eternalmagic.blockentities.ShrineCoreBlockEntity;
 import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
+import com.diamantino.eternalmagic.multiblocks.Multiblock;
+import com.diamantino.eternalmagic.multiblocks.MultiblockRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -17,17 +21,21 @@ import java.util.function.Supplier;
 
 public class MultiblockBlockSyncS2CPacket {
     private final List<StructureTemplate.StructureBlockInfo> multiblockTemplateBlocks;
-    private final BlockPos pos;
+    private final ResourceLocation multiblockName;
+    private final int size;
 
-    public MultiblockBlockSyncS2CPacket(List<StructureTemplate.StructureBlockInfo> multiblockTemplateBlocks, BlockPos pos) {
+    public MultiblockBlockSyncS2CPacket(List<StructureTemplate.StructureBlockInfo> multiblockTemplateBlocks, ResourceLocation multiblockName, int size) {
         this.multiblockTemplateBlocks = multiblockTemplateBlocks;
-        this.pos = pos;
+        this.multiblockName = multiblockName;
+        this.size = size;
     }
 
     public MultiblockBlockSyncS2CPacket(FriendlyByteBuf buf) {
         this.multiblockTemplateBlocks = new ArrayList<>();
 
-        this.pos = buf.readBlockPos();
+        this.size = buf.readInt();
+
+        this.multiblockName = buf.readResourceLocation();
 
         int len = buf.readInt();
 
@@ -35,12 +43,15 @@ public class MultiblockBlockSyncS2CPacket {
             BlockPos pos = buf.readBlockPos();
             BlockState state = buf.readById(Block.BLOCK_STATE_REGISTRY);
 
-            multiblockTemplateBlocks.add(new StructureTemplate.StructureBlockInfo(pos, state, null));
+            if (state != null)
+                multiblockTemplateBlocks.add(new StructureTemplate.StructureBlockInfo(pos, state, null));
         }
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeBlockPos(pos);
+        buf.writeInt(size);
+
+        buf.writeResourceLocation(multiblockName);
 
         buf.writeInt(multiblockTemplateBlocks.size());
 
@@ -57,11 +68,12 @@ public class MultiblockBlockSyncS2CPacket {
         NetworkEvent.Context context = supplier.get();
 
         context.enqueueWork(() -> {
-            if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) instanceof ShrineCoreBlockEntity blockEntity) {
-                blockEntity.multiblockTemplateBlocks.clear();
+            MultiblockRegistry registry = EternalMagic.instance.multiblockRegistry;
 
-                blockEntity.multiblockTemplateBlocks.addAll(multiblockTemplateBlocks);
-            }
+            if (registry.multiblockMap.size() >= size)
+                registry.multiblockMap.clear();
+
+            registry.addMultiblock(multiblockName, new Multiblock(multiblockName, multiblockTemplateBlocks));
         });
     }
 }

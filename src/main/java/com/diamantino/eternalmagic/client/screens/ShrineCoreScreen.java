@@ -51,7 +51,10 @@ public class ShrineCoreScreen extends AbstractContainerScreen<ShrineCoreMenu> {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        //this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".wand_bench.required_mana", TextUtils.formatNumberWithPrefix(menu.getRequiredMana())), 26, 126, 0xff0000);
+        this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".shrine_core.block_multiplier", ), 26, 126, 0xff0000);
+        this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".shrine_core.core_multiplier", ), 26, 126, 0xff0000);
+        this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".shrine_core.level", ), 26, 126, 0xff0000);
+        this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".shrine_core.mana_per_second", ), 26, 126, 0xff0000);
 
         renderManaAreaTooltips(poseStack, mouseX, mouseY, x, y);
     }

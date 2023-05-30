@@ -1,23 +1,19 @@
 package com.diamantino.eternalmagic.blockentities;
 
+import com.diamantino.eternalmagic.EternalMagic;
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.multiblocks.MultiblockUtils;
 import com.diamantino.eternalmagic.networking.s2c.GeneratingManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
-import com.diamantino.eternalmagic.networking.s2c.MultiblockBlockSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.diamantino.eternalmagic.registration.ModMessages;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -30,7 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
@@ -62,6 +57,9 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
     private long generatingMana = 0;
     private float generatingManaMultiplier = 1F;
+
+    public int showingBlockId = 0;
+    public int showingChangeCountdown = 80;
 
     public ShrineCoreBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntityTypes.shrineCoreBlockEntity.get(), pPos, pBlockState, baseCapacity);
@@ -138,7 +136,8 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     public void changeGeneratingMana(long generatingMana) {
         setGeneratingMana(generatingMana);
 
-        ModMessages.sendToClients(new GeneratingManaSyncS2CPacket(generatingMana, worldPosition));
+        if (level != null && !level.isClientSide())
+            ModMessages.sendToClients(new GeneratingManaSyncS2CPacket(generatingMana, worldPosition));
     }
 
     public void setGeneratingMana(long generatingMana) {
@@ -158,7 +157,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
                 BlockState worldState = this.level.getBlockState(worldPos);
 
                 if (state.is(Blocks.IRON_BLOCK)) {
-                    if (worldState.getBlock().getName().toString().contains("shrine_stone")) {
+                    if (worldState.is(ModBlocks.decorativeBlocks.get("shrine_stone").get())) {
                         this.generatingManaMultiplier += 0f;
                     } else if (worldState.is(Blocks.IRON_BLOCK)) {
                         this.generatingManaMultiplier += 0.15f;
@@ -230,23 +229,34 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
     public static void tick(Level level, BlockPos pos, BlockState state, ShrineCoreBlockEntity blockEntity) {
         if(level.isClientSide()) {
-            return;
-        }
+            if (!blockEntity.isAssembled) {
+                if (blockEntity.showingChangeCountdown <= 0) {
+                    if (blockEntity.showingBlockId == 4)
+                        blockEntity.showingBlockId = 0;
+                    else
+                        blockEntity.showingBlockId++;
 
-        ItemStack stack = blockEntity.itemHandler.getStackInSlot(0);
+                    blockEntity.showingChangeCountdown = 80;
+                }
 
-        if (!stack.isEmpty() && !(blockEntity.manaStorage.getManaStored() == blockEntity.manaStorage.getCapacity())) {
-            blockEntity.progress++;
-
-            if (blockEntity.progress >= blockEntity.maxProgress) {
-                blockEntity.resetProgress();
-                blockEntity.receiveMana(blockEntity.getGeneratingMana(), false);
+                blockEntity.showingChangeCountdown = Math.max(blockEntity.showingChangeCountdown - 1, 0);
             }
-
-            setChanged(level, pos, state);
         } else {
-            blockEntity.resetProgress();
-            setChanged(level, pos, state);
+            ItemStack stack = blockEntity.itemHandler.getStackInSlot(0);
+
+            if (!stack.isEmpty() && !(blockEntity.manaStorage.getManaStored() == blockEntity.manaStorage.getCapacity())) {
+                blockEntity.progress++;
+
+                if (blockEntity.progress >= blockEntity.maxProgress) {
+                    blockEntity.resetProgress();
+                    blockEntity.receiveMana(blockEntity.getGeneratingMana(), false);
+                }
+
+                setChanged(level, pos, state);
+            } else {
+                blockEntity.resetProgress();
+                setChanged(level, pos, state);
+            }
         }
     }
 
@@ -308,19 +318,9 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     public void onLoad() {
         super.onLoad();
 
-        if (this.level != null) {
-            StructureTemplate multiblock = MultiblockUtils.loadMultiblockNbt(this.level, new ResourceLocation(ModReferences.modId, "shrine"));
+        this.multiblockTemplateBlocks.clear();
 
-            if (multiblock != null) {
-                StructurePlaceSettings settings = new StructurePlaceSettings().setRandom(this.level.random);
-
-                multiblockTemplateBlocks.clear();
-
-                multiblockTemplateBlocks.addAll(settings.getRandomPalette(multiblock.palettes, this.getBlockPos()).blocks());
-
-                //ModMessages.sendToClients(new MultiblockBlockSyncS2CPacket(multiblockTemplateBlocks, this.getBlockPos()));
-            }
-        }
+        this.multiblockTemplateBlocks.addAll(EternalMagic.instance.multiblockRegistry.getMultiblockByName(new ResourceLocation(ModReferences.modId, "shrine")).multiblockTemplateBlocks());
 
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
     }

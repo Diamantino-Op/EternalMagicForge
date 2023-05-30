@@ -32,11 +32,11 @@ public class EMItemModelProvider extends ItemModelProvider {
             wandUpgrade(item.get());
         }
 
-        for (RegistryObject<? extends Block> block : ModBlocks.functionalBlocks) {
+        for (RegistryObject<? extends Block> block : ModBlocks.functionalBlocks.values()) {
             this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath()));
         }
 
-        for (RegistryObject<? extends Block> block : ModBlocks.decorativeBlocks) {
+        for (RegistryObject<? extends Block> block : ModBlocks.decorativeBlocks.values()) {
             if (block.getId().getPath().contains("_wall")) {
                 this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath() + "_post"));
             } else {
@@ -44,7 +44,7 @@ public class EMItemModelProvider extends ItemModelProvider {
             }
         }
 
-        for (RegistryObject<? extends Block> block : ModBlocks.resourcesBlocks) {
+        for (RegistryObject<? extends Block> block : ModBlocks.resourcesBlocks.values()) {
             this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath()));
         }
     }

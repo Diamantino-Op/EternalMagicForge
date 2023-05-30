@@ -30,9 +30,9 @@ public class ModBlocks {
     public static final DeferredRegister<Block> blocks = DeferredRegister.create(ForgeRegistries.BLOCKS, ModReferences.modId);
 
 
-    public static final List<RegistryObject<? extends Block>> functionalBlocks = new ArrayList<>();
-    public static final List<RegistryObject<? extends Block>> decorativeBlocks = new ArrayList<>();
-    public static final List<RegistryObject<? extends Block>> resourcesBlocks = new ArrayList<>();
+    public static final Map<String, RegistryObject<? extends Block>> functionalBlocks = new LinkedHashMap<>();
+    public static final Map<String, RegistryObject<? extends Block>> decorativeBlocks = new LinkedHashMap<>();
+    public static final Map<String, RegistryObject<? extends Block>> resourcesBlocks = new LinkedHashMap<>();
 
     public static final List<RegistryObject<? extends Block>> simpleBlocks = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class ModBlocks {
 
     private static <T extends Block> RegistryObject<T> registerFunctionalBlock(String name, boolean isSimple, MineTool tool, MineLevel mineLevel, Supplier<T> block) {
         RegistryObject<T> toReturn = blocks.register(name, block);
-        functionalBlocks.add(toReturn);
+        functionalBlocks.put(name, toReturn);
         registerBlockItem(name, toReturn);
 
         mineToolMap.put(toReturn.getId(), tool);
@@ -70,7 +70,7 @@ public class ModBlocks {
 
     private static <T extends Block> RegistryObject<T> registerDecorativeBlock(String name, boolean isSimple, MineTool tool, MineLevel mineLevel, Supplier<T> block) {
         RegistryObject<T> toReturn = blocks.register(name, block);
-        decorativeBlocks.add(toReturn);
+        decorativeBlocks.put(name, toReturn);
         registerBlockItem(name, toReturn);
 
         mineToolMap.put(toReturn.getId(), tool);
@@ -83,7 +83,7 @@ public class ModBlocks {
 
     private static <T extends Block> RegistryObject<T> registerResourceBlock(String name, boolean isSimple, MineTool tool, MineLevel mineLevel, Supplier<T> block) {
         RegistryObject<T> toReturn = blocks.register(name, block);
-        resourcesBlocks.add(toReturn);
+        resourcesBlocks.put(name, toReturn);
         registerBlockItem(name, toReturn);
 
         mineToolMap.put(toReturn.getId(), tool);
