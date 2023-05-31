@@ -61,9 +61,6 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
         ItemStack itemStack = pBlockEntity.getRenderStack();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-        if (!pBlockEntity.isAssembled)
-            renderBuilding(pBlockEntity, pPoseStack, pBufferSource);
-
         pPoseStack.pushPose();
         pPoseStack.translate(0.5F, -0.5F, 0.5F);
 
@@ -84,6 +81,9 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
         }
 
         pPoseStack.popPose();
+
+        if (!pBlockEntity.isAssembled)
+            renderBuilding(pBlockEntity, pPoseStack, pBufferSource);
     }
 
     private void renderBuilding(ShrineCoreBlockEntity pBlockEntity, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource) {

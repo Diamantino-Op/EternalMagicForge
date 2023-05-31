@@ -55,11 +55,12 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     public static long baseCapacity = 10000;
     public static long baseGeneratedMana = 10;
 
-    private long generatingMana = 0;
-    private float generatingManaMultiplier = 1F;
+    public long generatingMana = 0;
+    public float generatingManaMultiplier = 1F;
+    public int coreLevel = 0;
 
     public int showingBlockId = 0;
-    public int showingChangeCountdown = 80;
+    private int showingChangeCountdown = 80;
 
     public ShrineCoreBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntityTypes.shrineCoreBlockEntity.get(), pPos, pBlockState, baseCapacity);
@@ -69,17 +70,18 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
             protected void onContentsChanged(int slot) {
                 setChanged();
 
-                if(level != null && !level.isClientSide()) {
-                    ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
+                if(level != null) {
+                    if (!level.isClientSide())
+                        ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
 
-                    int coreLevel = Math.max(1, CoreItem.getLevel(getStackInSlot(slot).getOrCreateTag()));
+                    coreLevel = CoreItem.getLevel(getStackInSlot(slot).getOrCreateTag());
 
-                    long newCapacity = baseCapacity * ((long) coreLevel * coreLevel);
+                    long newCapacity = baseCapacity * Math.max(1, ((long) coreLevel * coreLevel));
 
                     manaStorage.setCapacity(newCapacity);
                     manaStorage.setMaxTransfer(newCapacity);
 
-                    changeGeneratingMana(getTotalGeneratingMana(coreLevel));
+                    changeGeneratingMana(getTotalGeneratingMana(getStackInSlot(slot).isEmpty() ? 0 : Math.max(1, coreLevel)));
                 }
             }
 

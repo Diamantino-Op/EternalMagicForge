@@ -51,10 +51,24 @@ public class ShrineCoreScreen extends AbstractContainerScreen<ShrineCoreMenu> {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".shrine_core.block_multiplier", ), 26, 126, 0xff0000);
-        this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".shrine_core.core_multiplier", ), 26, 126, 0xff0000);
-        this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".shrine_core.level", ), 26, 126, 0xff0000);
-        this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".shrine_core.mana_per_second", ), 26, 126, 0xff0000);
+        Component text1 = Component.translatable("screen." + ModReferences.modId + ".shrine_core.block_multiplier", menu.blockEntity.generatingManaMultiplier * 100 + "%");
+        Component text2 = Component.translatable("screen." + ModReferences.modId + ".shrine_core.core_multiplier", (menu.blockEntity.coreLevel * menu.blockEntity.coreLevel) * 10 + "%");
+        Component text3 = Component.translatable("screen." + ModReferences.modId + ".shrine_core.level", menu.blockEntity.coreLevel);
+        Component text4 = Component.translatable("screen." + ModReferences.modId + ".shrine_core.mana_per_second", menu.blockEntity.generatingMana);
+
+        float width3 = this.font.width(text3.getVisualOrderText()) * 0.6f;
+        float width4 = this.font.width(text4.getVisualOrderText()) * 0.6f;
+
+        poseStack.pushPose();
+
+        poseStack.scale(0.6f, 0.6f, 0.6f);
+
+        this.font.draw(poseStack, text1, 7 / 0.6f, 25 / 0.6f, 0xff0000);
+        this.font.draw(poseStack, text2, 7 / 0.6f, 40 / 0.6f, 0xff0000);
+        this.font.draw(poseStack, text4, (176 - width4 - 8) / 0.6f, 25 / 0.6f, 0xff0000);
+        this.font.draw(poseStack, text3, (176 - width3 - 8) / 0.6f, 40 / 0.6f, 0xff0000);
+
+        poseStack.popPose();
 
         renderManaAreaTooltips(poseStack, mouseX, mouseY, x, y);
     }

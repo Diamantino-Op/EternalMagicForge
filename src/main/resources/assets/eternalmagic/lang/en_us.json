@@ -43,6 +43,11 @@
   
   "screen.eternalmagic.wand_bench.required_mana": "Required: %s/t",
   
+  "screen.eternalmagic.shrine_core.block_multiplier": "Block Multiplier: %s",
+  "screen.eternalmagic.shrine_core.core_multiplier": "Core Multiplier: %s",
+  "screen.eternalmagic.shrine_core.level": "Level: %d",
+  "screen.eternalmagic.shrine_core.mana_per_second": "Mana Per Second: %d/s",
+  
   "element.eternalmagic.none": "None",
   "element.eternalmagic.earth": "Earth",
   "element.eternalmagic.air": "Air",
