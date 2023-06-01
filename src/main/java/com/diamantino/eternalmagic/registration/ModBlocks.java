@@ -110,7 +110,7 @@ public class ModBlocks {
         blocks.register(bus);
 
         registerSimpleDecorativeBlocksSet("mana_stone", MineTool.pickaxe, MineLevel.stone, Material.STONE, 1.5F, 6F);
-        registerSimpleDecorativeBlocksSet("shrine_stone", MineTool.pickaxe, MineLevel.iron, Material.STONE, 1.5F, 6F);
+        registerSimpleDecorativeBlocksSet("dark_stone", MineTool.pickaxe, MineLevel.iron, Material.STONE, 1.5F, 6F);
     }
 
     public enum MineTool {

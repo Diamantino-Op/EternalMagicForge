@@ -3,17 +3,16 @@ package com.diamantino.eternalmagic.client.renderers.blocks;
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.blockentities.ShrineCoreBlockEntity;
 import com.diamantino.eternalmagic.client.model.entities.ShrineCoreInternalModel;
-import com.diamantino.eternalmagic.client.model.entities.WandBenchSphereModel;
-import com.diamantino.eternalmagic.multiblocks.MultiblockUtils;
+import com.diamantino.eternalmagic.multiblocks.MultiblockLevel;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -34,6 +33,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
     public ShrineCoreRenderer(BlockEntityRendererProvider.Context pContext) {
         this.coreModel = new ShrineCoreInternalModel(pContext.bakeLayer(ShrineCoreInternalModel.layer));
 
-        this.multiplierBlocks.add(ModBlocks.decorativeBlocks.get("shrine_stone").get().defaultBlockState());
+        this.multiplierBlocks.add(ModBlocks.decorativeBlocks.get("dark_stone").get().defaultBlockState());
         this.multiplierBlocks.add(Blocks.IRON_BLOCK.defaultBlockState());
         this.multiplierBlocks.add(Blocks.GOLD_BLOCK.defaultBlockState());
         this.multiplierBlocks.add(Blocks.DIAMOND_BLOCK.defaultBlockState());
@@ -87,35 +88,47 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
     }
 
     private void renderBuilding(ShrineCoreBlockEntity pBlockEntity, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource) {
-        if (Minecraft.getInstance().level != null && pBlockEntity.multiblockTemplateBlocks.size() > 0) {
+        Level level = Minecraft.getInstance().level;
+
+        if (level != null && pBlockEntity.multiblockTemplateBlocks.size() > 0) {
             for (StructureTemplate.StructureBlockInfo structureBlockInfo : pBlockEntity.multiblockTemplateBlocks) {
                 BlockPos pos = structureBlockInfo.pos.offset(-5, -4, -5);
                 BlockPos worldPos = pBlockEntity.getBlockPos().offset(pos.getX(), pos.getY(), pos.getZ());
                 BlockState state = structureBlockInfo.state;
-                BlockState worldState = Minecraft.getInstance().level.getBlockState(worldPos);
+                BlockState worldState = level.getBlockState(worldPos);
 
-                if (state.is(Blocks.IRON_BLOCK)) {
+                BlockRenderDispatcher blockRenderDispatcher = Minecraft.getInstance().getBlockRenderer();
+
+                if (state.is(Blocks.IRON_BLOCK) && !multiplierBlocks.contains(worldState)) {
                     pPoseStack.pushPose();
                     pPoseStack.translate(pos.getX(), pos.getY(), pos.getZ());
 
-                    boolean valid = (worldState.isAir() || (worldState.is(ModBlocks.decorativeBlocks.get("shrine_stone").get())|| worldState.is(Blocks.IRON_BLOCK) || worldState.is(Blocks.GOLD_BLOCK) || worldState.is(Blocks.DIAMOND_BLOCK) || worldState.is(Blocks.EMERALD_BLOCK)));
+                    boolean valid = (worldState.isAir() || (worldState.is(ModBlocks.decorativeBlocks.get("dark_stone").get())|| worldState.is(Blocks.IRON_BLOCK) || worldState.is(Blocks.GOLD_BLOCK) || worldState.is(Blocks.DIAMOND_BLOCK) || worldState.is(Blocks.EMERALD_BLOCK)));
 
                     BlockState localState = multiplierBlocks.get(pBlockEntity.showingBlockId);
 
-                    BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(localState);
+                    BakedModel model = blockRenderDispatcher.getBlockModel(localState);
 
                     translateAndRenderModel(pBlockEntity, localState, pPoseStack, pBufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model, valid);
-                    renderBlockEntity(Minecraft.getInstance().level, pos, pPoseStack, pBufferSource);
+                    renderBlockEntity(level, pos, pPoseStack, pBufferSource);
 
                     pPoseStack.popPose();
                 } else if (worldState != state) {
                     pPoseStack.pushPose();
                     pPoseStack.translate(pos.getX(), pos.getY(), pos.getZ());
 
-                    BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
+                    BakedModel model = blockRenderDispatcher.getBlockModel(state);
+
+                    FluidState fluidState = state.getFluidState();
+
+                    if (!fluidState.isEmpty()) {
+                        VertexConsumer vertexconsumer = pBufferSource.getBuffer(RenderType.translucent());
+
+                        blockRenderDispatcher.renderLiquid(pos, new MultiblockLevel(level, state, pos), vertexconsumer, state, fluidState);
+                    }
 
                     translateAndRenderModel(pBlockEntity, state, pPoseStack, pBufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model, worldState.isAir());
-                    renderBlockEntity(Minecraft.getInstance().level, pos, pPoseStack, pBufferSource);
+                    renderBlockEntity(level, pos, pPoseStack, pBufferSource);
 
                     pPoseStack.popPose();
                 }
@@ -133,23 +146,25 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
             poseStack.translate(-0.005f, -0.005f, -0.005f);
         }
 
-        List<RenderType> renderTypes = model.getRenderTypes(state, random, model.getModelData(Objects.requireNonNull(Minecraft.getInstance().level), pBlockEntity.getBlockPos(), state, pBlockEntity.getModelData())).asList();
+        ModelData data = model.getModelData(Objects.requireNonNull(Minecraft.getInstance().level), pBlockEntity.getBlockPos(), state, pBlockEntity.getModelData());
+
+        List<RenderType> renderTypes = model.getRenderTypes(state, random, data).asList();
 
         for (RenderType renderType : renderTypes)
-            renderModel(random, model, state, combinedLight, combinedOverlay, poseStack, bufferSource.getBuffer(renderType), renderType, valid);
+            renderModel(random, model, data, state, combinedLight, combinedOverlay, poseStack, bufferSource.getBuffer(renderType), renderType, valid);
 
         poseStack.popPose();
     }
 
-    private static void renderModel(RandomSource random, BakedModel model, BlockState state, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, RenderType renderType, boolean valid) {
+    private static void renderModel(RandomSource random, BakedModel model, ModelData data, BlockState state, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, RenderType renderType, boolean valid) {
 
         for(Direction direction : Direction.values()){
             random.setSeed(42L);
-            renderQuads(poseStack, buffer, model.getQuads(state, direction, random), combinedLight, combinedOverlay, valid);
+            renderQuads(poseStack, buffer, model.getQuads(state, direction, random, data, renderType), combinedLight, combinedOverlay, valid);
         }
 
         random.setSeed(42L);
-        renderQuads(poseStack, buffer, model.getQuads(state, null, random), combinedLight, combinedOverlay, valid);
+        renderQuads(poseStack, buffer, model.getQuads(state, null, random, data, renderType), combinedLight, combinedOverlay, valid);
     }
 
     private static void renderQuads(PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, int combinedLight, int combinedOverlay, boolean valid) {

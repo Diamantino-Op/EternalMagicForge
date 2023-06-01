@@ -1,14 +1,14 @@
 {
   "values": [
-    "eternalmagic:shrine_stone",
-    "eternalmagic:shrine_stone_bricks",
-    "eternalmagic:shrine_stone_bricks_slab",
-    "eternalmagic:shrine_stone_slab",
-    "eternalmagic:shrine_stone_pillar",
-    "eternalmagic:shrine_stone_bricks_stairs",
-    "eternalmagic:shrine_stone_stairs",
-    "eternalmagic:shrine_stone_bricks_wall",
-    "eternalmagic:shrine_stone_wall",
+    "eternalmagic:dark_stone",
+    "eternalmagic:dark_stone_bricks",
+    "eternalmagic:dark_stone_bricks_slab",
+    "eternalmagic:dark_stone_slab",
+    "eternalmagic:dark_stone_pillar",
+    "eternalmagic:dark_stone_bricks_stairs",
+    "eternalmagic:dark_stone_stairs",
+    "eternalmagic:dark_stone_bricks_wall",
+    "eternalmagic:dark_stone_wall",
     "eternalmagic:shrine_core",
     "eternalmagic:shrine_output"
   ]

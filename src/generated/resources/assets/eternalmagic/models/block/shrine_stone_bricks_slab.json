@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "eternalmagic:block/shrine_stone_bricks_slab",
-    "side": "eternalmagic:block/shrine_stone_bricks_slab",
-    "top": "eternalmagic:block/shrine_stone_bricks_slab"
-  }
-}

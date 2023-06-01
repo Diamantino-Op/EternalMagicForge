@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "eternalmagic:block/shrine_stone_pillar_end",
-    "side": "eternalmagic:block/shrine_stone_pillar_side"
-  }
-}

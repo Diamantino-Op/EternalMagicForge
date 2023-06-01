@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "eternalmagic:block/dark_stone_slab"
+    },
+    "type=double": {
+      "model": "eternalmagic:block/dark_stone"
+    },
+    "type=top": {
+      "model": "eternalmagic:block/dark_stone_slab_top"
+    }
+  }
+}

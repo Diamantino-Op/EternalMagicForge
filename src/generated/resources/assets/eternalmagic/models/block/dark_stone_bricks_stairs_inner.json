@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "eternalmagic:block/dark_stone_bricks_stairs",
+    "side": "eternalmagic:block/dark_stone_bricks_stairs",
+    "top": "eternalmagic:block/dark_stone_bricks_stairs"
+  }
+}

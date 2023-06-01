@@ -159,7 +159,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
                 BlockState worldState = this.level.getBlockState(worldPos);
 
                 if (state.is(Blocks.IRON_BLOCK)) {
-                    if (worldState.is(ModBlocks.decorativeBlocks.get("shrine_stone").get())) {
+                    if (worldState.is(ModBlocks.decorativeBlocks.get("dark_stone").get())) {
                         this.generatingManaMultiplier += 0f;
                     } else if (worldState.is(Blocks.IRON_BLOCK)) {
                         this.generatingManaMultiplier += 0.15f;

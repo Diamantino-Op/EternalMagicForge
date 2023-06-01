@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "eternalmagic:block/shrine_stone_bricks_stairs",
-    "side": "eternalmagic:block/shrine_stone_bricks_stairs",
-    "top": "eternalmagic:block/shrine_stone_bricks_stairs"
-  }
-}
