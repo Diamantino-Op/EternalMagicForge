@@ -2,7 +2,6 @@ package com.diamantino.eternalmagic.multiblocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
@@ -49,12 +48,12 @@ public class MultiblockLevel implements BlockAndTintGetter {
 
     @Override
     public @NotNull BlockState getBlockState(@NotNull BlockPos pPos) {
-        return pos.compareTo(new Vec3i(pPos.getX(), pos.getY(), pos.getZ())) == 0 ? state : Blocks.AIR.defaultBlockState();
+        return pos.equals(pPos) ? state : Blocks.AIR.defaultBlockState();
     }
 
     @Override
     public @NotNull FluidState getFluidState(@NotNull BlockPos pPos) {
-        return pos.compareTo(new Vec3i(pPos.getX(), pos.getY(), pos.getZ())) == 0 ? state.getFluidState() : Fluids.EMPTY.defaultFluidState();
+        return pos.equals(pPos) ? state.getFluidState() : Fluids.EMPTY.defaultFluidState();
     }
 
     @Override

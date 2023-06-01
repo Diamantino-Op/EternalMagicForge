@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -122,7 +123,7 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
                     FluidState fluidState = state.getFluidState();
 
                     if (!fluidState.isEmpty()) {
-                        VertexConsumer vertexconsumer = pBufferSource.getBuffer(RenderType.translucent());
+                        VertexConsumer vertexconsumer = pBufferSource.getBuffer(ItemBlockRenderTypes.getRenderLayer(fluidState));
 
                         blockRenderDispatcher.renderLiquid(pos, new MultiblockLevel(level, state, pos), vertexconsumer, state, fluidState);
                     }
