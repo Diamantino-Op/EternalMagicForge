@@ -4,6 +4,7 @@ import com.diamantino.eternalmagic.EternalMagic;
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.items.CoreItem;
+import com.diamantino.eternalmagic.multiblocks.MultiblockLevel;
 import com.diamantino.eternalmagic.multiblocks.MultiblockUtils;
 import com.diamantino.eternalmagic.networking.s2c.GeneratingManaSyncS2CPacket;
 import com.diamantino.eternalmagic.networking.s2c.ItemStackSyncS2CPacket;
@@ -46,6 +47,8 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
     public List<StructureTemplate.StructureBlockInfo> multiblockTemplateBlocks = new ArrayList<>();
     public boolean isAssembled = false;
+
+    public MultiblockLevel multiblockLevel;
 
     protected final ContainerData data;
 
@@ -323,6 +326,8 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
         this.multiblockTemplateBlocks.clear();
 
         this.multiblockTemplateBlocks.addAll(EternalMagic.instance.multiblockRegistry.getMultiblockByName(new ResourceLocation(ModReferences.modId, "shrine")).multiblockTemplateBlocks());
+
+        multiblockLevel = new MultiblockLevel(this.getLevel(), multiblockTemplateBlocks);
 
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
     }

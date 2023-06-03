@@ -3,6 +3,7 @@ package com.diamantino.eternalmagic.client.renderers.blocks;
 import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.blockentities.ShrineCoreBlockEntity;
 import com.diamantino.eternalmagic.client.model.entities.ShrineCoreInternalModel;
+import com.diamantino.eternalmagic.client.renderers.FluidVertexConsumer;
 import com.diamantino.eternalmagic.multiblocks.MultiblockLevel;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -116,6 +117,7 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
                     pPoseStack.popPose();
                 } else if (worldState != state) {
                     pPoseStack.pushPose();
+
                     pPoseStack.translate(pos.getX(), pos.getY(), pos.getZ());
 
                     BakedModel model = blockRenderDispatcher.getBlockModel(state);
@@ -123,9 +125,9 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
                     FluidState fluidState = state.getFluidState();
 
                     if (!fluidState.isEmpty()) {
-                        VertexConsumer vertexconsumer = pBufferSource.getBuffer(ItemBlockRenderTypes.getRenderLayer(fluidState));
+                        VertexConsumer vertexconsumer = new FluidVertexConsumer(pBufferSource, fluidState, pPoseStack.last().pose(), pPoseStack.last().normal());
 
-                        blockRenderDispatcher.renderLiquid(pos, new MultiblockLevel(level, state, pos), vertexconsumer, state, fluidState);
+                        blockRenderDispatcher.renderLiquid(structureBlockInfo.pos, pBlockEntity.multiblockLevel, vertexconsumer, state, fluidState);
                     }
 
                     translateAndRenderModel(pBlockEntity, state, pPoseStack, pBufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model, worldState.isAir());
