@@ -45,7 +45,7 @@ public class MultiblockLevel implements BlockAndTintGetter {
     }
 
     @Override
-    public int getBrightness(LightLayer pLightType, BlockPos pBlockPos) {
+    public int getBrightness(@NotNull LightLayer pLightType, @NotNull BlockPos pBlockPos) {
         return 15;
     }
 
