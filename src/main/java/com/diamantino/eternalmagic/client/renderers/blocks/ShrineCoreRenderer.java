@@ -118,17 +118,23 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
                 } else if (worldState != state) {
                     pPoseStack.pushPose();
 
-                    pPoseStack.translate(pos.getX(), pos.getY(), pos.getZ());
-
-                    BakedModel model = blockRenderDispatcher.getBlockModel(state);
-
                     FluidState fluidState = state.getFluidState();
 
                     if (!fluidState.isEmpty()) {
+                        pPoseStack.translate(-5, -4, -5);
+
                         VertexConsumer vertexconsumer = new FluidVertexConsumer(pBufferSource, fluidState, pPoseStack.last().pose(), pPoseStack.last().normal());
 
                         blockRenderDispatcher.renderLiquid(structureBlockInfo.pos, pBlockEntity.multiblockLevel, vertexconsumer, state, fluidState);
+
+                        int b = pBlockEntity.multiblockLevel.getBrightness(LightLayer.BLOCK, structureBlockInfo.pos);
+
+                        pPoseStack.translate(5, 4, 5);
                     }
+
+                    pPoseStack.translate(pos.getX(), pos.getY(), pos.getZ());
+
+                    BakedModel model = blockRenderDispatcher.getBlockModel(state);
 
                     translateAndRenderModel(pBlockEntity, state, pPoseStack, pBufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model, worldState.isAir());
                     renderBlockEntity(level, pos, pPoseStack, pBufferSource);

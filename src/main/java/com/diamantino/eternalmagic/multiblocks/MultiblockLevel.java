@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,6 +42,11 @@ public class MultiblockLevel implements BlockAndTintGetter {
     public @NotNull LevelLightEngine getLightEngine()
     {
         return level.getLightEngine();
+    }
+
+    @Override
+    public int getBrightness(LightLayer pLightType, BlockPos pBlockPos) {
+        return 15;
     }
 
     @Override
