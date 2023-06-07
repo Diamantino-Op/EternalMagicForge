@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.api.mana;
 
 import com.diamantino.eternalmagic.ModReferences;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -10,6 +11,13 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     protected long capacity;
     protected long maxReceive;
     protected long maxExtract;
+
+    protected SideInfo topFace;
+    protected SideInfo bottomFace;
+    protected SideInfo northFace;
+    protected SideInfo southFace;
+    protected SideInfo eastFace;
+    protected SideInfo westFace;
 
     public ManaStorage(long capacity)
     {
@@ -56,9 +64,9 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     }
 
     @Override
-    public long receiveMana(long maxReceive, boolean simulate)
+    public long receiveMana(Direction side, long maxReceive, boolean simulate)
     {
-        if (!canReceive())
+        if (!canReceive(side))
             return 0;
 
         long manaReceived = Math.min(capacity - mana, Math.min(this.maxReceive, maxReceive));
@@ -68,9 +76,9 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     }
 
     @Override
-    public long extractMana(long maxExtract, boolean simulate)
+    public long extractMana(Direction side, long maxExtract, boolean simulate)
     {
-        if (!canExtract())
+        if (!canExtract(side))
             return 0;
 
         long manaExtracted = Math.min(mana, Math.min(this.maxExtract, maxExtract));
@@ -92,23 +100,30 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     }
 
     @Override
-    public boolean canExtract()
-    {
-        return this.maxExtract > 0;
-    }
-
     public long getMaxExtract() {
         return maxExtract;
     }
 
     @Override
-    public boolean canReceive()
+    public long getMaxReceive() {
+        return maxReceive;
+    }
+
+    @Override
+    public boolean canExtract(Direction side)
+    {
+        return this.maxExtract > 0;
+    }
+
+    @Override
+    public boolean canReceive(Direction side)
     {
         return this.maxReceive > 0;
     }
 
-    public long getMaxReceive() {
-        return maxReceive;
+    @Override
+    public boolean isSideEnabled(Direction side) {
+        return false;
     }
 
     @Override
@@ -123,5 +138,11 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
         if (!(nbt instanceof LongTag longNbt))
             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
         this.mana = longNbt.getAsLong();
+    }
+
+    public enum SideInfo {
+        extract,
+        insert,
+        none
     }
 }
