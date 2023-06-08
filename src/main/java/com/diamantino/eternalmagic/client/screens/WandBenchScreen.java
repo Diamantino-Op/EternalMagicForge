@@ -359,7 +359,6 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         return f;
     }
 
-
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         renderBackground(graphics);
@@ -389,6 +388,11 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             super(pFont, pX, pY, pWidth, pHeight, pMessage);
 
             this.elementsTexture = elementsTexture;
+        }
+
+        @Override
+        public void onClick(double p_279417_, double p_279437_) {
+            this.setFocused(true);
         }
 
         @Override
