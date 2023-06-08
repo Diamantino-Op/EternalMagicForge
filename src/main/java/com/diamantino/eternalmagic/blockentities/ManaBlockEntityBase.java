@@ -1,6 +1,5 @@
 package com.diamantino.eternalmagic.blockentities;
 
-import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModCapabilities;
@@ -110,12 +109,12 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
         lazyManaHandler.invalidate();
     }
 
-    public long extractMana(long amount, boolean simulate) {
-        return this.manaStorage.extractMana(amount, simulate);
+    public long extractMana(Direction direction, long amount, boolean simulate) {
+        return this.manaStorage.extractMana(direction, amount, simulate);
     }
 
-    public long receiveMana(long amount, boolean simulate) {
-        return this.manaStorage.receiveMana(amount, simulate);
+    public long receiveMana(Direction direction, long amount, boolean simulate) {
+        return this.manaStorage.receiveMana(direction, amount, simulate);
     }
 
     public boolean hasEnoughMana(long requiredMana) {

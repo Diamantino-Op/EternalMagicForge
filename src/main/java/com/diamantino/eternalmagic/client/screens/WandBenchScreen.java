@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.client.screens;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.model.Model;
@@ -18,7 +18,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -34,7 +34,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 import org.jetbrains.annotations.NotNull;
@@ -45,8 +44,8 @@ import org.joml.Vector3f;
 import java.util.*;
 
 public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
-    private static final ResourceLocation texture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench.png");
-    private static final ResourceLocation elementsTexture = new ResourceLocation(ModReferences.modId,"textures/gui/wand_bench_elements.png");
+    private static final ResourceLocation texture = new ResourceLocation(ModConstants.modId,"textures/gui/wand_bench.png");
+    private static final ResourceLocation elementsTexture = new ResourceLocation(ModConstants.modId,"textures/gui/wand_bench_elements.png");
     private IManaStorage manaStorage;
     private ManaInfoArea manaInfoArea;
 
@@ -196,20 +195,20 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     }
 
     @Override
-    protected void renderLabels(@NotNull PoseStack poseStack, int mouseX, int mouseY) {
-        super.renderLabels(poseStack, mouseX, mouseY);
+    protected void renderLabels(@NotNull GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderLabels(graphics, mouseX, mouseY);
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        this.font.draw(poseStack, Component.translatable("screen." + ModReferences.modId + ".wand_bench.required_mana", TextUtils.formatNumberWithPrefix(menu.getRequiredMana())), 26, 126, 0xff0000);
+        graphics.drawString(this.font, Component.translatable("screen." + ModConstants.modId + ".wand_bench.required_mana", TextUtils.formatNumberWithPrefix(menu.getRequiredMana())), 26, 126, 0xff0000);
 
-        renderManaAreaTooltips(poseStack, mouseX, mouseY, x, y);
+        renderManaAreaTooltips(graphics, mouseX, mouseY, x, y);
 
-        renderModelText(poseStack);
+        renderModelText(graphics);
     }
 
-    private void renderModelText(PoseStack stack) {
+    private void renderModelText(@NotNull GuiGraphics graphics) {
         Vector3f translation = new Vector3f(0, 0, 0);
         Vector3f rotation = new Vector3f(0, 0, 0);
         Vector3f scale = new Vector3f(0, 0, 0);
@@ -222,26 +221,26 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
             scale = model.scale();
         }
 
-        stack.pushPose();
+        graphics.pose().pushPose();
 
-        stack.scale(0.5f, 0.6f, 0.5f);
+        graphics.pose().scale(0.5f, 0.6f, 0.5f);
 
-        this.font.draw(stack, Component.literal(String.valueOf(translation.x())), 172, 37, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(translation.y())), 198, 37, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(translation.z())), 224, 37, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(rotation.x())), 172, 80.5f, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(rotation.y())), 198, 80.5f, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(rotation.z())), 224, 80.5f, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(scale.x())), 172, 124, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(scale.y())), 198, 124, 4210752);
-        this.font.draw(stack, Component.literal(String.valueOf(scale.z())), 224, 124, 4210752);
+        graphics.drawString(this.font, Component.literal(String.valueOf(translation.x())), 172, 37, 4210752);
+        graphics.drawString(this.font, Component.literal(String.valueOf(translation.y())), 198, 37, 4210752);
+        graphics.drawString(this.font, Component.literal(String.valueOf(translation.z())), 224, 37, 4210752);
+        graphics.drawString(this.font, Component.literal(String.valueOf(rotation.x())).getVisualOrderText(), 172, 80.5f, 4210752, true);
+        graphics.drawString(this.font, Component.literal(String.valueOf(rotation.y())).getVisualOrderText(), 198, 80.5f, 4210752, true);
+        graphics.drawString(this.font, Component.literal(String.valueOf(rotation.z())).getVisualOrderText(), 224, 80.5f, 4210752, true);
+        graphics.drawString(this.font, Component.literal(String.valueOf(scale.x())), 172, 124, 4210752);
+        graphics.drawString(this.font, Component.literal(String.valueOf(scale.y())), 198, 124, 4210752);
+        graphics.drawString(this.font, Component.literal(String.valueOf(scale.z())), 224, 124, 4210752);
 
-        stack.popPose();
+        graphics.pose().popPose();
     }
 
-    private void renderManaAreaTooltips(PoseStack poseStack, int mouseX, int mouseY, int x, int y) {
+    private void renderManaAreaTooltips(@NotNull GuiGraphics graphics, int mouseX, int mouseY, int x, int y) {
         if(isMouseAboveArea(mouseX, mouseY, x, y, 26, 136, 80, 5)) {
-            renderTooltip(poseStack, manaInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
+            graphics.renderTooltip(this.font, manaInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
         }
     }
 
@@ -286,32 +285,30 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
     }
 
     @Override
-    protected void renderBg(@NotNull PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
+    protected void renderBg(@NotNull GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        RenderSystem.setShaderTexture(0, texture);
+        graphics.blit(texture, x, y, 0, 0, imageWidth, imageHeight);
 
-        blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
+        graphics.enableScissor(x + 126, y + 8, x + 196, y + 102);
 
-        enableScissor(x + 126, y + 8, x + 196, y + 102);
+        renderItem(graphics.pose(), partialTick, x, y);
 
-        renderItem(poseStack, partialTick, x, y);
+        graphics.disableScissor();
 
-        disableScissor();
+        renderProgressArrow(graphics, x, y);
 
-        renderProgressArrow(poseStack, x, y);
+        searchBox.render(graphics, mouseX, mouseY, partialTick);
 
-        searchBox.render(poseStack, mouseX, mouseY, partialTick);
-
-        manaInfoArea.draw(poseStack, x, y);
+        manaInfoArea.draw(graphics, x, y);
     }
 
-    private void renderProgressArrow(PoseStack pPoseStack, int x, int y) {
+    private void renderProgressArrow(GuiGraphics graphics, int x, int y) {
         if(menu.isCrafting()) {
-            blit(pPoseStack, x + 150, y + 125, 122, 28, menu.getScaledProgress(), 16);
+            graphics.blit(texture, x + 150, y + 125, 122, 28, menu.getScaledProgress(), 16);
         }
     }
 
@@ -364,10 +361,10 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        renderBackground(poseStack);
-        super.render(poseStack, mouseX, mouseY, partialTick);
-        renderTooltip(poseStack, mouseX, mouseY);
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, partialTick);
+        renderTooltip(graphics, mouseX, mouseY);
     }
 
     private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
@@ -395,11 +392,9 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         }
 
         @Override
-        public void renderWidget(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+        public void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
             if (this.isVisible()) {
-                RenderSystem.setShaderTexture(0, elementsTexture);
-
-                blit(poseStack, this.getX(), this.getY(), (this.isFocused() ? 1 : 0) * 73, 0, 73, 14);
+                graphics.blit(elementsTexture, this.getX(), this.getY(), (this.isFocused() ? 1 : 0) * 73, 0, 73, 14);
 
                 int i2 = this.isEditable ? this.textColor : this.textColorUneditable;
                 int j = this.cursorPos - this.displayPos;
@@ -416,7 +411,7 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
 
                 if (!s.isEmpty()) {
                     String s1 = flag ? s.substring(0, j) : s;
-                    j1 = this.font.drawShadow(poseStack, this.formatter.apply(s1, this.displayPos), (float)l, (float)i1, i2);
+                    j1 = graphics.drawString(this.font, this.formatter.apply(s1, this.displayPos), (float)l, (float)i1, i2, true);
                 }
 
                 boolean flag2 = this.cursorPos < this.value.length() || this.value.length() >= this.getMaxLength();
@@ -429,28 +424,28 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
                 }
 
                 if (!s.isEmpty() && flag && j < s.length()) {
-                    this.font.drawShadow(poseStack, this.formatter.apply(s.substring(j), this.cursorPos), (float)j1, (float)i1, i2);
+                    graphics.drawString(this.font, this.formatter.apply(s.substring(j), this.cursorPos), (float)j1, (float)i1, i2, true);
                 }
 
                 if (this.hint != null && s.isEmpty() && !this.isFocused()) {
-                    this.font.drawShadow(poseStack, this.hint, (float)j1, (float)i1, i2);
+                    graphics.drawString(this.font, this.hint.getVisualOrderText(), (float)j1, (float)i1, i2, true);
                 }
 
                 if (!flag2 && this.suggestion != null) {
-                    this.font.drawShadow(poseStack, this.suggestion, (float)(k1 - 1), (float)i1, -8355712);
+                    graphics.drawString(this.font, this.suggestion, (float)(k1 - 1), (float)i1, -8355712, true);
                 }
 
                 if (flag1) {
                     if (flag2) {
-                        GuiComponent.fill(poseStack, k1, i1 - 1, k1 + 1, i1 + 1 + 9, -3092272);
+                        graphics.fill(k1, i1 - 1, k1 + 1, i1 + 1 + 9, -3092272);
                     } else {
-                        this.font.drawShadow(poseStack, "_", (float)k1, (float)i1, i2);
+                        graphics.drawString(this.font, "_", (float)k1, (float)i1, i2, true);
                     }
                 }
 
                 if (k != j) {
                     int l1 = l + this.font.width(s.substring(0, k));
-                    this.renderHighlight(poseStack, k1, i1 - 1, l1 - 1, i1 + 1 + 9);
+                    this.renderHighlight(graphics, k1, i1 - 1, l1 - 1, i1 + 1 + 9);
                 }
             }
         }
@@ -491,26 +486,24 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         }
 
         @Override
-        public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
             Minecraft mc = Minecraft.getInstance();
             int k = !this.active ? 1 : (this.isHovered() ? 2 : ((this.isFocused() || selected) ? 1 : 0));
 
-            RenderSystem.setShaderTexture(0, elementsTexture);
-
             switch (buttonType) {
-                case model -> blit(poseStack, this.getX(), this.getY(), k * 58, 14, this.getWidth(), this.getHeight());
-                case normal -> blit(poseStack, this.getX(), this.getY(), 198, k * 14, this.getWidth(), this.getHeight());
-                case up_arrow -> blit(poseStack, this.getX(), this.getY(), 146 + (k * 9), 0, this.getWidth(), this.getHeight());
-                case down_arrow -> blit(poseStack, this.getX(), this.getY(), 146 + (k * 9), 7, this.getWidth(), this.getHeight());
-                case left_arrow -> blit(poseStack, this.getX(), this.getY(), 174, 15 + (k * 15), this.getWidth(), this.getHeight());
-                case right_arrow -> blit(poseStack, this.getX(), this.getY(), 181, 15 + (k * 15), this.getWidth(), this.getHeight());
-                case plus -> blit(poseStack, this.getX(), this.getY(), 144, 28 + (k * 15), this.getWidth(), this.getHeight());
-                case minus -> blit(poseStack, this.getX(), this.getY(), 159, 28 + (k * 15), this.getWidth(), this.getHeight());
+                case model -> graphics.blit(elementsTexture, this.getX(), this.getY(), k * 58, 14, this.getWidth(), this.getHeight());
+                case normal -> graphics.blit(elementsTexture, this.getX(), this.getY(), 198, k * 14, this.getWidth(), this.getHeight());
+                case up_arrow -> graphics.blit(elementsTexture, this.getX(), this.getY(), 146 + (k * 9), 0, this.getWidth(), this.getHeight());
+                case down_arrow -> graphics.blit(elementsTexture, this.getX(), this.getY(), 146 + (k * 9), 7, this.getWidth(), this.getHeight());
+                case left_arrow -> graphics.blit(elementsTexture, this.getX(), this.getY(), 174, 15 + (k * 15), this.getWidth(), this.getHeight());
+                case right_arrow -> graphics.blit(elementsTexture, this.getX(), this.getY(), 181, 15 + (k * 15), this.getWidth(), this.getHeight());
+                case plus -> graphics.blit(elementsTexture, this.getX(), this.getY(), 144, 28 + (k * 15), this.getWidth(), this.getHeight());
+                case minus -> graphics.blit(elementsTexture, this.getX(), this.getY(), 159, 28 + (k * 15), this.getWidth(), this.getHeight());
             }
 
             if (buttonType == ButtonType.model || buttonType == ButtonType.normal) {
                 final FormattedText buttonText = mc.font.ellipsize(this.getMessage(), this.width - 6); // Remove 6 pixels so that the text is always contained within the button's borders
-                drawCenteredString(poseStack, mc.font, Language.getInstance().getVisualOrder(buttonText), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, getFGColor());
+                graphics.drawCenteredString(mc.font, Language.getInstance().getVisualOrder(buttonText), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, getFGColor());
             }
         }
 
@@ -586,20 +579,17 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         }
 
         @Override
-        public void render(PoseStack stack, int mouseX, int mouseY, float partialTick) {
+        public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
             Tesselator tess = Tesselator.getInstance();
 
-            double scale = Minecraft.getInstance().getWindow().getGuiScale();
-            RenderSystem.enableScissor((int)(left  * scale), (int)(Minecraft.getInstance().getWindow().getHeight() - (bottom * scale)), (int)(width * scale), (int)(height * scale));
+            graphics.enableScissor(left, top, left + width, top + height);
 
             int baseY = this.top + border - (int)this.scrollDistance;
-            this.drawPanel(stack, right, baseY, tess, mouseX, mouseY);
+            this.drawPanel(graphics, right, baseY, tess, mouseX, mouseY);
 
             RenderSystem.disableDepthTest();
 
             int extraHeight = (this.getContentHeight() + border) - height;
-
-            RenderSystem.setShaderTexture(0, elementsTexture);
 
             if (extraHeight > 0) {
                 int barTop = (int)this.scrollDistance * (height - 13) / extraHeight + this.top;
@@ -609,15 +599,15 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
                 }
 
                 if (this.scrolling)
-                    blit(stack, (this.left + this.width) - 13, barTop + 1, 174, 0, 12, 15);
+                    graphics.blit(elementsTexture, (this.left + this.width) - 13, barTop + 1, 174, 0, 12, 15);
                 else
-                    blit(stack, (this.left + this.width) - 13, this.top + 1, 186, 0, 12, 15);
+                    graphics.blit(elementsTexture, (this.left + this.width) - 13, this.top + 1, 186, 0, 12, 15);
             } else {
-                blit(stack, (this.left + this.width) - 13, this.top + 1, 186, 0, 12, 15);
+                graphics.blit(elementsTexture, (this.left + this.width) - 13, this.top + 1, 186, 0, 12, 15);
             }
 
             RenderSystem.disableBlend();
-            RenderSystem.disableScissor();
+            graphics.disableScissor();
         }
 
         @Override
@@ -651,12 +641,12 @@ public class WandBenchScreen extends AbstractContainerScreen<WandBenchMenu> {
         }
 
         @Override
-        protected void drawPanel(PoseStack stack, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
+        protected void drawPanel(GuiGraphics graphics, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
         {
             for (BenchButton button : this.sortedButtons)
             {
                 button.scrollButton((int) this.scrollDistance);
-                button.render(stack, mouseX, mouseY, 0);
+                button.render(graphics, mouseX, mouseY, 0);
             }
         }
 

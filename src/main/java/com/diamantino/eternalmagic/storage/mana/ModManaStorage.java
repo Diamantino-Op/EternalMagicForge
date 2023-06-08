@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.storage.mana;
 
 import com.diamantino.eternalmagic.api.mana.ManaStorage;
+import net.minecraft.core.Direction;
 
 public abstract class ModManaStorage extends ManaStorage {
     public ModManaStorage(long capacity, long maxTransfer) {
@@ -44,8 +45,8 @@ public abstract class ModManaStorage extends ManaStorage {
     }
 
     @Override
-    public long extractMana(long maxExtract, boolean simulate) {
-        long extractedMana = super.extractMana(maxExtract, simulate);
+    public long extractMana(Direction direction, long maxExtract, boolean simulate) {
+        long extractedMana = super.extractMana(direction, maxExtract, simulate);
         if(extractedMana != 0) {
             onManaChanged();
         }
@@ -54,8 +55,8 @@ public abstract class ModManaStorage extends ManaStorage {
     }
 
     @Override
-    public long receiveMana(long maxReceive, boolean simulate) {
-        long receiveMana = super.receiveMana(maxReceive, simulate);
+    public long receiveMana(Direction direction, long maxReceive, boolean simulate) {
+        long receiveMana = super.receiveMana(direction, maxReceive, simulate);
         if(receiveMana != 0) {
             onManaChanged();
         }

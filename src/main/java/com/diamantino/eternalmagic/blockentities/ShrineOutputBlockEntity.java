@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,17 +19,17 @@ public class ShrineOutputBlockEntity extends BlockEntity {
         this.isLinked = false;
     }
 
-    public long extractMana(long amount, boolean simulate) {
+    public long extractMana(Direction direction, long amount, boolean simulate) {
         if (isLinked && level != null && !level.isClientSide() && corePos != null && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
-            return shrineCoreBlockEntity.extractMana(amount, simulate);
+            return shrineCoreBlockEntity.extractMana(direction, amount, simulate);
         }
 
         return 0;
     }
 
-    public long receiveMana(long amount, boolean simulate) {
+    public long receiveMana(Direction direction, long amount, boolean simulate) {
         if (isLinked && level != null && !level.isClientSide() && corePos != null && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
-            return shrineCoreBlockEntity.receiveMana(amount, simulate);
+            return shrineCoreBlockEntity.receiveMana(direction, amount, simulate);
         }
 
         return 0;

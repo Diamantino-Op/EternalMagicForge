@@ -50,7 +50,7 @@ public class WandBenchButtonC2SPacket {
         ServerPlayer player = context.getSender();
 
         context.enqueueWork(() -> {
-            if (player != null && player.level.getBlockEntity(pos) instanceof WandBenchBlockEntity blockEntity && player.containerMenu instanceof WandBenchMenu menu && blockEntity.getRenderStack() != ItemStack.EMPTY) {
+            if (player != null && player.level().getBlockEntity(pos) instanceof WandBenchBlockEntity blockEntity && player.containerMenu instanceof WandBenchMenu menu && blockEntity.getRenderStack() != ItemStack.EMPTY) {
                 switch (btnId) {
                     case 0 -> menu.setSelectedModelToAddId(btnText);
                     case 1 -> menu.setSelectedModelId(modelId);

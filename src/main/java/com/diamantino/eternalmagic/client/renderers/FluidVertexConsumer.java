@@ -74,8 +74,6 @@ public final class FluidVertexConsumer implements VertexConsumer
     public void endVertex()
     {
         parent.endVertex();
-        // RemappingVertexPipeline does not call endVertex() on its parent TODO: remove in 1.20
-        superParent.endVertex();
     }
 
     @Override

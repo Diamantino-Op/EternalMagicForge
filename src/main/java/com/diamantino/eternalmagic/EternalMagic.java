@@ -8,7 +8,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(ModReferences.modId)
+@Mod(ModConstants.modId)
 public class EternalMagic {
     public static EternalMagic instance;
     public MultiblockRegistry multiblockRegistry;
@@ -18,7 +18,7 @@ public class EternalMagic {
 
         multiblockRegistry = new MultiblockRegistry();
 
-        multiblockRegistry.registeredStructures.add(new ResourceLocation(ModReferences.modId, "shrine"));
+        multiblockRegistry.registeredStructures.add(new ResourceLocation(ModConstants.modId, "shrine"));
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -30,7 +30,7 @@ public class EternalMagic {
         ModMenuTypes.registerMenuTypes(modEventBus);
         ModCapabilities.registerCapabilities();
         ModMessages.register();
-        ModCreativeTabs.registerCreativeTabs();
+        ModCreativeTabs.registerCreativeTabs(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }

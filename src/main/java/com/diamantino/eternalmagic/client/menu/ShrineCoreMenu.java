@@ -20,14 +20,14 @@ public class ShrineCoreMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public ShrineCoreMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
     public ShrineCoreMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.shrineCoreMenu.get(), id);
         checkContainerSize(inv, 1);
         blockEntity = (ShrineCoreBlockEntity) entity;
-        this.level = inv.player.level;
+        this.level = inv.player.level();
         this.data = data;
 
         addPlayerInventory(inv);

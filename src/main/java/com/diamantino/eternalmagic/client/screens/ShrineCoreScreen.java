@@ -1,12 +1,12 @@
 package com.diamantino.eternalmagic.client.screens;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.client.screens.render.ManaInfoArea;
 import com.diamantino.eternalmagic.utils.MouseUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class ShrineCoreScreen extends AbstractContainerScreen<ShrineCoreMenu> {
-    private static final ResourceLocation texture = new ResourceLocation(ModReferences.modId,"textures/gui/shrine_core.png");
+    private static final ResourceLocation texture = new ResourceLocation(ModConstants.modId,"textures/gui/shrine_core.png");
     private IManaStorage manaStorage;
     private ManaInfoArea manaInfoArea;
 
@@ -45,68 +45,66 @@ public class ShrineCoreScreen extends AbstractContainerScreen<ShrineCoreMenu> {
     }
 
     @Override
-    protected void renderLabels(@NotNull PoseStack poseStack, int mouseX, int mouseY) {
-        super.renderLabels(poseStack, mouseX, mouseY);
+    protected void renderLabels(@NotNull GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderLabels(graphics, mouseX, mouseY);
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        Component text1 = Component.translatable("screen." + ModReferences.modId + ".shrine_core.block_multiplier", menu.blockEntity.generatingManaMultiplier * 100 + "%");
-        Component text2 = Component.translatable("screen." + ModReferences.modId + ".shrine_core.core_multiplier", (menu.blockEntity.coreLevel * menu.blockEntity.coreLevel) * 10 + "%");
-        Component text3 = Component.translatable("screen." + ModReferences.modId + ".shrine_core.level", menu.blockEntity.coreLevel);
-        Component text4 = Component.translatable("screen." + ModReferences.modId + ".shrine_core.mana_per_second", menu.blockEntity.generatingMana);
+        Component text1 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.block_multiplier", menu.blockEntity.generatingManaMultiplier * 100 + "%");
+        Component text2 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.core_multiplier", (menu.blockEntity.coreLevel * menu.blockEntity.coreLevel) * 10 + "%");
+        Component text3 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.level", menu.blockEntity.coreLevel);
+        Component text4 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.mana_per_second", menu.blockEntity.generatingMana);
 
         float width3 = this.font.width(text3.getVisualOrderText()) * 0.6f;
         float width4 = this.font.width(text4.getVisualOrderText()) * 0.6f;
 
-        poseStack.pushPose();
+        graphics.pose().pushPose();
 
-        poseStack.scale(0.6f, 0.6f, 0.6f);
+        graphics.pose().scale(0.6f, 0.6f, 0.6f);
 
-        this.font.draw(poseStack, text1, 7 / 0.6f, 25 / 0.6f, 0xff0000);
-        this.font.draw(poseStack, text2, 7 / 0.6f, 40 / 0.6f, 0xff0000);
-        this.font.draw(poseStack, text4, (176 - width4 - 8) / 0.6f, 25 / 0.6f, 0xff0000);
-        this.font.draw(poseStack, text3, (176 - width3 - 8) / 0.6f, 40 / 0.6f, 0xff0000);
+        graphics.drawString(this.font, text1.getVisualOrderText(), 7 / 0.6f, 25 / 0.6f, 0xff0000, true);
+        graphics.drawString(this.font, text2.getVisualOrderText(), 7 / 0.6f, 40 / 0.6f, 0xff0000, true);
+        graphics.drawString(this.font, text4.getVisualOrderText(), (176 - width4 - 8) / 0.6f, 25 / 0.6f, 0xff0000, true);
+        graphics.drawString(this.font, text3.getVisualOrderText(), (176 - width3 - 8) / 0.6f, 40 / 0.6f, 0xff0000, true);
 
-        poseStack.popPose();
+        graphics.pose().popPose();
 
-        renderManaAreaTooltips(poseStack, mouseX, mouseY, x, y);
+        renderManaAreaTooltips(graphics, mouseX, mouseY, x, y);
     }
 
-    private void renderManaAreaTooltips(PoseStack poseStack, int mouseX, int mouseY, int x, int y) {
+    private void renderManaAreaTooltips(GuiGraphics graphics, int mouseX, int mouseY, int x, int y) {
         if(isMouseAboveArea(mouseX, mouseY, x, y, 50, 55, 80, 5)) {
-            renderTooltip(poseStack, manaInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
+            graphics.renderTooltip(this.font, manaInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
         }
     }
 
-    private void renderProgressArrow(PoseStack pPoseStack, int x, int y) {
+    private void renderProgressArrow(GuiGraphics graphics, int x, int y) {
         if(menu.isCrafting()) {
-            blit(pPoseStack, x + 65, y + 32, 176, 5, 15, menu.getScaledProgress());
-            blit(pPoseStack, x + 100, y + 32, 191, 5, 15, menu.getScaledProgress());
+            graphics.blit(texture, x + 65, y + 32, 176, 5, 15, menu.getScaledProgress());
+            graphics.blit(texture, x + 100, y + 32, 191, 5, 15, menu.getScaledProgress());
         }
     }
 
     @Override
-    protected void renderBg(@NotNull PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(@NotNull GuiGraphics graphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        RenderSystem.setShaderTexture(0, texture);
+        graphics.blit(texture, x, y, 0, 0, imageWidth, imageHeight);
 
-        blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
+        renderProgressArrow(graphics, x, y);
 
-        renderProgressArrow(pPoseStack, x, y);
-
-        manaInfoArea.draw(pPoseStack, x, y);
+        manaInfoArea.draw(graphics, x, y);
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        renderBackground(poseStack);
-        super.render(poseStack, mouseX, mouseY, partialTick);
-        renderTooltip(poseStack, mouseX, mouseY);
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, partialTick);
+        renderTooltip(graphics, mouseX, mouseY);
     }
 
     private boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {

@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.datagen;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataProvider;
@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class EMItemTagsProvider extends ItemTagsProvider implements DataProvider {
     public EMItemTagsProvider(PackOutput packOutput, CompletableFuture<TagsProvider.TagLookup<Block>> tagLookupCompletableFuture, @Nullable ExistingFileHelper existingFileHelper) {
-        super(packOutput, CompletableFuture.supplyAsync(VanillaRegistries::createLookup, Util.backgroundExecutor()), tagLookupCompletableFuture, ModReferences.modId, existingFileHelper);
+        super(packOutput, CompletableFuture.supplyAsync(VanillaRegistries::createLookup, Util.backgroundExecutor()), tagLookupCompletableFuture, ModConstants.modId, existingFileHelper);
     }
 
     @Override

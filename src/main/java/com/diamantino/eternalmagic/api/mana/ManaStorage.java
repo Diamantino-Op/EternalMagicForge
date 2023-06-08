@@ -1,6 +1,5 @@
 package com.diamantino.eternalmagic.api.mana;
 
-import com.diamantino.eternalmagic.ModReferences;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;

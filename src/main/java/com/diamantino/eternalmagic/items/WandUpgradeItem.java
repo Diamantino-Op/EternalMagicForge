@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.items;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.utils.Rarity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -30,9 +30,9 @@ public class WandUpgradeItem extends Item {
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         WandUpgrade upgrade = getUpgrade(pStack);
 
-        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModReferences.modId + ".type", upgrade.upgradeType.getName()).withStyle(ChatFormatting.DARK_BLUE));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModReferences.modId + ".rarity", upgrade.rarity.getName()).withStyle(upgrade.rarity.color));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModReferences.modId + ".value", String.valueOf(upgrade.value)).withStyle(ChatFormatting.GREEN));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModConstants.modId + ".type", upgrade.upgradeType.getName()).withStyle(ChatFormatting.DARK_BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModConstants.modId + ".rarity", upgrade.rarity.getName()).withStyle(upgrade.rarity.color));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_upgrade." + ModConstants.modId + ".value", String.valueOf(upgrade.value)).withStyle(ChatFormatting.GREEN));
     }
 
     public static void rerollRarity(ItemStack stack) {
@@ -113,12 +113,12 @@ public class WandUpgradeItem extends Item {
     }
 
     public enum WandUpgradeType {
-        none(0, "none", Component.translatable("upgrade.wand." + ModReferences.modId + ".none")),
-        cooldownReduction(1, "cooldown_reduction", Component.translatable("upgrade.wand." + ModReferences.modId + ".cooldown_reduction")),
-        castTimeReduction(2, "cast_time_reduction", Component.translatable("upgrade.wand." + ModReferences.modId + ".cast_time_reduction")),
-        manaUsageReduction(3, "mana_usage_reduction", Component.translatable("upgrade.wand." + ModReferences.modId + ".mana_usage_reduction")),
-        manaCapacity(4, "mana_capacity", Component.translatable("upgrade.wand." + ModReferences.modId + ".mana_capacity")),
-        slot(5, "slot", Component.translatable("upgrade.wand." + ModReferences.modId + ".slot"));
+        none(0, "none", Component.translatable("upgrade.wand." + ModConstants.modId + ".none")),
+        cooldownReduction(1, "cooldown_reduction", Component.translatable("upgrade.wand." + ModConstants.modId + ".cooldown_reduction")),
+        castTimeReduction(2, "cast_time_reduction", Component.translatable("upgrade.wand." + ModConstants.modId + ".cast_time_reduction")),
+        manaUsageReduction(3, "mana_usage_reduction", Component.translatable("upgrade.wand." + ModConstants.modId + ".mana_usage_reduction")),
+        manaCapacity(4, "mana_capacity", Component.translatable("upgrade.wand." + ModConstants.modId + ".mana_capacity")),
+        slot(5, "slot", Component.translatable("upgrade.wand." + ModConstants.modId + ".slot"));
 
         private final Component name;
         public final String regName;

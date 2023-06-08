@@ -1,10 +1,10 @@
 modLoader = "javafml"
-loaderVersion = "[45,)"
+loaderVersion = "[46,)"
 license = "All Rights Reserved"
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
 [[mods]]
 modId = "eternalmagic"
-version = "${file.jarVersion}"
+version = "1.0.0"
 displayName = "Eternal Magic"
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
 #updateJSONURL="https://change.me.example.invalid/updates.json"
@@ -20,13 +20,13 @@ description = '''
 [[dependencies.eternalmagic]]
 modId = "forge"
 mandatory = true
-versionRange = "[45,)"
+versionRange = "[46,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.eternalmagic]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.4,1.20)"
+versionRange = "[1.20,1.21)"
 ordering = "NONE"
 side = "BOTH"

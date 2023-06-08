@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.client;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.client.model.ModelLoader;
 import com.diamantino.eternalmagic.client.model.entities.ShrineCoreInternalModel;
 import com.diamantino.eternalmagic.client.model.entities.WandBenchSphereModel;
@@ -18,7 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod.EventBusSubscriber(modid = ModReferences.modId, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = ModConstants.modId, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EternalMagicClient {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {

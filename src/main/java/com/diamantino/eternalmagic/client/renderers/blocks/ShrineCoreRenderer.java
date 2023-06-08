@@ -1,16 +1,14 @@
 package com.diamantino.eternalmagic.client.renderers.blocks;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.blockentities.ShrineCoreBlockEntity;
 import com.diamantino.eternalmagic.client.model.entities.ShrineCoreInternalModel;
 import com.diamantino.eternalmagic.client.renderers.FluidVertexConsumer;
-import com.diamantino.eternalmagic.multiblocks.MultiblockLevel;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -44,7 +42,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEntity> {
-    public static final Material coreLocation = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(ModReferences.modId, "entity/shrine_core_internal"));
+    public static final Material coreLocation = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(ModConstants.modId, "entity/shrine_core_internal"));
     private final ShrineCoreInternalModel coreModel;
 
     private final List<BlockState> multiplierBlocks = new ArrayList<>();
@@ -94,18 +92,20 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
 
         if (level != null && pBlockEntity.multiblockTemplateBlocks.size() > 0) {
             for (StructureTemplate.StructureBlockInfo structureBlockInfo : pBlockEntity.multiblockTemplateBlocks) {
-                BlockPos pos = structureBlockInfo.pos.offset(-5, -4, -5);
+                BlockPos pos = structureBlockInfo.pos().offset(-5, -4, -5);
                 BlockPos worldPos = pBlockEntity.getBlockPos().offset(pos.getX(), pos.getY(), pos.getZ());
-                BlockState state = structureBlockInfo.state;
+                BlockState state = structureBlockInfo.state();
                 BlockState worldState = level.getBlockState(worldPos);
 
                 BlockRenderDispatcher blockRenderDispatcher = Minecraft.getInstance().getBlockRenderer();
 
                 if (state.is(Blocks.IRON_BLOCK) && !multiplierBlocks.contains(worldState)) {
                     pPoseStack.pushPose();
-                    pPoseStack.translate(pos.getX(), pos.getY(), pos.getZ());
+                    pPoseStack.translate(pos.getX() + 0.25f, pos.getY() + 0.25f, pos.getZ() + 0.25f);
 
-                    boolean valid = (worldState.isAir() || (worldState.is(ModBlocks.decorativeBlocks.get("dark_stone").get())|| worldState.is(Blocks.IRON_BLOCK) || worldState.is(Blocks.GOLD_BLOCK) || worldState.is(Blocks.DIAMOND_BLOCK) || worldState.is(Blocks.EMERALD_BLOCK)));
+                    pPoseStack.scale(0.5f, 0.5f, 0.5f);
+
+                    boolean valid = (worldState.isAir() || (worldState.is(ModBlocks.decorativeBlocks.get("dark_stone").get()) || worldState.is(Blocks.IRON_BLOCK) || worldState.is(Blocks.GOLD_BLOCK) || worldState.is(Blocks.DIAMOND_BLOCK) || worldState.is(Blocks.EMERALD_BLOCK)));
 
                     BlockState localState = multiplierBlocks.get(pBlockEntity.showingBlockId);
 
@@ -115,24 +115,30 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
                     renderBlockEntity(level, pos, pPoseStack, pBufferSource);
 
                     pPoseStack.popPose();
-                } else if (worldState != state) {
+                } else if (worldState != state && !state.is(Blocks.IRON_BLOCK)) {
                     pPoseStack.pushPose();
 
                     FluidState fluidState = state.getFluidState();
 
+                    pPoseStack.translate(pos.getX() + 0.25f, pos.getY() + 0.25f, pos.getZ() + 0.25f);
+
+                    pPoseStack.scale(0.5f, 0.5f, 0.5f);
+
                     if (!fluidState.isEmpty()) {
-                        pPoseStack.translate(-5, -4, -5);
+                        pPoseStack.translate(-pos.getX(), 0, (float) -pos.getZ());
+
+                        pPoseStack.translate(-5, -1, -5);
 
                         VertexConsumer vertexconsumer = new FluidVertexConsumer(pBufferSource, fluidState, pPoseStack.last().pose(), pPoseStack.last().normal());
 
-                        blockRenderDispatcher.renderLiquid(structureBlockInfo.pos, pBlockEntity.multiblockLevel, vertexconsumer, state, fluidState);
+                        blockRenderDispatcher.renderLiquid(structureBlockInfo.pos(), pBlockEntity.multiblockLevel, vertexconsumer, state, fluidState);
 
-                        int b = pBlockEntity.multiblockLevel.getBrightness(LightLayer.BLOCK, structureBlockInfo.pos);
+                        pPoseStack.translate(5, 1, 5);
 
-                        pPoseStack.translate(5, 4, 5);
+                        pPoseStack.translate(pos.getX(), 0, pos.getZ());
                     }
 
-                    pPoseStack.translate(pos.getX(), pos.getY(), pos.getZ());
+                    //pPoseStack.translate(pos.getX() + 0.25f, pos.getY() + 0.25f, pos.getZ() + 0.25f);
 
                     BakedModel model = blockRenderDispatcher.getBlockModel(state);
 
@@ -151,8 +157,8 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
         poseStack.pushPose();
 
         if (!valid) {
-            poseStack.scale(1.01f, 1.01f, 1.01f);
-            poseStack.translate(-0.005f, -0.005f, -0.005f);
+            poseStack.scale(2.02f, 2.02f, 2.02f);
+            poseStack.translate(-0.255f, -0.255f, -0.255f);
         }
 
         ModelData data = model.getModelData(Objects.requireNonNull(Minecraft.getInstance().level), pBlockEntity.getBlockPos(), state, pBlockEntity.getModelData());

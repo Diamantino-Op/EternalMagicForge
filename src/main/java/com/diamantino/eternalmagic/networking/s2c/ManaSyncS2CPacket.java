@@ -1,6 +1,5 @@
 package com.diamantino.eternalmagic.networking.s2c;
 
-import com.diamantino.eternalmagic.ModReferences;
 import com.diamantino.eternalmagic.blockentities.ManaBlockEntityBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

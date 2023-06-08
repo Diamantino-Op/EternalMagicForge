@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.datagen;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
@@ -16,7 +16,7 @@ import java.util.Objects;
 public class EMBlockStateProvider extends BlockStateProvider {
 
     public EMBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, ModReferences.modId, exFileHelper);
+        super(output, ModConstants.modId, exFileHelper);
     }
 
     @Override

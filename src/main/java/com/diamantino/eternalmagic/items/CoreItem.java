@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.items;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -28,8 +28,8 @@ public class CoreItem extends Item {
 
         String level = getLevelStr(tag);
 
-        pTooltipComponents.add(Component.translatable("tooltip.wand_core_item." + ModReferences.modId + ".element", element.getName()).withStyle(ChatFormatting.DARK_BLUE));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_core_item." + ModReferences.modId + ".level", level).withStyle(ChatFormatting.DARK_BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_core_item." + ModConstants.modId + ".element", element.getName()).withStyle(ChatFormatting.DARK_BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_core_item." + ModConstants.modId + ".level", level).withStyle(ChatFormatting.DARK_BLUE));
     }
 
     public static boolean incrementLevel(CompoundTag nbt) {
@@ -59,17 +59,17 @@ public class CoreItem extends Item {
     }
 
     public enum WandCoreElement {
-        none(0, Component.translatable("element." + ModReferences.modId + ".none")),
-        earth(1, Component.translatable("element." + ModReferences.modId + ".earth")),
-        air(2, Component.translatable("element." + ModReferences.modId + ".air")),
-        water(3, Component.translatable("element." + ModReferences.modId + ".water")),
-        fire(4, Component.translatable("element." + ModReferences.modId + ".fire")),
-        electricity(5, Component.translatable("element." + ModReferences.modId + ".electricity")),
-        darkness(6, Component.translatable("element." + ModReferences.modId + ".darkness")),
-        light(7, Component.translatable("element." + ModReferences.modId + ".light")),
-        ice(8, Component.translatable("element." + ModReferences.modId + ".ice")),
-        magma(9, Component.translatable("element." + ModReferences.modId + ".magma")),
-        infinity(10, Component.translatable("element." + ModReferences.modId + ".infinity"));
+        none(0, Component.translatable("element." + ModConstants.modId + ".none")),
+        earth(1, Component.translatable("element." + ModConstants.modId + ".earth")),
+        air(2, Component.translatable("element." + ModConstants.modId + ".air")),
+        water(3, Component.translatable("element." + ModConstants.modId + ".water")),
+        fire(4, Component.translatable("element." + ModConstants.modId + ".fire")),
+        electricity(5, Component.translatable("element." + ModConstants.modId + ".electricity")),
+        darkness(6, Component.translatable("element." + ModConstants.modId + ".darkness")),
+        light(7, Component.translatable("element." + ModConstants.modId + ".light")),
+        ice(8, Component.translatable("element." + ModConstants.modId + ".ice")),
+        magma(9, Component.translatable("element." + ModConstants.modId + ".magma")),
+        infinity(10, Component.translatable("element." + ModConstants.modId + ".infinity"));
 
         private final int id;
         private final Component name;

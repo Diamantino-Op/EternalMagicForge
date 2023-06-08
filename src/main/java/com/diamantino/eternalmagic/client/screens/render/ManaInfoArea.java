@@ -5,6 +5,8 @@ import com.diamantino.eternalmagic.utils.TextUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,9 +29,7 @@ public class ManaInfoArea extends InfoArea {
     }
 
     @Override
-    public void draw(PoseStack transform, int x, int y) {
-        RenderSystem.setShaderTexture(0, barLocation);
-
-        blit(transform, x + destArea.getX(), y + destArea.getY(), sourceArea.getX(), sourceArea.getY(), (int) ((double) manaStorage.getManaStored() * ((double) sourceArea.getWidth() / (double) manaStorage.getMaxManaStored())), sourceArea.getHeight());
+    public void draw(GuiGraphics graphics, int x, int y) {
+        graphics.blit(barLocation, x + destArea.getX(), y + destArea.getY(), sourceArea.getX(), sourceArea.getY(), (int) ((double) manaStorage.getManaStored() * ((double) sourceArea.getWidth() / (double) manaStorage.getMaxManaStored())), sourceArea.getHeight());
     }
 }

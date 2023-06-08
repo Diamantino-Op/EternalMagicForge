@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.registration;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.networking.c2s.WandBenchButtonC2SPacket;
 import com.diamantino.eternalmagic.networking.s2c.*;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +20,7 @@ public class ModMessages {
 
     public static void register() {
         SimpleChannel net = NetworkRegistry.ChannelBuilder
-                .named(new ResourceLocation(ModReferences.modId, "messages"))
+                .named(new ResourceLocation(ModConstants.modId, "messages"))
                 .networkProtocolVersion(() -> "1.0")
                 .clientAcceptedVersions(s -> true)
                 .serverAcceptedVersions(s -> true)

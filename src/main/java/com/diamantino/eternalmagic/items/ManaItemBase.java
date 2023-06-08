@@ -85,7 +85,7 @@ public abstract class ManaItemBase extends Item {
         AtomicLong returnVal = new AtomicLong(0);
 
         stack.getCapability(ItemStackManaStorage.itemStackManaStorageCapability).ifPresent(itemStackManaStorage -> {
-            returnVal.set(itemStackManaStorage.extractMana(amount, simulate));
+            returnVal.set(itemStackManaStorage.extractMana(null, amount, simulate));
         });
 
         return returnVal.get();
@@ -95,7 +95,7 @@ public abstract class ManaItemBase extends Item {
         AtomicLong returnVal = new AtomicLong(0);
 
         stack.getCapability(ItemStackManaStorage.itemStackManaStorageCapability).ifPresent(itemStackManaStorage -> {
-            returnVal.set(itemStackManaStorage.receiveMana(amount, simulate));
+            returnVal.set(itemStackManaStorage.receiveMana(null, amount, simulate));
         });
 
         return returnVal.get();

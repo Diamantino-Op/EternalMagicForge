@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.registration;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.items.WandUpgradeItem;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class ModItems {
-    public static final DeferredRegister<Item> modItems = DeferredRegister.create(ForgeRegistries.ITEMS, ModReferences.modId);
+    public static final DeferredRegister<Item> modItems = DeferredRegister.create(ForgeRegistries.ITEMS, ModConstants.modId);
 
     public static final List<RegistryObject<? extends Item>> items = new ArrayList<>();
     public static final List<RegistryObject<? extends Item>> resourcesItems = new ArrayList<>();

@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.datagen;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -34,7 +34,7 @@ public class EMLootTableProvider extends LootTableProvider {
         @Override
         protected @NotNull Iterable<Block> getKnownBlocks() {
             return ForgeRegistries.BLOCKS.getEntries().stream()
-                    .filter(e -> e.getKey().location().getNamespace().equals(ModReferences.modId))
+                    .filter(e -> e.getKey().location().getNamespace().equals(ModConstants.modId))
                     .map(Map.Entry::getValue)
                     .collect(Collectors.toList());
         }

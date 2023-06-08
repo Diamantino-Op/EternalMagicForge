@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.datagen;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.registration.ModBlocks;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class EMBlockTagsProvider extends BlockTagsProvider implements DataProvider {
     public EMBlockTagsProvider(PackOutput output, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, CompletableFuture.supplyAsync(VanillaRegistries::createLookup, Util.backgroundExecutor()), ModReferences.modId, existingFileHelper);
+        super(output, CompletableFuture.supplyAsync(VanillaRegistries::createLookup, Util.backgroundExecutor()), ModConstants.modId, existingFileHelper);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.client.menu;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.client.model.ModelLoader;
@@ -31,7 +31,7 @@ public class WandBenchMenu extends AbstractContainerMenu {
     private String selectedModelToAddId;
 
     public WandBenchMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
     public WandBenchMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -39,7 +39,7 @@ public class WandBenchMenu extends AbstractContainerMenu {
         checkContainerSize(inv, 4);
         this.data = data;
         blockEntity = (WandBenchBlockEntity) entity;
-        this.level = inv.player.level;
+        this.level = inv.player.level();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
@@ -107,7 +107,7 @@ public class WandBenchMenu extends AbstractContainerMenu {
 
     public void addSelectedModel() {
         if (!Objects.equals(selectedModelToAddId, "") && blockEntity.getRenderStack() != ItemStack.EMPTY) {
-            Model model = new Model(ModelLoader.loadedModels.getOrDefault(selectedModelToAddId, new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick")), blockEntity.getNextModelId(), false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+            Model model = new Model(ModelLoader.loadedModels.getOrDefault(selectedModelToAddId, new ResourceLocation(ModConstants.modId, "em_models/wands/base_wand_stick")), blockEntity.getNextModelId(), false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
 
             blockEntity.addModelToItem(model);
 

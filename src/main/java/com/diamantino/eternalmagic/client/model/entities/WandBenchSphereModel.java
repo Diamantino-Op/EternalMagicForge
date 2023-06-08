@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.client.model.entities;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -19,7 +19,7 @@ import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
 public class WandBenchSphereModel extends Model {
-	public static final ModelLayerLocation layer = new ModelLayerLocation(new ResourceLocation(ModReferences.modId, "wand_bench_sphere"), "main");
+	public static final ModelLayerLocation layer = new ModelLayerLocation(new ResourceLocation(ModConstants.modId, "wand_bench_sphere"), "main");
 	private final ModelPart Ring1;
 	private final ModelPart Ring2;
 	public final ModelPart ItemSpawn;

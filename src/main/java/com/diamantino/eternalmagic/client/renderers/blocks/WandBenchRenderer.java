@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.client.renderers.blocks;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
 import com.diamantino.eternalmagic.client.model.entities.WandBenchSphereModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.LightLayer;
 import org.jetbrains.annotations.NotNull;
 
 public class WandBenchRenderer implements BlockEntityRenderer<WandBenchBlockEntity> {
-    public static final Material sphereLocation = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(ModReferences.modId, "entity/wand_bench_sphere"));
+    public static final Material sphereLocation = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(ModConstants.modId, "entity/wand_bench_sphere"));
     private final WandBenchSphereModel wandBenchSphereModel;
 
     public WandBenchRenderer(BlockEntityRendererProvider.Context pContext) {

@@ -1,7 +1,7 @@
 package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.EternalMagic;
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.multiblocks.MultiblockLevel;
@@ -156,9 +156,9 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
         if (this.level != null && multiblockTemplateBlocks.size() > 0) {
             for (StructureTemplate.StructureBlockInfo structureBlockInfo : multiblockTemplateBlocks) {
-                BlockPos pos = structureBlockInfo.pos.offset(-5, -4, -5);
+                BlockPos pos = structureBlockInfo.pos().offset(-5, -4, -5);
                 BlockPos worldPos = this.getBlockPos().offset(pos.getX(), pos.getY(), pos.getZ());
-                BlockState state = structureBlockInfo.state;
+                BlockState state = structureBlockInfo.state();
                 BlockState worldState = this.level.getBlockState(worldPos);
 
                 if (state.is(Blocks.IRON_BLOCK)) {
@@ -254,7 +254,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
                 if (blockEntity.progress >= blockEntity.maxProgress) {
                     blockEntity.resetProgress();
-                    blockEntity.receiveMana(blockEntity.getGeneratingMana(), false);
+                    blockEntity.receiveMana(null, blockEntity.getGeneratingMana(), false);
                 }
 
                 setChanged(level, pos, state);
@@ -271,7 +271,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("menu." + ModReferences.modId + ".shrine_core");
+        return Component.translatable("menu." + ModConstants.modId + ".shrine_core");
     }
 
     @Nullable
@@ -325,7 +325,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
         this.multiblockTemplateBlocks.clear();
 
-        this.multiblockTemplateBlocks.addAll(EternalMagic.instance.multiblockRegistry.getMultiblockByName(new ResourceLocation(ModReferences.modId, "shrine")).multiblockTemplateBlocks());
+        this.multiblockTemplateBlocks.addAll(EternalMagic.instance.multiblockRegistry.getMultiblockByName(new ResourceLocation(ModConstants.modId, "shrine")).multiblockTemplateBlocks());
 
         multiblockLevel = new MultiblockLevel(this.getLevel(), multiblockTemplateBlocks);
 

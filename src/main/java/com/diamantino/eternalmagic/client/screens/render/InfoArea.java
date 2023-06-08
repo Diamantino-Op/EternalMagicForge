@@ -1,10 +1,9 @@
 package com.diamantino.eternalmagic.client.screens.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 
-public abstract class InfoArea extends GuiComponent {
+public abstract class InfoArea {
     protected final Rect2i sourceArea;
     protected final Rect2i destArea;
 
@@ -13,5 +12,5 @@ public abstract class InfoArea extends GuiComponent {
         this.destArea = destArea;
     }
 
-    public abstract void draw(PoseStack transform, int x, int y);
+    public abstract void draw(GuiGraphics graphics, int x, int y);
 }

@@ -1,31 +1,52 @@
 package com.diamantino.eternalmagic.registration;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.event.CreativeModeTabEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
-@Mod.EventBusSubscriber(modid = ModReferences.modId, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModCreativeTabs {
-    public static CreativeModeTab functionalBlocksTab;
-    public static CreativeModeTab decorativeBlocksTab;
-    public static CreativeModeTab itemsTab;
-    public static CreativeModeTab resourcesTab;
+    private static final DeferredRegister<CreativeModeTab> creativeTabs = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ModConstants.modId);
 
-    @SubscribeEvent
-    public static void registerCreativeModeTabs(CreativeModeTabEvent.Register event) {
-        functionalBlocksTab = event.registerCreativeModeTab(new ResourceLocation(ModReferences.modId, "functional_blocks_tab"), builder -> builder.icon(() -> new ItemStack(ModBlocks.wandBenchBlock.get())).title(Component.translatable("itemGroup." + ModReferences.modId + ".functional_blocks")).build());
-        decorativeBlocksTab = event.registerCreativeModeTab(new ResourceLocation(ModReferences.modId, "decorative_blocks_tab"), builder -> builder.icon(() -> new ItemStack(ModBlocks.decorativeBlocks.get(0).get())).title(Component.translatable("itemGroup." + ModReferences.modId + ".decorative_blocks")).build());
-        itemsTab = event.registerCreativeModeTab(new ResourceLocation(ModReferences.modId, "items_tab"), builder -> builder.icon(() -> new ItemStack(ModItems.wandItem.get())).title(Component.translatable("itemGroup." + ModReferences.modId + ".items")).build());
-        resourcesTab = event.registerCreativeModeTab(new ResourceLocation(ModReferences.modId, "resources_tab"), builder -> builder.icon(() -> new ItemStack(Blocks.IRON_ORE)).title(Component.translatable("itemGroup." + ModReferences.modId + ".resources")).build());
-    }
+    public static RegistryObject<CreativeModeTab> functionalBlocksTab = creativeTabs.register("functional_blocks_tab",
+            () -> CreativeModeTab.builder()
+                    .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
+                    .icon(() -> new ItemStack(ModBlocks.wandBenchBlock.get()))
+                    .title(Component.translatable("itemGroup." + ModConstants.modId + ".functional_blocks"))
+                    .build()
+    );
 
-    public static void registerCreativeTabs() {
+    public static RegistryObject<CreativeModeTab> decorativeBlocksTab = creativeTabs.register("decorative_blocks_tab",
+            () -> CreativeModeTab.builder()
+                    .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
+                    .icon(() -> new ItemStack(ModBlocks.decorativeBlocks.get("dark_stone").get()))
+                    .title(Component.translatable("itemGroup." + ModConstants.modId + ".decorative_blocks"))
+                    .build()
+    );
 
+    public static RegistryObject<CreativeModeTab> itemsTab = creativeTabs.register("items_tab",
+            () -> CreativeModeTab.builder()
+                    .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
+                    .icon(() -> new ItemStack(ModItems.wandItem.get()))
+                    .title(Component.translatable("itemGroup." + ModConstants.modId + ".items"))
+                    .build()
+    );
+
+    public static RegistryObject<CreativeModeTab> resourcesTab = creativeTabs.register("resources_tab",
+            () -> CreativeModeTab.builder()
+                    .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
+                    .icon(() -> new ItemStack(Blocks.IRON_ORE))
+                    .title(Component.translatable("itemGroup." + ModConstants.modId + ".resources"))
+                    .build()
+    );
+
+    public static void registerCreativeTabs(IEventBus bus) {
+        creativeTabs.register(bus);
     }
 }

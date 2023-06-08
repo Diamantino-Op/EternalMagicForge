@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.items;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.utils.TextUtils;
 import net.minecraft.ChatFormatting;
@@ -49,13 +49,13 @@ public class WandItem extends ManaItemBase {
         float cooldownReduction = tag.getFloat("cooldownReduction");
         float castTimeReduction = tag.getFloat("castTimeReduction");
 
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".stored_mana", TextUtils.formatNumberWithPrefix(storedMana), TextUtils.formatNumberWithPrefix(maxStoredMana)).withStyle(ChatFormatting.AQUA));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_element", coreElement).withStyle(ChatFormatting.DARK_BLUE));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".core_level", coreLevel < 10 ? String.valueOf(coreLevel) : "MAX").withStyle(ChatFormatting.DARK_BLUE));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".spell_slots", usedSpellSlots, totalSpellSlots).withStyle(ChatFormatting.GREEN));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".cooldown_reduction", cooldownReduction + "%").withStyle(ChatFormatting.GOLD));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".cast_time_reduction", castTimeReduction + "%").withStyle(ChatFormatting.GOLD));
-        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModReferences.modId + ".mana_usage_reduction", manaUsageReduction + "%").withStyle(ChatFormatting.GOLD));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModConstants.modId + ".stored_mana", TextUtils.formatNumberWithPrefix(storedMana), TextUtils.formatNumberWithPrefix(maxStoredMana)).withStyle(ChatFormatting.AQUA));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModConstants.modId + ".core_element", coreElement).withStyle(ChatFormatting.DARK_BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModConstants.modId + ".core_level", coreLevel < 10 ? String.valueOf(coreLevel) : "MAX").withStyle(ChatFormatting.DARK_BLUE));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModConstants.modId + ".spell_slots", usedSpellSlots, totalSpellSlots).withStyle(ChatFormatting.GREEN));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModConstants.modId + ".cooldown_reduction", cooldownReduction + "%").withStyle(ChatFormatting.GOLD));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModConstants.modId + ".cast_time_reduction", castTimeReduction + "%").withStyle(ChatFormatting.GOLD));
+        pTooltipComponents.add(Component.translatable("tooltip.wand_item." + ModConstants.modId + ".mana_usage_reduction", manaUsageReduction + "%").withStyle(ChatFormatting.GOLD));
     }
 
     public static float getTotalCooldownReduction(CompoundTag nbt) {
@@ -242,7 +242,7 @@ public class WandItem extends ManaItemBase {
         } else {
             CompoundTag tag = new CompoundTag();
 
-            tag.put("0", new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)).toNbt());
+            tag.put("0", new Model(new ResourceLocation(ModConstants.modId, "em_models/wands/base_wand_stick"), 0, false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)).toNbt());
             tag.put("1", model.toNbt());
 
             tag.putInt("modelsAmount", 2);
@@ -266,7 +266,7 @@ public class WandItem extends ManaItemBase {
 
         CompoundTag modelTag = tag.getCompound(String.valueOf(id));
 
-        Model model = nbt.contains("models") ? Model.fromNbt(modelTag) : new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), id, selected, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+        Model model = nbt.contains("models") ? Model.fromNbt(modelTag) : new Model(new ResourceLocation(ModConstants.modId, "em_models/wands/base_wand_stick"), id, selected, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
 
         modelTag.putString("modelId", model.modelId().toString());
         modelTag.putInt("id", model.id());
@@ -303,7 +303,7 @@ public class WandItem extends ManaItemBase {
                 wandParts.put(i, Model.fromNbt(tag));
             }
         } else {
-            wandParts.put(0, new Model(new ResourceLocation(ModReferences.modId, "em_models/wands/base_wand_stick"), 0, false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
+            wandParts.put(0, new Model(new ResourceLocation(ModConstants.modId, "em_models/wands/base_wand_stick"), 0, false, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1)));
         }
 
         return wandParts;

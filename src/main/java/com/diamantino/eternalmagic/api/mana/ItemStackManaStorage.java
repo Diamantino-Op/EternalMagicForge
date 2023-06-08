@@ -58,12 +58,12 @@ public class ItemStackManaStorage  implements ICapabilityProvider, INBTSerializa
         this.manaStorage.setMana(mana);
     }
 
-    public long extractMana(long amount, boolean simulate) {
-        return this.manaStorage.extractMana(amount, simulate);
+    public long extractMana(Direction direction, long amount, boolean simulate) {
+        return this.manaStorage.extractMana(direction, amount, simulate);
     }
 
-    public long receiveMana(long amount, boolean simulate) {
-        return this.manaStorage.receiveMana(amount, simulate);
+    public long receiveMana(Direction direction, long amount, boolean simulate) {
+        return this.manaStorage.receiveMana(direction, amount, simulate);
     }
 
     public boolean hasEnoughMana(long requiredMana) {

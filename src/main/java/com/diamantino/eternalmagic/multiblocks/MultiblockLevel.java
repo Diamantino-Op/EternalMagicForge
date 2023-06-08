@@ -28,7 +28,7 @@ public class MultiblockLevel implements BlockAndTintGetter {
         this.level = level;
 
         for (StructureTemplate.StructureBlockInfo blockInfo : blockInfos) {
-            states.put(blockInfo.pos.asLong(), blockInfo.state);
+            states.put(blockInfo.pos().asLong(), blockInfo.state());
         }
     }
 

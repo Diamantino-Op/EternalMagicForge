@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.datagen;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.items.WandUpgradeItem;
 import com.diamantino.eternalmagic.registration.ModBlocks;
@@ -19,13 +19,13 @@ import java.util.Objects;
 
 public class EMItemModelProvider extends ItemModelProvider {
     public EMItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, ModReferences.modId, existingFileHelper);
+        super(output, ModConstants.modId, existingFileHelper);
     }
 
     @Override
     protected void registerModels() {
         for (RegistryObject<CoreItem> item : ModItems.wandCores.values()) {
-            wandCore(item.get(), new ResourceLocation(ModReferences.modId, "item/core_base"));
+            wandCore(item.get(), new ResourceLocation(ModConstants.modId, "item/core_base"));
         }
 
         for (RegistryObject<WandUpgradeItem> item : ModItems.wandUpgrades.values()) {

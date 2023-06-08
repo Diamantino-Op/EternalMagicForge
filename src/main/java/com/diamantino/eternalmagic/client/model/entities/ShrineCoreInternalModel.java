@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.client.model.entities;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.blockentities.ShrineCoreBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class ShrineCoreInternalModel extends Model {
-	public static final ModelLayerLocation layer = new ModelLayerLocation(new ResourceLocation(ModReferences.modId, "shrine_core_internal"), "main");
+	public static final ModelLayerLocation layer = new ModelLayerLocation(new ResourceLocation(ModConstants.modId, "shrine_core_internal"), "main");
 	private final ModelPart OuterRing;
 	private final ModelPart InternalRing;
 	public final ModelPart Core;

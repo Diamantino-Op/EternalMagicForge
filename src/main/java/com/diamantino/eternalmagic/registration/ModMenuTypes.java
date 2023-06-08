@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.registration;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -13,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModMenuTypes {
-    public static final DeferredRegister<MenuType<?>> menuTypes = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ModReferences.modId);
+    public static final DeferredRegister<MenuType<?>> menuTypes = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ModConstants.modId);
 
     public static final RegistryObject<MenuType<WandBenchMenu>> wandBenchMenu = registerMenuType(WandBenchMenu::new, "wand_bench");
     public static final RegistryObject<MenuType<ShrineCoreMenu>> shrineCoreMenu = registerMenuType(ShrineCoreMenu::new, "shrine_core");

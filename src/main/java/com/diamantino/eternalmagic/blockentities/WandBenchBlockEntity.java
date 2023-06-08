@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.blockentities;
 
-import com.diamantino.eternalmagic.ModReferences;
+import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.api.mana.ItemStackManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.model.Model;
@@ -143,7 +143,7 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
 
             if (blockEntity.hasEnoughMana(requiredMana)) {
                 blockEntity.progress++;
-                blockEntity.extractMana(requiredMana, false);
+                blockEntity.extractMana(null, requiredMana, false);
                 setChanged(level, pos, state);
 
                 if(blockEntity.progress >= blockEntity.maxProgress) {
@@ -157,7 +157,7 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
 
             if (blockEntity.hasEnoughMana(requiredMana)) {
                 blockEntity.progress++;
-                blockEntity.extractMana(requiredMana, false);
+                blockEntity.extractMana(null, requiredMana, false);
                 setChanged(level, pos, state);
 
                 if(blockEntity.progress >= blockEntity.maxProgress) {
@@ -173,9 +173,9 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
 
     public static void transferManaToTank(WandBenchBlockEntity blockEntity) {
         blockEntity.itemHandler.getStackInSlot(0).getCapability(ItemStackManaStorage.itemStackManaStorageCapability).ifPresent(itemStackManaStorage -> {
-            long manaExtract = itemStackManaStorage.extractMana(blockEntity.manaStorage.getMaxManaStored() - blockEntity.manaStorage.getManaStored(), false);
+            long manaExtract = itemStackManaStorage.extractMana(null, blockEntity.manaStorage.getMaxManaStored() - blockEntity.manaStorage.getManaStored(), false);
 
-            blockEntity.receiveMana(manaExtract, false);
+            blockEntity.receiveMana(null, manaExtract, false);
         });
     }
 
@@ -189,7 +189,7 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("menu." + ModReferences.modId + ".wand_bench");
+        return Component.translatable("menu." + ModConstants.modId + ".wand_bench");
     }
 
     @Nullable

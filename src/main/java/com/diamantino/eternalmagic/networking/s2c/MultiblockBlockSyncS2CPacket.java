@@ -56,8 +56,8 @@ public class MultiblockBlockSyncS2CPacket {
         buf.writeInt(multiblockTemplateBlocks.size());
 
         for (StructureTemplate.StructureBlockInfo block : multiblockTemplateBlocks) {
-            BlockState state = block.state;
-            BlockPos pos = block.pos;
+            BlockState state = block.state();
+            BlockPos pos = block.pos();
 
             buf.writeBlockPos(pos);
             buf.writeId(Block.BLOCK_STATE_REGISTRY, state);
