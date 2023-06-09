@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.EternalMagic;
 import com.diamantino.eternalmagic.ModConstants;
+import com.diamantino.eternalmagic.api.mana.ManaStorage;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.multiblocks.MultiblockLevel;
@@ -67,6 +68,13 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
     public ShrineCoreBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntityTypes.shrineCoreBlockEntity.get(), pPos, pBlockState, baseCapacity);
+
+        this.manaStorage.topFace = ManaStorage.SideInfo.extract;
+        this.manaStorage.bottomFace = ManaStorage.SideInfo.extract;
+        this.manaStorage.northFace = ManaStorage.SideInfo.extract;
+        this.manaStorage.southFace = ManaStorage.SideInfo.extract;
+        this.manaStorage.eastFace = ManaStorage.SideInfo.extract;
+        this.manaStorage.westFace = ManaStorage.SideInfo.extract;
 
         this.itemHandler = new ItemStackHandler(1) {
             @Override

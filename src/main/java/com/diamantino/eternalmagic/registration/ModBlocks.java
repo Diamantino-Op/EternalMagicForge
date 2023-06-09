@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.ModConstants;
+import com.diamantino.eternalmagic.blocks.ManaPipeBlock;
 import com.diamantino.eternalmagic.blocks.ShrineCoreBlock;
 import com.diamantino.eternalmagic.blocks.ShrineOutputBlock;
 import com.diamantino.eternalmagic.blocks.WandBenchBlock;
@@ -40,6 +41,7 @@ public class ModBlocks {
     public static final RegistryObject<WandBenchBlock> wandBenchBlock = registerFunctionalBlock("wand_bench", false, MineTool.pickaxe, MineLevel.wood, () -> new WandBenchBlock(BlockBehaviour.Properties.of().strength(1.5F, 6F).lightLevel(state -> 15).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(ModBlocks::never).isRedstoneConductor(ModBlocks::never).isSuffocating(ModBlocks::never).isViewBlocking(ModBlocks::never)));
     public static final RegistryObject<ShrineCoreBlock> shrineCoreBlock = registerFunctionalBlock("shrine_core", false, MineTool.pickaxe, MineLevel.iron, () -> new ShrineCoreBlock(BlockBehaviour.Properties.of().strength(1.5F, 6F).lightLevel(state -> 15).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(ModBlocks::never).isRedstoneConductor(ModBlocks::never).isSuffocating(ModBlocks::never).isViewBlocking(ModBlocks::never)));
     public static final RegistryObject<ShrineOutputBlock> shrineOutputBlock = registerFunctionalBlock("shrine_output", true, MineTool.pickaxe, MineLevel.iron, () -> new ShrineOutputBlock(BlockBehaviour.Properties.of().strength(1.5F, 6F).requiresCorrectToolForDrops()));
+    public static final RegistryObject<ManaPipeBlock> manaPipeBlock = registerFunctionalBlock("mana_pipe", false, MineTool.pickaxe, MineLevel.iron, () -> new ManaPipeBlock(BlockBehaviour.Properties.of().strength(1.5F, 6F).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(ModBlocks::never).isRedstoneConductor(ModBlocks::never).isSuffocating(ModBlocks::never).isViewBlocking(ModBlocks::never)));
 
     private static void registerSimpleDecorativeBlocksSet(String regName, MineTool tool, MineLevel mineLevel, float destroyTime, float explosionResistance) {
         RegistryObject<Block> block = registerDecorativeBlock(regName, true, tool, mineLevel, () -> new Block(BlockBehaviour.Properties.of().strength(destroyTime, explosionResistance).requiresCorrectToolForDrops()));

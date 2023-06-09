@@ -1,13 +1,9 @@
 package com.diamantino.eternalmagic.blocks;
 
-import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
+import com.diamantino.eternalmagic.blockentities.ManaPipeBlockEntity;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -21,47 +17,36 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("deprecation")
-public class WandBenchBlock extends BaseEntityBlock {
+public class ManaPipeBlock extends BaseEntityBlock {
     public static final BooleanProperty waterlogged = BlockStateProperties.WATERLOGGED;
+    public static final BooleanProperty connectedTop = BooleanProperty.create("connected_top");
+    public static final BooleanProperty connectedBottom = BooleanProperty.create("connected_bottom");
+    public static final BooleanProperty connectedNorth = BooleanProperty.create("connected_north");
+    public static final BooleanProperty connectedSouth = BooleanProperty.create("connected_south");
+    public static final BooleanProperty connectedEast = BooleanProperty.create("connected_east");
+    public static final BooleanProperty connectedWest = BooleanProperty.create("connected_west");
 
-    public WandBenchBlock(Properties properties) {
-        super(properties);
+    public ManaPipeBlock(Properties pProperties) {
+        super(pProperties);
 
-        this.registerDefaultState(this.stateDefinition.any().setValue(waterlogged, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(waterlogged, false).setValue(connectedTop, false).setValue(connectedBottom, false).setValue(connectedNorth, false).setValue(connectedSouth, false).setValue(connectedEast, false).setValue(connectedWest, false));
     }
 
+    @Nullable
     @Override
-    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult hitResult) {
-        if (!level.isClientSide()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-
-            if (blockEntity instanceof WandBenchBlockEntity wandBenchBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer) player, wandBenchBlockEntity, pos);
-            } else {
-                throw new IllegalStateException("Container provider is missing!");
-            }
-        }
-
-        return InteractionResult.sidedSuccess(level.isClientSide());
+    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+        return new ManaPipeBlockEntity(pPos, pState);
     }
 
-    @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return new WandBenchBlockEntity(pos, state);
-    }
-
+    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, ModBlockEntityTypes.wandBenchBlockEntity.get(), WandBenchBlockEntity::tick);
+        return createTickerHelper(blockEntityType, ModBlockEntityTypes.manaPipeBlockEntity.get(), ManaPipeBlockEntity::tick);
     }
 
     @Override
@@ -70,21 +55,8 @@ public class WandBenchBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
-        if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-
-            if (blockEntity instanceof WandBenchBlockEntity wandBenchBlockEntity) {
-                wandBenchBlockEntity.dropContent();
-            }
-        }
-
-        super.onRemove(state, level, pos, newState, isMoving);
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(waterlogged);
+        pBuilder.add(waterlogged, connectedBottom, connectedTop, connectedNorth, connectedSouth, connectedEast, connectedWest);
     }
 
     @Override

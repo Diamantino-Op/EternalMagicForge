@@ -11,12 +11,12 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     protected long maxReceive;
     protected long maxExtract;
 
-    protected SideInfo topFace;
-    protected SideInfo bottomFace;
-    protected SideInfo northFace;
-    protected SideInfo southFace;
-    protected SideInfo eastFace;
-    protected SideInfo westFace;
+    public SideInfo topFace = SideInfo.none;
+    public SideInfo bottomFace = SideInfo.none;
+    public SideInfo northFace = SideInfo.none;
+    public SideInfo southFace = SideInfo.none;
+    public SideInfo eastFace = SideInfo.none;
+    public SideInfo westFace = SideInfo.none;
 
     public ManaStorage(long capacity)
     {
@@ -111,18 +111,34 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     @Override
     public boolean canExtract(Direction side)
     {
-        return this.maxExtract > 0;
+        return switch (side) {
+            case DOWN -> bottomFace == SideInfo.extract || bottomFace == SideInfo.both;
+            case UP -> topFace == SideInfo.extract || topFace == SideInfo.both;
+            case NORTH -> northFace == SideInfo.extract || northFace == SideInfo.both;
+            case SOUTH -> southFace == SideInfo.extract || southFace == SideInfo.both;
+            case WEST -> westFace == SideInfo.extract || westFace == SideInfo.both;
+            case EAST -> eastFace == SideInfo.extract || eastFace == SideInfo.both;
+            case null -> this.maxExtract > 0;
+        };
     }
 
     @Override
     public boolean canReceive(Direction side)
     {
-        return this.maxReceive > 0;
+        return switch (side) {
+            case DOWN -> bottomFace == SideInfo.insert || bottomFace == SideInfo.both;
+            case UP -> topFace == SideInfo.insert || topFace == SideInfo.both;
+            case NORTH -> northFace == SideInfo.insert || northFace == SideInfo.both;
+            case SOUTH -> southFace == SideInfo.insert || southFace == SideInfo.both;
+            case WEST -> westFace == SideInfo.insert || westFace == SideInfo.both;
+            case EAST -> eastFace == SideInfo.insert || eastFace == SideInfo.both;
+            case null -> this.maxReceive > 0;
+        };
     }
 
     @Override
     public boolean isSideEnabled(Direction side) {
-        return false;
+        return bottomFace != SideInfo.none && topFace != SideInfo.none && northFace != SideInfo.none && southFace != SideInfo.none && westFace != SideInfo.none && eastFace != SideInfo.none;
     }
 
     @Override
@@ -142,6 +158,7 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     public enum SideInfo {
         extract,
         insert,
+        both,
         none
     }
 }

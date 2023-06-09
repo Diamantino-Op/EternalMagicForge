@@ -1,12 +1,19 @@
 package com.diamantino.eternalmagic.blockentities;
 
+import com.diamantino.eternalmagic.blocks.ShrineOutputBlock;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
+import com.diamantino.eternalmagic.registration.ModCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class ShrineOutputBlockEntity extends BlockEntity {
     public BlockPos corePos;
@@ -16,31 +23,6 @@ public class ShrineOutputBlockEntity extends BlockEntity {
         super(ModBlockEntityTypes.shrineOutputBlockEntity.get(), pPos, pBlockState);
 
         this.corePos = null;
-        this.isLinked = false;
-    }
-
-    public long extractMana(Direction direction, long amount, boolean simulate) {
-        if (isLinked && level != null && !level.isClientSide() && corePos != null && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
-            return shrineCoreBlockEntity.extractMana(direction, amount, simulate);
-        }
-
-        return 0;
-    }
-
-    public long receiveMana(Direction direction, long amount, boolean simulate) {
-        if (isLinked && level != null && !level.isClientSide() && corePos != null && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
-            return shrineCoreBlockEntity.receiveMana(direction, amount, simulate);
-        }
-
-        return 0;
-    }
-
-    public boolean hasEnoughMana(long requiredMana) {
-        if (isLinked && level != null && !level.isClientSide() && corePos != null && level.getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
-            return shrineCoreBlockEntity.hasEnoughMana(requiredMana);
-        }
-
-        return false;
     }
 
     @Override
@@ -51,8 +33,6 @@ public class ShrineOutputBlockEntity extends BlockEntity {
             nbt.putInt("coreZ", corePos.getZ());
         }
 
-        nbt.putBoolean("linked", isLinked);
-
         super.saveAdditional(nbt);
     }
 
@@ -60,8 +40,22 @@ public class ShrineOutputBlockEntity extends BlockEntity {
     public void load(@NotNull CompoundTag nbt) {
         if (nbt.contains("coreX"))
             corePos = new BlockPos(nbt.getInt("coreX"), nbt.getInt("coreY"), nbt.getInt("coreZ"));
-        isLinked = nbt.getBoolean("linked");
 
         super.load(nbt);
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (this.getLevel() != null) {
+            Optional<Direction> facing = this.getLevel().getBlockState(this.getBlockPos()).getOptionalValue(ShrineOutputBlock.facing);
+
+            if (facing.isPresent()) {
+                if (side == facing.get() && corePos != null && this.getLevel().getBlockEntity(this.getBlockPos()) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
+                    return ModCapabilities.mana.orEmpty(cap, shrineCoreBlockEntity.lazyManaHandler);
+                }
+            }
+        }
+
+        return super.getCapability(cap, side);
     }
 }

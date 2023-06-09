@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class ManaBlockEntityBase extends BlockEntity {
     public final ModManaStorage manaStorage;
 
-    private LazyOptional<IManaStorage> lazyManaHandler = LazyOptional.empty();
+    public LazyOptional<IManaStorage> lazyManaHandler = LazyOptional.empty();
 
     public ManaBlockEntityBase(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, long capacity) {
         this(pType, pPos, pBlockState, capacity, capacity, capacity);
