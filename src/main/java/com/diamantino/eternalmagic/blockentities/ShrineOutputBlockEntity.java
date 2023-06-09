@@ -50,7 +50,7 @@ public class ShrineOutputBlockEntity extends BlockEntity {
             Optional<Direction> facing = this.getLevel().getBlockState(this.getBlockPos()).getOptionalValue(ShrineOutputBlock.facing);
 
             if (facing.isPresent()) {
-                if (side == facing.get() && corePos != null && this.getLevel().getBlockEntity(this.getBlockPos()) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
+                if (side == facing.get() && corePos != null && this.getLevel().getBlockEntity(corePos) instanceof ShrineCoreBlockEntity shrineCoreBlockEntity) {
                     return ModCapabilities.mana.orEmpty(cap, shrineCoreBlockEntity.lazyManaHandler);
                 }
             }

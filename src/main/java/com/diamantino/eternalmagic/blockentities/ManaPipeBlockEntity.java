@@ -30,8 +30,8 @@ public class ManaPipeBlockEntity extends ManaBlockEntityBase {
                 if (entity instanceof ManaPipeBlockEntity manaPipeBlockEntity) {
                     equalizeMana(blockEntity, manaPipeBlockEntity);
                 } else {
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.DOWN, blockEntity.getManaStorage().getManaStored(), false), false));
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> manaStorage.extractMana(Direction.DOWN, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.DOWN).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.DOWN, blockEntity.getManaStorage().getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.DOWN).ifPresent(manaStorage -> manaStorage.extractMana(Direction.DOWN, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
                 }
             }
         }
@@ -43,8 +43,8 @@ public class ManaPipeBlockEntity extends ManaBlockEntityBase {
                 if (entity instanceof ManaPipeBlockEntity manaPipeBlockEntity) {
                     equalizeMana(blockEntity, manaPipeBlockEntity);
                 } else {
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.UP, blockEntity.getManaStorage().getManaStored(), false), false));
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> manaStorage.extractMana(Direction.UP, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.UP).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.UP, blockEntity.getManaStorage().getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.UP).ifPresent(manaStorage -> manaStorage.extractMana(Direction.UP, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
                 }
             }
         }
@@ -56,8 +56,8 @@ public class ManaPipeBlockEntity extends ManaBlockEntityBase {
                 if (entity instanceof ManaPipeBlockEntity manaPipeBlockEntity) {
                     equalizeMana(blockEntity, manaPipeBlockEntity);
                 } else {
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.SOUTH, blockEntity.getManaStorage().getManaStored(), false), false));
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> manaStorage.extractMana(Direction.SOUTH, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.SOUTH).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.SOUTH, blockEntity.getManaStorage().getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.SOUTH).ifPresent(manaStorage -> manaStorage.extractMana(Direction.SOUTH, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
                 }
             }
         }
@@ -69,8 +69,8 @@ public class ManaPipeBlockEntity extends ManaBlockEntityBase {
                 if (entity instanceof ManaPipeBlockEntity manaPipeBlockEntity) {
                     equalizeMana(blockEntity, manaPipeBlockEntity);
                 } else {
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.NORTH, blockEntity.getManaStorage().getManaStored(), false), false));
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> manaStorage.extractMana(Direction.NORTH, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.NORTH).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.NORTH, blockEntity.getManaStorage().getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.NORTH).ifPresent(manaStorage -> manaStorage.extractMana(Direction.NORTH, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
                 }
             }
         }
@@ -82,8 +82,8 @@ public class ManaPipeBlockEntity extends ManaBlockEntityBase {
                 if (entity instanceof ManaPipeBlockEntity manaPipeBlockEntity) {
                     equalizeMana(blockEntity, manaPipeBlockEntity);
                 } else {
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.WEST, blockEntity.getManaStorage().getManaStored(), false), false));
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> manaStorage.extractMana(Direction.WEST, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.WEST).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.WEST, blockEntity.getManaStorage().getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.WEST).ifPresent(manaStorage -> manaStorage.extractMana(Direction.WEST, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
                 }
             }
         }
@@ -95,8 +95,8 @@ public class ManaPipeBlockEntity extends ManaBlockEntityBase {
                 if (entity instanceof ManaPipeBlockEntity manaPipeBlockEntity) {
                     equalizeMana(blockEntity, manaPipeBlockEntity);
                 } else {
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.EAST, blockEntity.getManaStorage().getManaStored(), false), false));
-                    entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> manaStorage.extractMana(Direction.EAST, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.EAST).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(Direction.EAST, blockEntity.getManaStorage().getManaStored(), false), false));
+                    entity.getCapability(ModCapabilities.mana, Direction.EAST).ifPresent(manaStorage -> manaStorage.extractMana(Direction.EAST, blockEntity.receiveMana(null, manaStorage.getManaStored(), false), false));
                 }
             }
         }

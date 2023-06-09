@@ -1,7 +1,7 @@
 package com.diamantino.eternalmagic.utils;
 
 public class TextUtils {
-    public static String formatNumberWithPrefix(long number) {
+    public static String formatNumberWithPrefix(double number) {
         String[] suffixes = new String[]{"", "K", "M", "B", "T", "P", "E", "Z", "Y"};
         int suffixIndex = 0;
         double formattedNumber = number;

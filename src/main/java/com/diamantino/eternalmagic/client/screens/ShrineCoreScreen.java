@@ -5,6 +5,7 @@ import com.diamantino.eternalmagic.api.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.client.screens.render.ManaInfoArea;
 import com.diamantino.eternalmagic.utils.MouseUtils;
+import com.diamantino.eternalmagic.utils.TextUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -51,22 +52,22 @@ public class ShrineCoreScreen extends AbstractContainerScreen<ShrineCoreMenu> {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        Component text1 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.block_multiplier", menu.blockEntity.generatingManaMultiplier * 100 + "%");
-        Component text2 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.core_multiplier", (menu.blockEntity.coreLevel * menu.blockEntity.coreLevel) * 10 + "%");
-        Component text3 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.level", menu.blockEntity.coreLevel);
-        Component text4 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.mana_per_second", menu.blockEntity.generatingMana);
+        Component text1 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.block_multiplier", TextUtils.formatNumberWithPrefix(menu.blockEntity.generatingManaMultiplier * 100) + "%");
+        Component text2 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.core_multiplier", TextUtils.formatNumberWithPrefix((menu.blockEntity.coreLevel * menu.blockEntity.coreLevel) * 10) + "%");
+        Component text3 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.level", menu.blockEntity.coreLevel < 10 ? String.valueOf(menu.blockEntity.coreLevel) : "MAX");
+        Component text4 = Component.translatable("screen." + ModConstants.modId + ".shrine_core.mana_per_second", TextUtils.formatNumberWithPrefix(menu.blockEntity.generatingMana));
 
-        float width3 = this.font.width(text3.getVisualOrderText()) * 0.6f;
-        float width4 = this.font.width(text4.getVisualOrderText()) * 0.6f;
+        float width3 = this.font.width(text3.getVisualOrderText()) * 0.5f;
+        float width4 = this.font.width(text4.getVisualOrderText()) * 0.5f;
 
         graphics.pose().pushPose();
 
-        graphics.pose().scale(0.6f, 0.6f, 0.6f);
+        graphics.pose().scale(0.5f, 0.5f, 0.5f);
 
-        graphics.drawString(this.font, text1.getVisualOrderText(), 7 / 0.6f, 25 / 0.6f, 0xff0000, true);
-        graphics.drawString(this.font, text2.getVisualOrderText(), 7 / 0.6f, 40 / 0.6f, 0xff0000, true);
-        graphics.drawString(this.font, text4.getVisualOrderText(), (176 - width4 - 8) / 0.6f, 25 / 0.6f, 0xff0000, true);
-        graphics.drawString(this.font, text3.getVisualOrderText(), (176 - width3 - 8) / 0.6f, 40 / 0.6f, 0xff0000, true);
+        graphics.drawString(this.font, text1.getVisualOrderText(), 7 / 0.5f, 25 / 0.5f, 0xff0000, false);
+        graphics.drawString(this.font, text2.getVisualOrderText(), 7 / 0.5f, 40 / 0.5f, 0xff0000, false);
+        graphics.drawString(this.font, text4.getVisualOrderText(), (176 - width4 - 8) / 0.5f, 25 / 0.5f, 0xff0000, false);
+        graphics.drawString(this.font, text3.getVisualOrderText(), (176 - width3 - 8) / 0.5f, 40 / 0.5f, 0xff0000, false);
 
         graphics.pose().popPose();
 

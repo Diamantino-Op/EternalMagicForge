@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.blocks;
 
 import com.diamantino.eternalmagic.blockentities.ManaPipeBlockEntity;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
+import com.diamantino.eternalmagic.registration.ModCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -63,12 +64,59 @@ public class ManaPipeBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockPos blockpos = pContext.getClickedPos();
         FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-        return this.defaultBlockState().setValue(waterlogged, fluidstate.getType() == Fluids.WATER);
+        return updateState(blockpos, this.defaultBlockState().setValue(waterlogged, fluidstate.getType() == Fluids.WATER), pContext.getLevel());
     }
 
     @Override
     public @NotNull FluidState getFluidState(BlockState pState) {
         return pState.getValue(waterlogged) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    }
+
+    private BlockState updateState(BlockPos pos, BlockState initialState, LevelAccessor level) {
+        for (Direction dir : Direction.values()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos.relative(dir));
+
+            switch (dir) {
+                case DOWN -> {
+                    if (blockEntity != null && blockEntity.getCapability(ModCapabilities.mana, dir.getOpposite()).isPresent())
+                        initialState = initialState.setValue(connectedBottom, true);
+                    else
+                        initialState = initialState.setValue(connectedBottom, false);
+                }
+                case UP -> {
+                    if (blockEntity != null && blockEntity.getCapability(ModCapabilities.mana, dir.getOpposite()).isPresent())
+                        initialState = initialState.setValue(connectedTop, true);
+                    else
+                        initialState = initialState.setValue(connectedTop, false);
+                }
+                case NORTH -> {
+                    if (blockEntity != null && blockEntity.getCapability(ModCapabilities.mana, dir.getOpposite()).isPresent())
+                        initialState = initialState.setValue(connectedNorth, true);
+                    else
+                        initialState = initialState.setValue(connectedNorth, false);
+                }
+                case SOUTH -> {
+                    if (blockEntity != null && blockEntity.getCapability(ModCapabilities.mana, dir.getOpposite()).isPresent())
+                        initialState = initialState.setValue(connectedSouth, true);
+                    else
+                        initialState = initialState.setValue(connectedSouth, false);
+                }
+                case WEST -> {
+                    if (blockEntity != null && blockEntity.getCapability(ModCapabilities.mana, dir.getOpposite()).isPresent())
+                        initialState = initialState.setValue(connectedWest, true);
+                    else
+                        initialState = initialState.setValue(connectedWest, false);
+                }
+                case EAST -> {
+                    if (blockEntity != null && blockEntity.getCapability(ModCapabilities.mana, dir.getOpposite()).isPresent())
+                        initialState = initialState.setValue(connectedEast, true);
+                    else
+                        initialState = initialState.setValue(connectedEast, false);
+                }
+            }
+        }
+
+        return initialState;
     }
 
     @Override
@@ -77,6 +125,6 @@ public class ManaPipeBlock extends BaseEntityBlock {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
 
-        return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+        return updateState(pCurrentPos, super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos), pLevel);
     }
 }

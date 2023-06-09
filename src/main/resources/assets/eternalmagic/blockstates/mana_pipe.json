@@ -1,0 +1,62 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "eternalmagic:block/mana_pipe/mana_pipe_center"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalmagic:block/mana_pipe/mana_pipe_connection",
+        "x": 270
+      },
+      "when": {
+        "connected_top": true
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalmagic:block/mana_pipe/mana_pipe_connection",
+        "x": 90
+      },
+      "when": {
+        "connected_bottom": true
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalmagic:block/mana_pipe/mana_pipe_connection"
+      },
+      "when": {
+        "connected_north": true
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalmagic:block/mana_pipe/mana_pipe_connection",
+        "y": 180
+      },
+      "when": {
+        "connected_south": true
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalmagic:block/mana_pipe/mana_pipe_connection",
+        "y": 90
+      },
+      "when": {
+        "connected_east": true
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalmagic:block/mana_pipe/mana_pipe_connection",
+        "y": 270
+      },
+      "when": {
+        "connected_west": true
+      }
+    }
+  ]
+}

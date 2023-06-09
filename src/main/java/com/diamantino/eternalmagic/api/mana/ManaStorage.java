@@ -111,28 +111,26 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     @Override
     public boolean canExtract(Direction side)
     {
-        return switch (side) {
+        return side == null ? this.maxExtract > 0 : switch (side) {
             case DOWN -> bottomFace == SideInfo.extract || bottomFace == SideInfo.both;
             case UP -> topFace == SideInfo.extract || topFace == SideInfo.both;
             case NORTH -> northFace == SideInfo.extract || northFace == SideInfo.both;
             case SOUTH -> southFace == SideInfo.extract || southFace == SideInfo.both;
             case WEST -> westFace == SideInfo.extract || westFace == SideInfo.both;
             case EAST -> eastFace == SideInfo.extract || eastFace == SideInfo.both;
-            case null -> this.maxExtract > 0;
         };
     }
 
     @Override
     public boolean canReceive(Direction side)
     {
-        return switch (side) {
+        return side == null ? this.maxReceive > 0 : switch (side) {
             case DOWN -> bottomFace == SideInfo.insert || bottomFace == SideInfo.both;
             case UP -> topFace == SideInfo.insert || topFace == SideInfo.both;
             case NORTH -> northFace == SideInfo.insert || northFace == SideInfo.both;
             case SOUTH -> southFace == SideInfo.insert || southFace == SideInfo.both;
             case WEST -> westFace == SideInfo.insert || westFace == SideInfo.both;
             case EAST -> eastFace == SideInfo.insert || eastFace == SideInfo.both;
-            case null -> this.maxReceive > 0;
         };
     }
 
