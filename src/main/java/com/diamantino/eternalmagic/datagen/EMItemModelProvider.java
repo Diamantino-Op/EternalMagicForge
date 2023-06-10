@@ -33,7 +33,15 @@ public class EMItemModelProvider extends ItemModelProvider {
         }
 
         for (RegistryObject<? extends Block> block : ModBlocks.functionalBlocks.values()) {
-            this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + block.getId().getPath()));
+            String folder = "";
+            String additional = "";
+
+            if (block == ModBlocks.manaPipeBlock) {
+                folder = "mana_pipe/";
+                additional = "_center";
+            }
+
+            this.withExistingParent(block.getId().getPath(), new ResourceLocation(block.getId().getNamespace(), "block/" + folder + block.getId().getPath() + additional));
         }
 
         for (RegistryObject<? extends Block> block : ModBlocks.decorativeBlocks.values()) {

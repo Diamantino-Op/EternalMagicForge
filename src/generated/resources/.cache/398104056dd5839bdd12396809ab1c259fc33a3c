@@ -1,4 +1,4 @@
-// 1.19.4	2023-06-01T15:22:14.954788	Item Models: eternalmagic
+// 1.20	2023-06-10T11:51:30.0828038	Item Models: eternalmagic
 e54afb29afb210badd560f35f6e8d7cc0c7955f4 assets/eternalmagic/models/item/air_core.json
 6d4beb41af0bd92d8b934e31276aa85eba704d9d assets/eternalmagic/models/item/darkness_core.json
 37c57a6f2b4cc7a309b4761e4f5235aa39df6a70 assets/eternalmagic/models/item/dark_stone.json
@@ -17,6 +17,7 @@ fd5b30b80e6db2abbbd541cec141b0aefeabda3e assets/eternalmagic/models/item/fire_co
 28ffbd1666c5a15f51e9b48a9f3b064b66a721f2 assets/eternalmagic/models/item/infinity_core.json
 daf6e7e962be3bf91ca69148f830f0655d8df170 assets/eternalmagic/models/item/light_core.json
 46c7c0843f43968e8428fd2545366fd6bc857bf5 assets/eternalmagic/models/item/magma_core.json
+69bec5ef3bca1ae2cd0bb3ae8a225ec03ea9f642 assets/eternalmagic/models/item/mana_pipe.json
 35e555e1c2823b0cd685cd7845945ccb2f5a90be assets/eternalmagic/models/item/mana_stone.json
 df69d0a4215611d4add7cb3704c46297e6ee620f assets/eternalmagic/models/item/mana_stone_bricks.json
 43b67d018388ebab2ffc8a3159d71e23e742816b assets/eternalmagic/models/item/mana_stone_bricks_slab.json

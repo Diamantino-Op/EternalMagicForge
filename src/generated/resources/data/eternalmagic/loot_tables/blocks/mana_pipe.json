@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "eternalmagic:dark_stone_pillar"
+          "name": "eternalmagic:mana_pipe"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "eternalmagic:blocks/dark_stone_pillar"
+  "random_sequence": "eternalmagic:blocks/mana_pipe"
 }
