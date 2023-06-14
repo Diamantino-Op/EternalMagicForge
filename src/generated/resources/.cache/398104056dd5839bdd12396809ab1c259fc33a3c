@@ -1,4 +1,4 @@
-// 1.20	2023-06-10T11:51:30.0828038	Item Models: eternalmagic
+// 1.20.1	2023-06-14T22:18:27.8144457	Item Models: eternalmagic
 e54afb29afb210badd560f35f6e8d7cc0c7955f4 assets/eternalmagic/models/item/air_core.json
 6d4beb41af0bd92d8b934e31276aa85eba704d9d assets/eternalmagic/models/item/darkness_core.json
 37c57a6f2b4cc7a309b4761e4f5235aa39df6a70 assets/eternalmagic/models/item/dark_stone.json
@@ -10,6 +10,7 @@ b0e0e2fdccb30e25c722b9befbbfe540d3a6487b assets/eternalmagic/models/item/dark_st
 d2b5a28d353c9650b41271947aad53787d68057f assets/eternalmagic/models/item/dark_stone_slab.json
 5a73de8752e5b006d138b4e5b8ed19855e765d26 assets/eternalmagic/models/item/dark_stone_stairs.json
 4f9bc8e4992231bd1fd9a659a130a6749a73929a assets/eternalmagic/models/item/dark_stone_wall.json
+22d3908909e13e080f02bd12ad08310cd86340ce assets/eternalmagic/models/item/directional_mana_transmitter.json
 f61d66e295c29ecf23dce264ba500bb055b0e496 assets/eternalmagic/models/item/earth_core.json
 8f0ba3066380c002a8cc52350c4468be155ddf48 assets/eternalmagic/models/item/electricity_core.json
 fd5b30b80e6db2abbbd541cec141b0aefeabda3e assets/eternalmagic/models/item/fire_core.json
@@ -18,6 +19,7 @@ fd5b30b80e6db2abbbd541cec141b0aefeabda3e assets/eternalmagic/models/item/fire_co
 daf6e7e962be3bf91ca69148f830f0655d8df170 assets/eternalmagic/models/item/light_core.json
 46c7c0843f43968e8428fd2545366fd6bc857bf5 assets/eternalmagic/models/item/magma_core.json
 69bec5ef3bca1ae2cd0bb3ae8a225ec03ea9f642 assets/eternalmagic/models/item/mana_pipe.json
+9298826bb0f19cce036ca469c9988711447be449 assets/eternalmagic/models/item/mana_receiver.json
 35e555e1c2823b0cd685cd7845945ccb2f5a90be assets/eternalmagic/models/item/mana_stone.json
 df69d0a4215611d4add7cb3704c46297e6ee620f assets/eternalmagic/models/item/mana_stone_bricks.json
 43b67d018388ebab2ffc8a3159d71e23e742816b assets/eternalmagic/models/item/mana_stone_bricks_slab.json
@@ -27,6 +29,8 @@ a3b010ed68fe64b971f536d4e1fedd55aa955c4c assets/eternalmagic/models/item/mana_st
 ab62c384901b71683030b8a65fff070e70c5118f assets/eternalmagic/models/item/mana_stone_slab.json
 12007f3f946907c9793e7e9a078c316d9466e10b assets/eternalmagic/models/item/mana_stone_stairs.json
 54f009609f17ba63bce94fa3040319c5461ce079 assets/eternalmagic/models/item/mana_stone_wall.json
+ca13d018772a5d273292feb8f6060107142cd411 assets/eternalmagic/models/item/mana_tunnel.json
+64e8c88cee921db39da276e5f3c0274916065628 assets/eternalmagic/models/item/omnidirectional_mana_transmitter.json
 c7fd493174292f2f4793e36f9479d6d25f9987f1 assets/eternalmagic/models/item/shrine_core.json
 c0071671762ce17105dacf30b51d3159912b9d6b assets/eternalmagic/models/item/shrine_output.json
 b7e3614b04fb54324be7505e3caea309c9d3c1f5 assets/eternalmagic/models/item/wand_bench.json

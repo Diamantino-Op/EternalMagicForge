@@ -4,6 +4,29 @@
 
   "block.eternalmagic.wand_bench": "Wand Bench",
   "block.eternalmagic.shrine_core": "Shrine Core",
+  "block.eternalmagic.shrine_output": "Shrine Output",
+  "block.eternalmagic.mana_tunnel": "Mana Tunnel",
+  "block.eternalmagic.mana_receiver": "Mana Receiver",
+  "block.eternalmagic.directional_mana_transmitter": "Directional Mana Transmitter",
+  "block.eternalmagic.omnidirectional_mana_transmitter": "Omnidirectional Mana Transmitter",
+  "block.eternalmagic.mana_stone": "Mana Stone",
+  "block.eternalmagic.mana_stone_bricks": "Mana Stone Bricks",
+  "block.eternalmagic.mana_stone_bricks_slab": "Mana Stone Bricks Slab",
+  "block.eternalmagic.mana_stone_slab": "Mana Stone Slab",
+  "block.eternalmagic.mana_stone_pillar": "Mana Stone Pillar",
+  "block.eternalmagic.mana_stone_bricks_stairs": "Mana Stone Bricks Stairs",
+  "block.eternalmagic.mana_stone_stairs": "Mana Stone Stairs",
+  "block.eternalmagic.mana_stone_bricks_wall": "Mana Stone Bricks Wall",
+  "block.eternalmagic.mana_stone_wall": "Mana Stone Wall",
+  "block.eternalmagic.dark_stone": "Dark Stone",
+  "block.eternalmagic.dark_stone_bricks": "Dark Stone Bricks",
+  "block.eternalmagic.dark_stone_bricks_slab": "Dark Stone Bricks Slab",
+  "block.eternalmagic.dark_stone_slab": "Dark Stone Slab",
+  "block.eternalmagic.dark_stone_pillar": "Dark Stone Pillar",
+  "block.eternalmagic.dark_stone_bricks_stairs": "Dark Stone Bricks Stairs",
+  "block.eternalmagic.dark_stone_stairs": "Dark Stone Stairs",
+  "block.eternalmagic.dark_stone_bricks_wall": "Dark Stone Bricks Wall",
+  "block.eternalmagic.dark_stone_wall": "Dark Stone Wall",
 
   "item.eternalmagic.wand": "Wand",
   "item.eternalmagic.earth_core": "Earth Core",
@@ -74,5 +97,7 @@
   "upgrade.wand.eternalmagic.mana_capacity": "Mana Capacity",
   "upgrade.wand.eternalmagic.slot": "Slot",
   
-  "msg.eternalmagic.wrong_block_at": "Wrong Block At: %d %d %d, Found: %s, Expected: %s"
+  "msg.eternalmagic.wrong_block_at": "Wrong Block At: %d %d %d, Found: %s, Expected: %s",
+  "message.eternalmagic.link_error": "Link Failed!",
+  "message.eternalmagic.link_successful": "Link Successful!"
 }

@@ -55,6 +55,7 @@ public class ShrineCoreRenderer implements BlockEntityRenderer<ShrineCoreBlockEn
         this.multiplierBlocks.add(Blocks.GOLD_BLOCK.defaultBlockState());
         this.multiplierBlocks.add(Blocks.DIAMOND_BLOCK.defaultBlockState());
         this.multiplierBlocks.add(Blocks.EMERALD_BLOCK.defaultBlockState());
+        this.multiplierBlocks.add(Blocks.NETHERITE_BLOCK.defaultBlockState());
     }
 
     @Override

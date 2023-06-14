@@ -1,4 +1,4 @@
-// 1.20	2023-06-10T11:51:30.0828038	Loot Tables
+// 1.20.1	2023-06-14T22:18:27.8154481	Loot Tables
 f546bc7900c029d9ab93229ab9dec50164b867f1 data/eternalmagic/loot_tables/blocks/dark_stone.json
 3a05227c7b6bcd833f2c73bce9016e67df58fac4 data/eternalmagic/loot_tables/blocks/dark_stone_bricks.json
 8d06d31c7b6ac43eb5d1c4f41c7d6caf1b0cd02d data/eternalmagic/loot_tables/blocks/dark_stone_bricks_slab.json
@@ -8,7 +8,9 @@ bf7024e1e7204acb74cd5eda4ff5a7b40c569df5 data/eternalmagic/loot_tables/blocks/da
 2c427025f02e59e7c3a837fd01df44c1f57e67eb data/eternalmagic/loot_tables/blocks/dark_stone_slab.json
 ee0bc9c940aa4814972729906ce1bc91718ffc13 data/eternalmagic/loot_tables/blocks/dark_stone_stairs.json
 61ee7651801629ac60da5119a92570470368bb7b data/eternalmagic/loot_tables/blocks/dark_stone_wall.json
+032488691d59a8c5f29d1f3e36e437e9da6be293 data/eternalmagic/loot_tables/blocks/directional_mana_transmitter.json
 da9252ba08fa08eff984d5a4c825351df648e9c8 data/eternalmagic/loot_tables/blocks/mana_pipe.json
+c78236d7416218c17a5478410e40fe4d6ff0c29a data/eternalmagic/loot_tables/blocks/mana_receiver.json
 d52685842f221150aea862bf84ada1b1ed716e52 data/eternalmagic/loot_tables/blocks/mana_stone.json
 a6251050f5cd27e1e97e4c379b73afe5bbc81919 data/eternalmagic/loot_tables/blocks/mana_stone_bricks.json
 b22987754f53a2ff3477ac75bad8696a4f460f37 data/eternalmagic/loot_tables/blocks/mana_stone_bricks_slab.json
@@ -18,6 +20,8 @@ ebe6d709712044756dc2ba70f5e3e78603103660 data/eternalmagic/loot_tables/blocks/ma
 5d7767af496bea32bc82523783f69e00a0d76355 data/eternalmagic/loot_tables/blocks/mana_stone_slab.json
 c865c57a021b2650baaede6cb0731ba1780e23fa data/eternalmagic/loot_tables/blocks/mana_stone_stairs.json
 f287909cedaf19fd74b88cf6b85ddc0f584213ef data/eternalmagic/loot_tables/blocks/mana_stone_wall.json
+84f3e09f291f2e6aaf279725e1f3684ad4d42fd5 data/eternalmagic/loot_tables/blocks/mana_tunnel.json
+27f5371768a010114abea87b376f7b29f03e2e73 data/eternalmagic/loot_tables/blocks/omnidirectional_mana_transmitter.json
 2378ecb2cde340a76d35ce0c06930e78ad69151d data/eternalmagic/loot_tables/blocks/shrine_core.json
 65d12908266d82b71f45b229ab69442a580f88e1 data/eternalmagic/loot_tables/blocks/shrine_output.json
 a0ae2c71b1a9765e98a39374b16fae0f54358594 data/eternalmagic/loot_tables/blocks/wand_bench.json

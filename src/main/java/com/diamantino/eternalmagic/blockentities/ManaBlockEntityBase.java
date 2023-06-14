@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.api.mana.IManaStorage;
+import com.diamantino.eternalmagic.api.mana.ManaStorage;
 import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModCapabilities;
 import com.diamantino.eternalmagic.registration.ModMessages;
@@ -88,11 +89,26 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ModCapabilities.mana) {
+        if (cap == ModCapabilities.mana && supportManaCap(side)) {
             return ModCapabilities.mana.orEmpty(cap, lazyManaHandler);
         }
 
         return super.getCapability(cap, side);
+    }
+
+    private boolean supportManaCap(@Nullable Direction side) {
+        if (side != null) {
+            return switch (side) {
+                case DOWN -> manaStorage.bottomFace != ManaStorage.SideInfo.none;
+                case UP -> manaStorage.topFace != ManaStorage.SideInfo.none;
+                case NORTH -> manaStorage.northFace != ManaStorage.SideInfo.none;
+                case SOUTH -> manaStorage.southFace != ManaStorage.SideInfo.none;
+                case WEST -> manaStorage.westFace != ManaStorage.SideInfo.none;
+                case EAST -> manaStorage.eastFace != ManaStorage.SideInfo.none;
+            };
+        }
+
+        return true;
     }
 
     @Override

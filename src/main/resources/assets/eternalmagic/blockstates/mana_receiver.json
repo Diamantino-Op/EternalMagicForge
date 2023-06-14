@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "eternalmagic:block/mana_receiver",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "eternalmagic:block/mana_receiver",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalmagic:block/mana_receiver"
+    },
+    "facing=south": {
+      "model": "eternalmagic:block/mana_receiver",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "eternalmagic:block/mana_receiver",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "eternalmagic:block/mana_receiver",
+      "y": 270
+    }
+  }
+}

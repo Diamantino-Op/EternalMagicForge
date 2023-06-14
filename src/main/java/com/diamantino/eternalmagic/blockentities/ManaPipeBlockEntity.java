@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ManaPipeBlockEntity extends ManaBlockEntityBase {
     public ManaPipeBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntityTypes.manaPipeBlockEntity.get(), pPos, pBlockState, 10240, 1024);
+        super(ModBlockEntityTypes.manaPipeBlockEntity.get(), pPos, pBlockState, 102400, 10240);
 
         this.manaStorage.topFace = ManaStorage.SideInfo.both;
         this.manaStorage.bottomFace = ManaStorage.SideInfo.both;

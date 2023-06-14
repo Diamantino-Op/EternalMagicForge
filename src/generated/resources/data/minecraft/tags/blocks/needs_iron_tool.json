@@ -11,6 +11,10 @@
     "eternalmagic:dark_stone_wall",
     "eternalmagic:shrine_core",
     "eternalmagic:shrine_output",
-    "eternalmagic:mana_pipe"
+    "eternalmagic:mana_pipe",
+    "eternalmagic:mana_tunnel",
+    "eternalmagic:mana_receiver",
+    "eternalmagic:directional_mana_transmitter",
+    "eternalmagic:omnidirectional_mana_transmitter"
   ]
 }

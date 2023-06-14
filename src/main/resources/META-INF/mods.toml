@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[46,)"
+loaderVersion = "[47,)"
 license = "All Rights Reserved"
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
 [[mods]]
@@ -20,7 +20,7 @@ description = '''
 [[dependencies.eternalmagic]]
 modId = "forge"
 mandatory = true
-versionRange = "[46,)"
+versionRange = "[47,)"
 ordering = "NONE"
 side = "BOTH"
 

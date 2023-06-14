@@ -180,6 +180,8 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
                         this.generatingManaMultiplier += 0.5f;
                     } else if (worldState.is(Blocks.EMERALD_BLOCK)) {
                         this.generatingManaMultiplier += 0.75f;
+                    } else if (worldState.is(Blocks.NETHERITE_BLOCK)) {
+                        this.generatingManaMultiplier += 1f;
                     } else {
                         ret = false;
 
@@ -244,7 +246,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
         if(level.isClientSide()) {
             if (!blockEntity.isAssembled) {
                 if (blockEntity.showingChangeCountdown <= 0) {
-                    if (blockEntity.showingBlockId == 4)
+                    if (blockEntity.showingBlockId == 5)
                         blockEntity.showingBlockId = 0;
                     else
                         blockEntity.showingBlockId++;
