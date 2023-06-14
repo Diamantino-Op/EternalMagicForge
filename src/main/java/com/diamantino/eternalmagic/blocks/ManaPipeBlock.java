@@ -6,6 +6,7 @@ import com.diamantino.eternalmagic.registration.ModCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -20,6 +21,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,6 +75,30 @@ public class ManaPipeBlock extends BaseEntityBlock {
     @Override
     public @NotNull FluidState getFluidState(BlockState pState) {
         return pState.getValue(waterlogged) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    }
+
+    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+        VoxelShape shape = Block.box(4, 4, 4, 12, 12, 12);
+
+        if (pState.getValue(connectedTop))
+            shape = Shapes.or(shape, Block.box(5, 11, 5, 11, 16, 11));
+
+        if (pState.getValue(connectedBottom))
+            shape = Shapes.or(shape, Block.box(5, 0, 5, 11, 5, 11));
+
+        if (pState.getValue(connectedNorth))
+            shape = Shapes.or(shape, Block.box(5, 5, 0, 11, 11, 5));
+
+        if (pState.getValue(connectedSouth))
+            shape = Shapes.or(shape, Block.box(5, 5, 11, 11, 11, 16));
+
+        if (pState.getValue(connectedEast))
+            shape = Shapes.or(shape, Block.box(11, 5, 5, 16, 11, 11));
+
+        if (pState.getValue(connectedWest))
+            shape = Shapes.or(shape, Block.box(0, 5, 5, 5, 11, 11));
+
+        return shape;
     }
 
     private BlockState updateState(BlockPos pos, BlockState initialState, LevelAccessor level) {
