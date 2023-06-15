@@ -260,8 +260,6 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
 
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("progress");
-
-        ModMessages.sendToClients(new ItemStackSyncS2CPacket(this.itemHandler, worldPosition));
     }
 
     @Override

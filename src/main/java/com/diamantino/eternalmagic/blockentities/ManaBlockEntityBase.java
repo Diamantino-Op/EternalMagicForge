@@ -85,8 +85,6 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
         super.load(nbt);
 
         manaStorage.deserializeNBT(nbt.get("manaStorage"));
-
-        syncMana();
     }
 
     @Override
@@ -118,6 +116,11 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
         super.onLoad();
 
         lazyManaHandler = LazyOptional.of(() -> manaStorage);
+    }
+
+    @Override
+    public @NotNull CompoundTag getUpdateTag() {
+        return this.serializeNBT();
     }
 
     @Override

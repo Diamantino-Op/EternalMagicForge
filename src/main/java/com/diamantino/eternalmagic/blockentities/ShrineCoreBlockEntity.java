@@ -85,14 +85,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
                     if (!level.isClientSide())
                         ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
 
-                    coreLevel = CoreItem.getLevel(getStackInSlot(slot).getOrCreateTag());
-
-                    long newCapacity = baseCapacity * Math.max(1, ((long) coreLevel * coreLevel));
-
-                    manaStorage.setCapacity(newCapacity);
-                    manaStorage.setMaxTransfer(newCapacity);
-
-                    changeGeneratingMana(getTotalGeneratingMana(getStackInSlot(slot).isEmpty() ? 0 : Math.max(1, coreLevel)));
+                    updateCapacity();
                 }
             }
 
@@ -125,6 +118,16 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
                 return 2;
             }
         };
+    }
+
+    public void updateCapacity() {
+        coreLevel = CoreItem.getLevel(itemHandler.getStackInSlot(0).getOrCreateTag());
+
+        long newCapacity = baseCapacity * Math.max(1, ((long) coreLevel * coreLevel));
+
+        manaStorage.setCapacity(newCapacity);
+
+        changeGeneratingMana(getTotalGeneratingMana(itemHandler.getStackInSlot(0).isEmpty() ? 0 : Math.max(1, coreLevel)));
     }
 
     public long getTotalGeneratingMana(int coreLevel) {
@@ -304,7 +307,6 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("progress", this.progress);
-        nbt.putLong("generatingMana", this.getGeneratingMana());
         nbt.putFloat("generatingManaMultiplier", this.generatingManaMultiplier);
         nbt.putBoolean("isAssembled", this.isAssembled);
     }
@@ -315,11 +317,10 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
 
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("progress");
-        changeGeneratingMana(nbt.getLong("generatingMana"));
         generatingManaMultiplier = nbt.getFloat("generatingManaMultiplier");
         isAssembled = nbt.getBoolean("isAssembled");
 
-        ModMessages.sendToClients(new ItemStackSyncS2CPacket(this.itemHandler, worldPosition));
+        updateCapacity();
     }
 
     @Override
