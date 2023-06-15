@@ -33,6 +33,11 @@ public interface IManaStorage {
     long getManaStored();
 
     /**
+     * Sets the amount of mana currently stored.
+     */
+    void setManaStored(long mana);
+
+    /**
      * Returns the maximum amount of mana that can be stored.
      */
     long getMaxManaStored();
@@ -58,6 +63,12 @@ public interface IManaStorage {
      * If this is false, then any calls to receiveMana will return 0.
      */
     boolean canReceive(Direction side);
+
+    /**
+     * Used to determine if this storage can receive and can have mana extracted.
+     * If this is false, then any calls to receiveMana will return 0.
+     */
+    boolean canIO(Direction side);
 
     /**
      * Returns if the storage can receive/extract from this side.

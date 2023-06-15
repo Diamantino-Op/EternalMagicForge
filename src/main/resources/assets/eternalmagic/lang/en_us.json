@@ -63,6 +63,7 @@
   "tooltip.wand_upgrade.eternalmagic.type": "Type: %s",
   "tooltip.wand_upgrade.eternalmagic.rarity": "Rarity: %s",
   "tooltip.wand_upgrade.eternalmagic.value": "Value: %s",
+  "tooltip.mana_tool.eternalmagic.mode": "Mode: %s",
   
   "screen.eternalmagic.wand_bench.required_mana": "Required: %s/t",
   
@@ -99,5 +100,12 @@
   
   "msg.eternalmagic.wrong_block_at": "Wrong Block At: %d %d %d, Found: %s, Expected: %s",
   "message.eternalmagic.link_error": "Link Failed!",
-  "message.eternalmagic.link_successful": "Link Successful!"
+  "message.eternalmagic.link_successful": "Link Successful!",
+  "message.eternalmagic.mana_info": "Stored Mana: %s/ %s",
+  "message.eternalmagic.clear_saved_position": "Cleared Saved Position!",
+  "message.eternalmagic.save_position": "Position Saved!",
+  
+  "mode.manatool.eternalmagic.change": "Changed Mode To: %s",
+  "mode.manatool.eternalmagic.link": "Link",
+  "mode.manatool.eternalmagic.info": "Info"
 }

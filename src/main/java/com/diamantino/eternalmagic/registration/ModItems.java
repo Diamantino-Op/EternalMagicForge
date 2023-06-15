@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.items.CoreItem;
+import com.diamantino.eternalmagic.items.ManaTool;
 import com.diamantino.eternalmagic.items.WandItem;
 import com.diamantino.eternalmagic.items.WandUpgradeItem;
 import net.minecraft.world.item.Item;
@@ -27,6 +28,7 @@ public class ModItems {
 
     public static final RegistryObject<WandItem> wandItem = registerItem("wand", () -> new WandItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> emptyUpgrade = registerItem("blank_upgrade", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<ManaTool> manaTool = registerItem("mana_tool", () -> new ManaTool(new Item.Properties().stacksTo(1)));
 
     private static void registerWandCores() {
         for (CoreItem.WandCoreElement element : CoreItem.WandCoreElement.values()) {

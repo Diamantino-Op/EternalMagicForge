@@ -93,6 +93,11 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     }
 
     @Override
+    public void setManaStored(long mana) {
+        this.mana = mana;
+    }
+
+    @Override
     public long getMaxManaStored()
     {
         return capacity;
@@ -131,6 +136,19 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
             case SOUTH -> southFace == SideInfo.insert || southFace == SideInfo.both;
             case WEST -> westFace == SideInfo.insert || westFace == SideInfo.both;
             case EAST -> eastFace == SideInfo.insert || eastFace == SideInfo.both;
+        };
+    }
+
+    @Override
+    public boolean canIO(Direction side)
+    {
+        return side == null ? (this.maxExtract > 0 && this.maxReceive > 0) : switch (side) {
+            case DOWN -> bottomFace == SideInfo.both;
+            case UP -> topFace == SideInfo.both;
+            case NORTH -> northFace == SideInfo.both;
+            case SOUTH -> southFace == SideInfo.both;
+            case WEST -> westFace == SideInfo.both;
+            case EAST -> eastFace == SideInfo.both;
         };
     }
 

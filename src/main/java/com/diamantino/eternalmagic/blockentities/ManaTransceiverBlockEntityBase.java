@@ -59,9 +59,18 @@ public abstract class ManaTransceiverBlockEntityBase extends ManaBlockEntityBase
                         if (blockEntity.isTunnel) {
                             equalizeMana(blockEntity, entity);
                         } else {
-                            if (blockEntity.isTransmitter) {
-                                entity.getCapability(ModCapabilities.mana).ifPresent(manaStorage -> blockEntity.extractMana(null, manaStorage.receiveMana(null, blockEntity.getManaStorage().getManaStored(), false), false));
-                            }
+                            entity.getCapability(ModCapabilities.mana, null).ifPresent(manaStorage -> {
+                                if (blockEntity.isTransmitter) {
+                                    long extractedMana = blockEntity.manaStorage.extractMana(null, blockEntity.manaStorage.getManaStored(), true);
+
+                                    long receivedMana = manaStorage.receiveMana(null, extractedMana, false);
+
+                                    blockEntity.manaStorage.extractMana(null, receivedMana, false);
+
+                                    entity.setChanged();
+                                    blockEntity.setChanged();
+                                }
+                            });
                         }
                     }
                 }
@@ -164,7 +173,7 @@ public abstract class ManaTransceiverBlockEntityBase extends ManaBlockEntityBase
 
         CompoundTag tag = stack.getOrCreateTag();
 
-        if (tag.contains("savedTarget")) {
+        if (!player.isShiftKeyDown() && tag.contains("savedTarget")) {
             CompoundTag targetTag = tag.getCompound("savedTarget");
 
             BlockPos savedPos = new BlockPos(targetTag.getInt("x"), targetTag.getInt("y"), targetTag.getInt("z"));
@@ -182,6 +191,8 @@ public abstract class ManaTransceiverBlockEntityBase extends ManaBlockEntityBase
 
                         this.targetPos.add(savedPos);
                         this.targetLevel = blockEntityBase.level.dimension();
+
+                        tag.remove("savedTarget");
 
                         player.sendSystemMessage(Component.translatable("message." + ModConstants.modId + ".link_successful").withStyle(ChatFormatting.GREEN));
                     } else {
