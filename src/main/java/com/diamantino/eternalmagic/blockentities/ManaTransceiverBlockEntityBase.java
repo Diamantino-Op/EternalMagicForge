@@ -206,7 +206,9 @@ public abstract class ManaTransceiverBlockEntityBase extends ManaBlockEntityBase
     public abstract boolean canLink(BlockPos targetPos, ManaTransceiverBlockEntityBase blockEntity);
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
+    protected void saveAdditional(@NotNull CompoundTag nbt) {
+        super.saveAdditional(nbt);
+
         if (targetLevel != null)
             nbt.putString("targetLevel", targetLevel.location().toString());
 
@@ -223,12 +225,12 @@ public abstract class ManaTransceiverBlockEntityBase extends ManaBlockEntityBase
         }
 
         nbt.put("targets", new ListTag(posTags, (byte) 10));
-
-        super.saveAdditional(nbt);
     }
 
     @Override
     public void load(@NotNull CompoundTag nbt) {
+        super.load(nbt);
+
         if (nbt.contains("targetLevel"))
             targetLevel = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(nbt.getString("targetLevel")));
 
@@ -237,7 +239,5 @@ public abstract class ManaTransceiverBlockEntityBase extends ManaBlockEntityBase
 
             targetPos.add(new BlockPos(tagCmp.getInt("targetX"), tagCmp.getInt("targetY"), tagCmp.getInt("targetZ")));
         }
-
-        super.load(nbt);
     }
 }

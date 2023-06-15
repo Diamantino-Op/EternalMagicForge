@@ -56,7 +56,7 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     private int progress = 0;
     private int maxProgress = 20;
 
-    public static long baseCapacity = 10000;
+    public static long baseCapacity = 10240;
     public static long baseGeneratedMana = 10;
 
     public long generatingMana = 0;
@@ -299,25 +299,27 @@ public class ShrineCoreBlockEntity extends ManaBlockEntityBase implements MenuPr
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
+    protected void saveAdditional(@NotNull CompoundTag nbt) {
+        super.saveAdditional(nbt);
+
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("progress", this.progress);
         nbt.putLong("generatingMana", this.getGeneratingMana());
         nbt.putFloat("generatingManaMultiplier", this.generatingManaMultiplier);
         nbt.putBoolean("isAssembled", this.isAssembled);
-
-        super.saveAdditional(nbt);
     }
 
     @Override
     public void load(@NotNull CompoundTag nbt) {
+        super.load(nbt);
+
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("progress");
         changeGeneratingMana(nbt.getLong("generatingMana"));
         generatingManaMultiplier = nbt.getFloat("generatingManaMultiplier");
         isAssembled = nbt.getBoolean("isAssembled");
 
-        super.load(nbt);
+        ModMessages.sendToClients(new ItemStackSyncS2CPacket(this.itemHandler, worldPosition));
     }
 
     @Override

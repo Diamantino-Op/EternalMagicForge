@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class DirectionalManaTransmitterBlockEntity extends ManaTransceiverBlockEntityBase {
     public DirectionalManaTransmitterBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntityTypes.directionalManaTransmitterBlockEntity.get(), pPos, pBlockState, 20480, 2048, true, false);
+        super(ModBlockEntityTypes.directionalManaTransmitterBlockEntity.get(), pPos, pBlockState, 10240, 10240, true, false);
     }
 
     @Override

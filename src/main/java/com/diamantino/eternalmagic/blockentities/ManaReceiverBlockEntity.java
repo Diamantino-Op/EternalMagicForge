@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ManaReceiverBlockEntity extends ManaTransceiverBlockEntityBase {
     public ManaReceiverBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntityTypes.manaReceiverBlockEntity.get(), pPos, pBlockState, 20480, 2048, false, false);
+        super(ModBlockEntityTypes.manaReceiverBlockEntity.get(), pPos, pBlockState, 10240, 10240, false, false);
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class OmnidirectionalManaTransmitterBlockEntity extends ManaTransceiverBlockEntityBase {
     public OmnidirectionalManaTransmitterBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntityTypes.omnidirectionalManaTransmitterBlockEntity.get(), pPos, pBlockState, 20480, 2048, true, false);
+        super(ModBlockEntityTypes.omnidirectionalManaTransmitterBlockEntity.get(), pPos, pBlockState, 10240, 10240, true, false);
     }
 
     @Override

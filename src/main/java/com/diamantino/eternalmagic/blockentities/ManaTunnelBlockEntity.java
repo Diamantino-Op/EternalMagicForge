@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ManaTunnelBlockEntity extends ManaTransceiverBlockEntityBase {
     public ManaTunnelBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntityTypes.manaTunnelBlockEntity.get(), pPos, pBlockState, 102400, 10240, false, true);
+        super(ModBlockEntityTypes.manaTunnelBlockEntity.get(), pPos, pBlockState, 10240, 10240, false, true);
     }
 
     @Override

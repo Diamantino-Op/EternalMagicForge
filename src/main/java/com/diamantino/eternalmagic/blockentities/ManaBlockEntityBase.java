@@ -74,17 +74,19 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        nbt.put("manaStorage", manaStorage.serializeNBT());
-
+    protected void saveAdditional(@NotNull CompoundTag nbt) {
         super.saveAdditional(nbt);
+
+        nbt.put("manaStorage", manaStorage.serializeNBT());
     }
 
     @Override
     public void load(@NotNull CompoundTag nbt) {
+        super.load(nbt);
+
         manaStorage.deserializeNBT(nbt.get("manaStorage"));
 
-        super.load(nbt);
+        syncMana();
     }
 
     @Override

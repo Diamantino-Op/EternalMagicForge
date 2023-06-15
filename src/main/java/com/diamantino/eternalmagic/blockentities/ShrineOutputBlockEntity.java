@@ -27,21 +27,21 @@ public class ShrineOutputBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag nbt) {
+        super.saveAdditional(nbt);
+
         if (corePos != null) {
             nbt.putInt("coreX", corePos.getX());
             nbt.putInt("coreY", corePos.getY());
             nbt.putInt("coreZ", corePos.getZ());
         }
-
-        super.saveAdditional(nbt);
     }
 
     @Override
     public void load(@NotNull CompoundTag nbt) {
+        super.load(nbt);
+
         if (nbt.contains("coreX"))
             corePos = new BlockPos(nbt.getInt("coreX"), nbt.getInt("coreY"), nbt.getInt("coreZ"));
-
-        super.load(nbt);
     }
 
     @Override

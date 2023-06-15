@@ -247,19 +247,21 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
+    protected void saveAdditional(@NotNull CompoundTag nbt) {
+        super.saveAdditional(nbt);
+
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("progress", this.progress);
-
-        super.saveAdditional(nbt);
     }
 
     @Override
     public void load(@NotNull CompoundTag nbt) {
+        super.load(nbt);
+
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("progress");
 
-        super.load(nbt);
+        ModMessages.sendToClients(new ItemStackSyncS2CPacket(this.itemHandler, worldPosition));
     }
 
     @Override
