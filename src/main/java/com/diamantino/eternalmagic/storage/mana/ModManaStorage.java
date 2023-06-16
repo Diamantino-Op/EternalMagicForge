@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.storage.mana;
 
-import com.diamantino.eternalmagic.api.mana.ManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.ManaStorage;
 import net.minecraft.core.Direction;
 
 public abstract class ModManaStorage extends ManaStorage {

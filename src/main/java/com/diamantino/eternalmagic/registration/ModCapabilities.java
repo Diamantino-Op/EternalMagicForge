@@ -1,6 +1,6 @@
 package com.diamantino.eternalmagic.registration;
 
-import com.diamantino.eternalmagic.api.mana.IManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.IManaStorage;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 

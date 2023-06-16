@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.items;
 
 import com.diamantino.eternalmagic.ModConstants;
+import com.diamantino.eternalmagic.api.capabilities.player.Element;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,9 +15,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class CoreItem extends Item {
-    private final WandCoreElement element;
+    private final Element element;
 
-    public CoreItem(Properties pProperties, WandCoreElement element) {
+    public CoreItem(Properties pProperties, Element element) {
         super(pProperties);
 
         this.element = element;
@@ -54,46 +55,7 @@ public class CoreItem extends Item {
         return nbt.getInt("level");
     }
 
-    public WandCoreElement getElement() {
+    public Element getElement() {
         return element;
-    }
-
-    public enum WandCoreElement {
-        none(0, Component.translatable("element." + ModConstants.modId + ".none")),
-        earth(1, Component.translatable("element." + ModConstants.modId + ".earth")),
-        air(2, Component.translatable("element." + ModConstants.modId + ".air")),
-        water(3, Component.translatable("element." + ModConstants.modId + ".water")),
-        fire(4, Component.translatable("element." + ModConstants.modId + ".fire")),
-        electricity(5, Component.translatable("element." + ModConstants.modId + ".electricity")),
-        darkness(6, Component.translatable("element." + ModConstants.modId + ".darkness")),
-        light(7, Component.translatable("element." + ModConstants.modId + ".light")),
-        ice(8, Component.translatable("element." + ModConstants.modId + ".ice")),
-        magma(9, Component.translatable("element." + ModConstants.modId + ".magma")),
-        infinity(10, Component.translatable("element." + ModConstants.modId + ".infinity"));
-
-        private final int id;
-        private final Component name;
-
-        WandCoreElement(int id, Component name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public String getName() {
-            return name.getString();
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public static WandCoreElement fromId(int elementId) {
-            for (WandCoreElement elem : WandCoreElement.values()) {
-                if (elem.id == elementId)
-                    return elem;
-            }
-
-            return earth;
-        }
     }
 }

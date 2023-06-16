@@ -1,4 +1,4 @@
-package com.diamantino.eternalmagic.api.mana;
+package com.diamantino.eternalmagic.api.capabilities.mana;
 
 import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;

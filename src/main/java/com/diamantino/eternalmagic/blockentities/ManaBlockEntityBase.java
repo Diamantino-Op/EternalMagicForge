@@ -1,7 +1,7 @@
 package com.diamantino.eternalmagic.blockentities;
 
-import com.diamantino.eternalmagic.api.mana.IManaStorage;
-import com.diamantino.eternalmagic.api.mana.ManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.IManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.ManaStorage;
 import com.diamantino.eternalmagic.networking.s2c.ManaSyncS2CPacket;
 import com.diamantino.eternalmagic.registration.ModCapabilities;
 import com.diamantino.eternalmagic.registration.ModMessages;
@@ -84,7 +84,7 @@ public abstract class ManaBlockEntityBase extends BlockEntity {
     public void load(@NotNull CompoundTag nbt) {
         super.load(nbt);
 
-        manaStorage.deserializeNBT(nbt.get("manaStorage"));
+        manaStorage.deserializeNBT(nbt.getCompound("manaStorage"));
     }
 
     @Override

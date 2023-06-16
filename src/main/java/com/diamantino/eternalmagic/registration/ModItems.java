@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.ModConstants;
+import com.diamantino.eternalmagic.api.capabilities.player.Element;
 import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.items.ManaTool;
 import com.diamantino.eternalmagic.items.WandItem;
@@ -23,7 +24,7 @@ public class ModItems {
     public static final List<RegistryObject<? extends Item>> items = new ArrayList<>();
     public static final List<RegistryObject<? extends Item>> resourcesItems = new ArrayList<>();
 
-    public static final Map<CoreItem.WandCoreElement, RegistryObject<CoreItem>> wandCores = new LinkedHashMap<>();
+    public static final Map<Element, RegistryObject<CoreItem>> wandCores = new LinkedHashMap<>();
     public static final Map<WandUpgradeItem.WandUpgradeType, RegistryObject<WandUpgradeItem>> wandUpgrades = new LinkedHashMap<>();
 
     public static final RegistryObject<WandItem> wandItem = registerItem("wand", () -> new WandItem(new Item.Properties().stacksTo(1)));
@@ -31,8 +32,8 @@ public class ModItems {
     public static final RegistryObject<ManaTool> manaTool = registerItem("mana_tool", () -> new ManaTool(new Item.Properties().stacksTo(1)));
 
     private static void registerWandCores() {
-        for (CoreItem.WandCoreElement element : CoreItem.WandCoreElement.values()) {
-            if (element == CoreItem.WandCoreElement.none)
+        for (Element element : Element.values()) {
+            if (element == Element.none)
                 continue;
 
             RegistryObject<CoreItem> item = modItems.register(element.toString() + "_core", () -> new CoreItem(new Item.Properties().stacksTo(1), element));

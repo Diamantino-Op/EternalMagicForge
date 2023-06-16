@@ -1,6 +1,8 @@
 package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.EternalMagic;
+import com.diamantino.eternalmagic.ModConstants;
+import com.diamantino.eternalmagic.api.capabilities.player.PlayerMageInfo;
 import com.diamantino.eternalmagic.multiblocks.Multiblock;
 import com.diamantino.eternalmagic.multiblocks.MultiblockRegistry;
 import com.diamantino.eternalmagic.multiblocks.MultiblockUtils;
@@ -9,10 +11,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -49,6 +56,30 @@ public class ForgeEvents {
                     ModMessages.sendToPlayer(new MultiblockBlockSyncS2CPacket(multiblock.multiblockTemplateBlocks(), id, registry.multiblockMap.size()), player);
                 });
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onAttachPlayerCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof Player player) {
+            if (!player.getCapability(PlayerMageInfo.mageInfoCapability).isPresent()) {
+                event.addCapability(new ResourceLocation(ModConstants.modId, "mage_info"), new PlayerMageInfo());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCloned(PlayerEvent.Clone event) {
+        if (event.isWasDeath()) {
+            event.getOriginal().reviveCaps();
+
+            event.getOriginal().getCapability(PlayerMageInfo.mageInfoCapability).ifPresent(oldStore -> {
+                event.getEntity().getCapability(PlayerMageInfo.mageInfoCapability).ifPresent(newStore -> {
+                    newStore.deserializeNBT(oldStore.serializeNBT());
+                });
+            });
+
+            event.getOriginal().invalidateCaps();
         }
     }
 

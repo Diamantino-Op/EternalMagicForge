@@ -1,7 +1,7 @@
 package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.ModConstants;
-import com.diamantino.eternalmagic.api.mana.ManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.ManaStorage;
 import com.diamantino.eternalmagic.registration.ModCapabilities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

@@ -1,6 +1,7 @@
 package com.diamantino.eternalmagic.items;
 
 import com.diamantino.eternalmagic.ModConstants;
+import com.diamantino.eternalmagic.api.capabilities.player.Element;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.utils.TextUtils;
 import net.minecraft.ChatFormatting;
@@ -42,7 +43,7 @@ public class WandItem extends ManaItemBase {
         long storedMana = getManaLevel(pStack);
         long maxStoredMana = getCapacity(pStack);
         float manaUsageReduction = tag.getFloat("manaUsageReduction");
-        String coreElement = CoreItem.WandCoreElement.fromId(coreTag.getInt("element")).getName();
+        String coreElement = Element.fromId(coreTag.getInt("element")).getName();
         int coreLevel = coreTag.getInt("level");
         int usedSpellSlots = spellsTag.getInt("usedSlots");
         int totalSpellSlots = spellsTag.getInt("totalSlots");
@@ -134,10 +135,10 @@ public class WandItem extends ManaItemBase {
         CompoundTag nbt = stack.getOrCreateTag();
         CompoundTag coreTag = nbt.getCompound("core");
 
-        CoreItem.WandCoreElement element = ((CoreItem) stack.getItem()).getElement();
+        Element element = ((CoreItem) stack.getItem()).getElement();
         int level = CoreItem.getLevel(coreNbt);
 
-        coreTag.putInt("element", element.getId());
+        coreTag.putInt("element", element.ordinal());
         coreTag.putInt("level", level);
 
         nbt.put("core", coreTag);

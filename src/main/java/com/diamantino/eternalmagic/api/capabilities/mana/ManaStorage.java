@@ -1,11 +1,12 @@
-package com.diamantino.eternalmagic.api.mana;
+package com.diamantino.eternalmagic.api.capabilities.mana;
 
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
+public class ManaStorage implements IManaStorage, INBTSerializable<CompoundTag> {
     protected long mana;
     protected long capacity;
     protected long maxReceive;
@@ -158,16 +159,36 @@ public class ManaStorage implements IManaStorage, INBTSerializable<Tag> {
     }
 
     @Override
-    public Tag serializeNBT()
+    public CompoundTag serializeNBT()
     {
-        return LongTag.valueOf(this.getManaStored());
+        CompoundTag tag = new CompoundTag();
+
+        tag.put("mana", LongTag.valueOf(this.getManaStored()));
+        tag.putString("upSide", topFace.name());
+        tag.putString("downSide", bottomFace.name());
+        tag.putString("northSide", northFace.name());
+        tag.putString("southSide", southFace.name());
+        tag.putString("eastSide", eastFace.name());
+        tag.putString("westSide", westFace.name());
+
+        return tag;
     }
 
     @Override
-    public void deserializeNBT(Tag nbt)
+    public void deserializeNBT(CompoundTag nbt)
     {
-        if (!(nbt instanceof LongTag longNbt))
+        Tag tag = nbt.get("mana");
+
+        if (!(tag instanceof LongTag longNbt))
             throw new IllegalArgumentException("Can not deserialize to an instance that isn't the default implementation");
+
+        topFace = SideInfo.valueOf(nbt.getString("upSide"));
+        bottomFace = SideInfo.valueOf(nbt.getString("downSide"));
+        northFace = SideInfo.valueOf(nbt.getString("northSide"));
+        southFace = SideInfo.valueOf(nbt.getString("southSide"));
+        eastFace = SideInfo.valueOf(nbt.getString("eastSide"));
+        westFace = SideInfo.valueOf(nbt.getString("westSide"));
+
         this.mana = longNbt.getAsLong();
     }
 

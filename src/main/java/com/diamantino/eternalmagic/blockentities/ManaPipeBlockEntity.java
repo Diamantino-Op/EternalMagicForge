@@ -1,7 +1,7 @@
 package com.diamantino.eternalmagic.blockentities;
 
-import com.diamantino.eternalmagic.api.mana.IManaStorage;
-import com.diamantino.eternalmagic.api.mana.ManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.IManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.ManaStorage;
 import com.diamantino.eternalmagic.blocks.ManaPipeBlock;
 import com.diamantino.eternalmagic.registration.ModBlockEntityTypes;
 import com.diamantino.eternalmagic.registration.ModCapabilities;

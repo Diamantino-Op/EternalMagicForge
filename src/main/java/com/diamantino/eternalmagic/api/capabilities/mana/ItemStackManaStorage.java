@@ -1,23 +1,20 @@
-package com.diamantino.eternalmagic.api.mana;
+package com.diamantino.eternalmagic.api.capabilities.mana;
 
-import com.diamantino.eternalmagic.blockentities.WandBenchBlockEntity;
 import com.diamantino.eternalmagic.storage.mana.ModManaStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ItemStackManaStorage  implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+@AutoRegisterCapability
+public class ItemStackManaStorage implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static final Capability<ItemStackManaStorage> itemStackManaStorageCapability = CapabilityManager.get(new CapabilityToken<>(){});
     private final LazyOptional<ItemStackManaStorage> lazyManaHandler;
 
-    public final ModManaStorage manaStorage;
+    private final ModManaStorage manaStorage;
 
     public ItemStackManaStorage(long baseCapacity, long maxReceive, long maxExtract) {
         lazyManaHandler = LazyOptional.of(() -> this);
@@ -90,6 +87,6 @@ public class ItemStackManaStorage  implements ICapabilityProvider, INBTSerializa
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        manaStorage.deserializeNBT(nbt.get("manaStorage"));
+        manaStorage.deserializeNBT(nbt.getCompound("manaStorage"));
     }
 }

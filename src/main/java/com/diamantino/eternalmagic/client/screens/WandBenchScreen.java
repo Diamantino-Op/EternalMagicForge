@@ -1,7 +1,7 @@
 package com.diamantino.eternalmagic.client.screens;
 
 import com.diamantino.eternalmagic.ModConstants;
-import com.diamantino.eternalmagic.api.mana.IManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.IManaStorage;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.client.model.ModelLoader;

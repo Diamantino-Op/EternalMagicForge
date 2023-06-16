@@ -1,9 +1,16 @@
 package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.ModConstants;
+import com.diamantino.eternalmagic.api.capabilities.player.PlayerMageInfo;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.IModBusEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = ModConstants.modId)
 public class ModEvents {
@@ -27,14 +34,7 @@ public class ModEvents {
         }
     }
 
-    /*private static void onAttachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event)
-    {
-        PostsInChunk cap = new PostsInChunk(event.getObject());
-        event.addCapability(new ResourceLocation(ModReferences.modId, "mana_storage"), cap);
-        event.addListener(cap::onCapabilityInvalidated);
-    }*/
-
     public static void registerModEvents() {
-        //bus.addGenericListener(ItemStack.class, ModEvents::onAttachChunkCapabilities);
+
     }
 }

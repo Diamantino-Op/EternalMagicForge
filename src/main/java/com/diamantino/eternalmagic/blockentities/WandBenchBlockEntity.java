@@ -1,7 +1,8 @@
 package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.ModConstants;
-import com.diamantino.eternalmagic.api.mana.ItemStackManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.ItemStackManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.player.Element;
 import com.diamantino.eternalmagic.client.menu.WandBenchMenu;
 import com.diamantino.eternalmagic.client.model.Model;
 import com.diamantino.eternalmagic.items.CoreItem;
@@ -151,8 +152,8 @@ public class WandBenchBlockEntity extends ManaBlockEntityBase implements MenuPro
                 }
             }
         } else if (hasItemInSlot(blockEntity, 2) && hasItemInSlot(blockEntity, 3)) {
-            CoreItem.WandCoreElement coreElement = ((CoreItem) coreStack.getItem()).getElement();
-            long requiredMana = (Math.max(CoreItem.getLevel(coreStack.getOrCreateTag()), 1) * 1000L) * (coreElement == CoreItem.WandCoreElement.infinity ? 10 : 1);
+            Element coreElement = ((CoreItem) coreStack.getItem()).getElement();
+            long requiredMana = (Math.max(CoreItem.getLevel(coreStack.getOrCreateTag()), 1) * 1000L) * (coreElement == Element.infinity ? 10 : 1);
             blockEntity.changeRequiredMana(requiredMana);
 
             if (blockEntity.hasEnoughMana(requiredMana)) {

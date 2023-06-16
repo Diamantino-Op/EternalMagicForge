@@ -2,7 +2,7 @@ package com.diamantino.eternalmagic.blockentities;
 
 import com.diamantino.eternalmagic.EternalMagic;
 import com.diamantino.eternalmagic.ModConstants;
-import com.diamantino.eternalmagic.api.mana.ManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.ManaStorage;
 import com.diamantino.eternalmagic.client.menu.ShrineCoreMenu;
 import com.diamantino.eternalmagic.items.CoreItem;
 import com.diamantino.eternalmagic.multiblocks.MultiblockLevel;

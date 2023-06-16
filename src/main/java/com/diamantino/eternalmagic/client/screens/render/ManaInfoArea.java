@@ -1,12 +1,9 @@
 package com.diamantino.eternalmagic.client.screens.render;
 
-import com.diamantino.eternalmagic.api.mana.IManaStorage;
+import com.diamantino.eternalmagic.api.capabilities.mana.IManaStorage;
 import com.diamantino.eternalmagic.utils.TextUtils;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
