@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.registration;
 
 import com.diamantino.eternalmagic.EternalMagic;
 import com.diamantino.eternalmagic.ModConstants;
+import com.diamantino.eternalmagic.api.capabilities.player.MageInfo;
 import com.diamantino.eternalmagic.api.capabilities.player.PlayerMageInfo;
 import com.diamantino.eternalmagic.multiblocks.Multiblock;
 import com.diamantino.eternalmagic.multiblocks.MultiblockRegistry;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -63,7 +66,7 @@ public class ForgeEvents {
     public static void onAttachPlayerCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player player) {
             if (!player.getCapability(PlayerMageInfo.mageInfoCapability).isPresent()) {
-                event.addCapability(new ResourceLocation(ModConstants.modId, "mage_info"), new PlayerMageInfo());
+                event.addCapability(new ResourceLocation(ModConstants.modId, "mage_info"), new PlayerMageInfo(player));
             }
         }
     }
@@ -80,6 +83,20 @@ public class ForgeEvents {
             });
 
             event.getOriginal().invalidateCaps();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+
+    }
+
+    @SubscribeEvent
+    public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
+        if (!event.getLevel().isClientSide()) {
+            if (event.getEntity() instanceof ServerPlayer player) {
+                player.getCapability(PlayerMageInfo.mageInfoCapability).ifPresent(MageInfo::sendUpdatePacket);
+            }
         }
     }
 

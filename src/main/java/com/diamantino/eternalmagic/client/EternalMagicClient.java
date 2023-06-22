@@ -4,6 +4,7 @@ import com.diamantino.eternalmagic.ModConstants;
 import com.diamantino.eternalmagic.client.model.ModelLoader;
 import com.diamantino.eternalmagic.client.model.entities.ShrineCoreInternalModel;
 import com.diamantino.eternalmagic.client.model.entities.WandBenchSphereModel;
+import com.diamantino.eternalmagic.client.overlay.MageInfoOverlay;
 import com.diamantino.eternalmagic.client.renderers.blocks.ShrineCoreRenderer;
 import com.diamantino.eternalmagic.client.renderers.blocks.WandBenchRenderer;
 import com.diamantino.eternalmagic.client.screens.ShrineCoreScreen;
@@ -14,6 +15,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -48,5 +50,10 @@ public class EternalMagicClient {
     public static void onModelRegister(ModelEvent.RegisterAdditional event)
     {
         new ModelLoader().registerModels(event);
+    }
+
+    @SubscribeEvent
+    public static void registerGuiOverlay(RegisterGuiOverlaysEvent event) {
+        event.registerAboveAll("mage_info", MageInfoOverlay.mageInfoOverlay);
     }
 }

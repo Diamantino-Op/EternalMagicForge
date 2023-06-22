@@ -2,6 +2,7 @@ package com.diamantino.eternalmagic.api.capabilities.player;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -14,8 +15,8 @@ public class PlayerMageInfo implements ICapabilityProvider, INBTSerializable<Com
 
     private final MageInfo mageInfo;
 
-    public PlayerMageInfo() {
-        mageInfo = new MageInfo();
+    public PlayerMageInfo(Player player) {
+        mageInfo = new MageInfo(player);
 
         lazyMageInfo = LazyOptional.of(() -> mageInfo);
     }

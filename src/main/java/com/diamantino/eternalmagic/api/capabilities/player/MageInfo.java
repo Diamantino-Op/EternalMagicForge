@@ -1,6 +1,10 @@
 package com.diamantino.eternalmagic.api.capabilities.player;
 
+import com.diamantino.eternalmagic.networking.s2c.MageInfoSyncPacket;
+import com.diamantino.eternalmagic.registration.ModMessages;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 
 import java.util.Random;
@@ -11,8 +15,10 @@ public class MageInfo {
     private Element mageElement;
     private long mana;
     private long maxMana;
+    private final Player player;
 
-    public MageInfo() {
+    public MageInfo(Player player) {
+        this.player = player;
         this.mageLevel = MageLevel.novice;
         this.mageElement = chooseRandom();
         this.mana = 0;
@@ -23,11 +29,15 @@ public class MageInfo {
         this.mageLevel = level;
 
         updateMaxMana();
+
+        sendUpdatePacket();
     }
 
     public boolean incrementMageLevel() {
         if (mageLevel.ordinal() < 3) {
             mageLevel = MageLevel.fromId(mageLevel.ordinal() + 1);
+
+            sendUpdatePacket();
 
             return true;
         }
@@ -39,18 +49,26 @@ public class MageInfo {
         this.mageElement = element;
 
         updateMaxMana();
+
+        sendUpdatePacket();
     }
 
     public void removeMana(long amount) {
         this.mana = Math.max(0, this.mana - amount);
+
+        sendUpdatePacket();
     }
 
     public void addMana(long amount) {
         this.mana = Math.min(this.maxMana, this.mana + amount);
+
+        sendUpdatePacket();
     }
 
     public void setMana(long amount) {
         this.mana = Math.max(0, Math.min(this.maxMana, amount));
+
+        sendUpdatePacket();
     }
 
     public long getMana() {
@@ -113,6 +131,12 @@ public class MageInfo {
             int rand = random.nextInt(4) + 1;
 
             return rand == 1 ? Element.earth : (rand == 2 ? Element.air : (rand == 3 ? Element.water : Element.fire));
+        }
+    }
+
+    public void sendUpdatePacket() {
+        if (!player.level().isClientSide()) {
+            ModMessages.sendToPlayer(new MageInfoSyncPacket(this.serializeNBT()), (ServerPlayer) player);
         }
     }
 

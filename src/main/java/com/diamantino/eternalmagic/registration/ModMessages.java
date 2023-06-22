@@ -65,6 +65,12 @@ public class ModMessages {
                 .consumerMainThread(MultiblockBlockSyncS2CPacket::handle)
                 .add();
 
+        net.messageBuilder(MageInfoSyncPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(MageInfoSyncPacket::new)
+                .encoder(MageInfoSyncPacket::toBytes)
+                .consumerMainThread(MageInfoSyncPacket::handle)
+                .add();
+
         // C2S
         net.messageBuilder(WandBenchButtonC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(WandBenchButtonC2SPacket::new)
